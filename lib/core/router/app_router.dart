@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import '../../core/theme/app_colors.dart';
 import '../../injection/injection_container.dart';
 import '../../presentation/blocs/account/account_bloc.dart';
 import '../../presentation/blocs/auth/auth_bloc.dart';
@@ -93,7 +94,28 @@ class AppRouter {
                           : 'home';
 
               return _withAccount(Scaffold(
+                extendBody: true, // Allow body to scroll under the transparent nav parts
+                backgroundColor: AppColors.bg, // Base dark background
                 body: child,
+                floatingActionButton: SizedBox(
+                  width: 64,
+                  height: 64,
+                  child: FloatingActionButton(
+                    onPressed: () => context.go('/payment'),
+                    backgroundColor: AppColors.bg, // Dark background for the scan button
+                    elevation: 8,
+                    shape: const CircleBorder(),
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: const Color(0xFFDFF26E).withOpacity(0.15), // Subtle green glow inside
+                      ),
+                      child: const Icon(Icons.qr_code_scanner_rounded, color: Color(0xFFDFF26E), size: 28),
+                    ),
+                  ),
+                ),
+                floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
                 bottomNavigationBar: AppTabBar(
                   active: tab,
                   onTab: (t) {
@@ -104,7 +126,6 @@ class AppRouter {
                       default: context.go('/home');
                     }
                   },
-                  onScan: () => context.go('/payment'),
                 ),
               ));
             },

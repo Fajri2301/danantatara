@@ -1,64 +1,51 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
-import 'feature_icon.dart';
 
 class AppTabBar extends StatelessWidget {
   final String active;
   final ValueChanged<String> onTab;
-  final VoidCallback? onScan;
 
   const AppTabBar({
     super.key,
     required this.active,
     required this.onTab,
-    this.onScan,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 64 + MediaQuery.of(context).padding.bottom,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.06),
-            blurRadius: 20,
-            offset: const Offset(0, -4),
-          ),
-        ],
+    return ClipRRect(
+      borderRadius: const BorderRadius.only(
+        topLeft: Radius.circular(32),
+        topRight: Radius.circular(32),
       ),
-      child: SafeArea(
-        top: false,
-        child: Row(
-          children: [
-            _TabItem(icon: DkgIcons.home, label: 'Home', tabKey: 'home', active: active, onTap: onTab),
-            _TabItem(icon: DkgIcons.history, label: 'Riwayat', tabKey: 'history', active: active, onTap: onTab),
-            // Center scan button
-            Expanded(
-              child: Center(
-                child: GestureDetector(
-                  onTap: onScan,
-                  child: Container(
-                    width: 56,
-                    height: 56,
-                    decoration: BoxDecoration(
-                      gradient: AppColors.primaryGradient,
-                      shape: BoxShape.circle,
-                      boxShadow: AppColors.shadowPrimary,
-                    ),
-                    child: const Icon(DkgIcons.scan, color: Colors.white, size: 26),
-                  ),
-                ),
-              ),
-            ),
-            _TabItem(icon: DkgIcons.gift, label: 'Promo', tabKey: 'promo', active: active, onTap: onTab),
-            _TabItem(icon: DkgIcons.user, label: 'Akun', tabKey: 'akun', active: active, onTap: onTab),
-          ],
+      child: BottomAppBar(
+        color: const Color(0xFFDFF26E), // Matched with Balance Card color
+        shape: const CircularNotchedRectangle(), // Creates the transparent 'U' cutout
+        notchMargin: 8.0,
+        padding: EdgeInsets.zero, // Remove default padding
+        child: SizedBox(
+          height: 70, // Fixed height for exact proportions
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center, // Aligns everything exactly on the Y axis
+            children: [
+              Expanded(child: _TabItem(icon: Icons.home_rounded, label: 'Beranda', tabKey: 'home', active: active, onTap: onTab)),
+              Expanded(child: _TabItem(icon: Icons.credit_card_rounded, label: 'Kartu', tabKey: 'promo', active: active, onTap: onTab)),
+              
+              // Empty space for the floating QRIS button
+              const SizedBox(width: 56),
+              
+              Expanded(child: _TabItem(icon: Icons.history_rounded, label: 'Riwayat', tabKey: 'history', active: active, onTap: onTab)),
+              Expanded(child: _TabItem(icon: Icons.person_rounded, label: 'Profil', tabKey: 'akun', active: active, onTap: onTab)),
+            ],
+          ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }
 
 class _TabItem extends StatelessWidget {
@@ -79,30 +66,29 @@ class _TabItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isActive = active == tabKey;
-    return Expanded(
-      child: GestureDetector(
-        onTap: () => onTap(tabKey),
-        behavior: HitTestBehavior.opaque,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              size: 24,
-              color: isActive ? AppColors.primary : AppColors.slate400,
+    return GestureDetector(
+      onTap: () => onTap(tabKey),
+      behavior: HitTestBehavior.opaque,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            icon,
+            size: 24,
+            color: isActive ? Colors.black : Colors.black45, // Black icons on green background
+          ),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: TextStyle(
+              fontFamily: 'Inter',
+              fontSize: 10,
+              fontWeight: isActive ? FontWeight.bold : FontWeight.w500,
+              color: isActive ? Colors.black : Colors.black45,
             ),
-            const SizedBox(height: 3),
-            Text(
-              label,
-              style: TextStyle(
-                fontFamily: 'PlusJakartaSans',
-                fontSize: 11,
-                fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
-                color: isActive ? AppColors.primary : AppColors.slate400,
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -8,9 +9,6 @@ import '../../../domain/entities/transaction_entity.dart';
 import '../../blocs/account/account_bloc.dart';
 import '../../blocs/auth/auth_bloc.dart';
 import '../../widgets/app_avatar.dart';
-import '../../widgets/app_logo.dart';
-import '../../widgets/feature_icon.dart';
-import '../../widgets/transaction_row.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -33,7 +31,6 @@ class _HomePageState extends State<HomePage> {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, authState) {
         final user = authState is AuthAuthenticated ? authState.user : null;
-        final firstName = user?.firstName ?? 'Kamu';
         final fullName = user?.name ?? 'User';
 
         return Scaffold(
@@ -41,116 +38,62 @@ class _HomePageState extends State<HomePage> {
           body: BlocBuilder<AccountBloc, AccountState>(
             builder: (context, accountState) {
               final balance = accountState is AccountLoaded ? accountState.account.balance : 0.0;
-              final txns =
-                  accountState is AccountLoaded ? accountState.transactions : <TransactionEntity>[];
-              final loading = accountState is AccountLoading;
-
+              final txns = accountState is AccountLoaded ? accountState.transactions : <TransactionEntity>[];
+              
               return RefreshIndicator(
                 onRefresh: () async => context.read<AccountBloc>().add(AccountRefreshRequested()),
-                color: AppColors.primary,
+                color: AppColors.bg,
+                backgroundColor: AppColors.primary,
                 child: SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Gradient header
+                      // Top Massive Green Container
                       Container(
-                        width: double.infinity,
+                        padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).padding.top + 16, 20, 24),
                         decoration: const BoxDecoration(
-                          gradient: AppColors.primaryGradient,
+                          color: Color(0xFFAACF31), // Darker green from user
                           borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(28),
-                            bottomRight: Radius.circular(28),
+                            bottomLeft: Radius.circular(40),
+                            bottomRight: Radius.circular(40),
                           ),
                         ),
-                        padding: EdgeInsets.fromLTRB(
-                            20, MediaQuery.of(context).padding.top + 12, 20, 94),
-                        child: Row(
+                        child: Column(
                           children: [
-                            AppAvatar(
-                                name: fullName,
-                                size: 44,
-                                bg: Colors.white.withValues(alpha: 0.25)),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text('Selamat siang,',
-                                      style: TextStyle(
-                                        fontFamily: 'PlusJakartaSans',
-                                        fontSize: 13,
-                                        color: Colors.white70,
-                                      )),
-                                  Text('$firstName ',
-                                      style: const TextStyle(
-                                        fontFamily: 'PlusJakartaSans',
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.w800,
-                                        color: Colors.white,
-                                        letterSpacing: -0.2,
-                                      )),
-                                ],
+                            _buildHeader(fullName),
+                            const SizedBox(height: 24),
+                            _buildBalanceCard(balance, context),
+                            const SizedBox(height: 8),
+                            // Downward indicator tab
+                            Container(
+                              width: 40,
+                              height: 6,
+                              decoration: BoxDecoration(
+                                color: AppColors.bg.withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(10),
                               ),
-                            ),
-                            Stack(
-                              children: [
-                                Container(
-                                  width: 42,
-                                  height: 42,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white.withValues(alpha: 0.18),
-                                    borderRadius: BorderRadius.circular(14),
-                                  ),
-                                  child: const Icon(Icons.notifications_outlined,
-                                      size: 21, color: Colors.white),
-                                ),
-                                Positioned(
-                                  top: 10,
-                                  right: 11,
-                                  child: Container(
-                                    width: 8,
-                                    height: 8,
-                                    decoration: BoxDecoration(
-                                      color: AppColors.amber,
-                                      shape: BoxShape.circle,
-                                      border: Border.all(color: Colors.white, width: 2),
-                                    ),
-                                  ),
-                                ),
-                              ],
                             ),
                           ],
                         ),
                       ),
-                      // Balance Card (overlaps the header's bottom edge)
-                      Transform.translate(
-                        offset: const Offset(0, -46),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: _buildBalanceCard(balance, loading),
+                      
+                      // Bottom Dark Section
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 24, 20, 100),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _buildFavouriteContacts(),
+                            const SizedBox(height: 24),
+                            _buildPPOBGrid(),
+                            const SizedBox(height: 24),
+                            _buildVirtualCard(fullName),
+                            const SizedBox(height: 24),
+                            _buildRecentTransactions(txns),
+                          ],
                         ),
                       ),
-                      const SizedBox(height: 14),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: _buildPointsRow(),
-                      ),
-                      const SizedBox(height: 18),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: _buildFeatureGrid(),
-                      ),
-                      const SizedBox(height: 16),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: _buildDeeplinkBanner(),
-                      ),
-                      const SizedBox(height: 22),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: _buildTransactions(txns),
-                      ),
-                      const SizedBox(height: 24),
                     ],
                   ),
                 ),
@@ -162,373 +105,519 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildBalanceCard(double balance, bool loading) {
-    final actions = [
-      {'icon': Icons.north_rounded, 'label': 'Top Up', 'tone': 'blue', 'route': '/topup'},
-      {'icon': Icons.send_rounded, 'label': 'Transfer', 'tone': 'green', 'route': '/transfer'},
-      {'icon': Icons.qr_code_rounded, 'label': 'Bayar', 'tone': 'violet', 'route': '/payment'},
-      {'icon': Icons.south_rounded, 'label': 'Tarik', 'tone': 'amber', 'route': '/topup'},
-    ];
+  Widget _buildHeader(String fullName) {
+    return Row(
+      children: [
+        Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: AppColors.bg, width: 2), // Changed to dark border
+              ),
+              child: AppAvatar(name: fullName, size: 40, bg: Colors.transparent),
+            ),
+            Positioned(
+              bottom: -4,
+              right: -4,
+              child: Container(
+                padding: const EdgeInsets.all(2),
+                decoration: const BoxDecoration(
+                  color: AppColors.bg, // Dark verified badge
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(Icons.verified, size: 10, color: AppColors.primary),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(fullName, style: const TextStyle(fontFamily: 'Inter', fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black)),
+              const Text('@danantara_user', style: TextStyle(fontFamily: 'Inter', fontSize: 12, color: Colors.black54)),
+            ],
+          ),
+        ),
+        _buildIconBtn(Icons.emoji_events),
+        const SizedBox(width: 12),
+        _buildIconBtn(Icons.notifications),
+      ],
+    );
+  }
 
+  Widget _buildIconBtn(IconData icon) {
+    return Container(
+      width: 40,
+      height: 40,
+      decoration: BoxDecoration(
+        color: Colors.black.withOpacity(0.8), // Dark icons on green background
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Icon(icon, color: AppColors.primary, size: 20),
+    );
+  }
+
+  Widget _buildBalanceCard(double balance, BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(22),
-        boxShadow: AppColors.shadowCard,
+        color: const Color(0xFFDFF26E), // Lighter green for balance card
+        borderRadius: BorderRadius.circular(32), // Rounder to match dribbble
+        border: Border.all(color: Colors.black.withOpacity(0.05)),
       ),
-      padding: const EdgeInsets.fromLTRB(18, 18, 18, 8),
+      padding: const EdgeInsets.all(24),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  const AppLogo(size: 26),
-                  const SizedBox(width: 7),
-                  const Text('Saldo DKG',
-                      style: TextStyle(
-                        fontFamily: 'PlusJakartaSans',
-                        fontSize: 13,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.slate500,
-                      )),
-                ],
-              ),
-              const Spacer(),
+              const Text('Total Saldo', style: TextStyle(fontFamily: 'Inter', fontSize: 13, fontWeight: FontWeight.w600, color: Colors.black87)),
               GestureDetector(
-                onTap: () => context.go('/topup'),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: AppColors.primarySurface,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: const Row(
-                    children: [
-                      Icon(Icons.add_rounded, size: 15, color: AppColors.primary),
-                      SizedBox(width: 5),
-                      Text('Isi Saldo',
-                          style: TextStyle(
-                            fontFamily: 'PlusJakartaSans',
-                            color: AppColors.primary,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 13,
-                          )),
-                    ],
-                  ),
-                ),
-              ),
+                onTap: () {},
+                child: const Icon(Icons.more_horiz, color: Colors.black, size: 24),
+              )
             ],
           ),
           const SizedBox(height: 12),
           Row(
             children: [
-              Text(
-                _hideBalance ? CurrencyFormatter.maskBalance() : CurrencyFormatter.format(balance),
-                style: const TextStyle(
-                  fontFamily: 'PlusJakartaSans',
-                  fontSize: 30,
-                  fontWeight: FontWeight.w800,
-                  color: AppColors.ink,
-                  letterSpacing: -0.5,
-                ),
-              ),
-              const SizedBox(width: 10),
-              IconButton(
-                icon: Icon(_hideBalance ? Icons.visibility_off_outlined : Icons.visibility_outlined,
-                    size: 20, color: AppColors.slate400),
-                onPressed: () => setState(() => _hideBalance = !_hideBalance),
-                padding: const EdgeInsets.all(4),
-                constraints: const BoxConstraints(),
-              ),
+              Text(_hideBalance ? CurrencyFormatter.maskBalance() : CurrencyFormatter.format(balance),
+                  style: const TextStyle(fontFamily: 'Poppins', fontSize: 32, fontWeight: FontWeight.bold, color: Colors.black, letterSpacing: -1)),
+              const SizedBox(width: 12),
+              GestureDetector(
+                onTap: () => setState(() => _hideBalance = !_hideBalance),
+                child: Icon(_hideBalance ? Icons.visibility_off : Icons.visibility, color: Colors.black54, size: 24),
+              )
             ],
           ),
+          const SizedBox(height: 12),
           Container(
-            margin: const EdgeInsets.only(top: 16),
-            decoration: const BoxDecoration(
-              border: Border(top: BorderSide(color: AppColors.line2)),
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+            decoration: BoxDecoration(color: Colors.black.withOpacity(0.05), borderRadius: BorderRadius.circular(16)),
             child: Row(
-              children: actions.map((a) {
-                return Expanded(
-                  child: GestureDetector(
-                    onTap: () => context.go(a['route'] as String),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: Column(
-                        children: [
-                          FeatureIcon(
-                            icon: a['icon'] as IconData,
-                            tone: a['tone'] as String,
-                            size: 46,
-                            iconSize: 22,
-                          ),
-                          const SizedBox(height: 7),
-                          Text(a['label'] as String,
-                              style: const TextStyle(
-                                fontFamily: 'PlusJakartaSans',
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700,
-                                color: AppColors.slate600,
-                              )),
-                        ],
+              mainAxisSize: MainAxisSize.min,
+              children: const [
+                Icon(Icons.arrow_upward, color: Colors.green, size: 14),
+                SizedBox(width: 4),
+                Text('24%', style: TextStyle(fontFamily: 'Inter', fontSize: 11, fontWeight: FontWeight.bold, color: Colors.black)),
+                SizedBox(width: 6),
+                Text('Minggu lalu', style: TextStyle(fontFamily: 'Inter', fontSize: 11, color: Colors.black54)),
+              ],
+            ),
+          ),
+          const SizedBox(height: 24),
+          _buildQuickActions(context), // Quick actions moved inside
+        ],
+      ),
+    );
+  }
+
+  Widget _buildQuickActions(BuildContext context) {
+    final actions = [
+      {'icon': Icons.arrow_outward, 'label': 'Kirim', 'route': '/transfer'},
+      {'icon': Icons.call_received, 'label': 'Minta', 'route': '/topup'},
+      {'icon': Icons.qr_code_scanner, 'label': 'Bayar', 'route': '/payment'},
+      {'icon': Icons.account_balance_wallet, 'label': 'Tarik', 'route': '/topup'},
+    ];
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: actions.map((a) {
+        return Column(
+          children: [
+            GestureDetector(
+              onTap: () => context.go(a['route'] as String),
+              child: Container(
+                width: 56, // Slightly smaller since it is nested
+                height: 56,
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.85), // Dark buttons on green background
+                  borderRadius: BorderRadius.circular(18),
+                ),
+                child: Icon(a['icon'] as IconData, color: const Color(0xFFDFF26E), size: 24),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(a['label'] as String, style: const TextStyle(fontFamily: 'Inter', fontSize: 11, fontWeight: FontWeight.bold, color: Colors.black)),
+          ],
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildFavouriteContacts() {
+    final contacts = [
+      {'name': 'Alina', 'initial': 'A', 'color': Colors.pink},
+      {'name': 'Mark', 'initial': 'M', 'color': Colors.blue},
+      {'name': 'Rosie', 'initial': 'R', 'color': Colors.purple},
+      {'name': 'John', 'initial': 'J', 'color': Colors.orange},
+    ];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text('Kontak Favorit', style: TextStyle(fontFamily: 'Poppins', fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.slate300)),
+            GestureDetector(
+              onTap: () {},
+              child: const Text('Lihat Semua >', style: TextStyle(fontFamily: 'Inter', fontSize: 12, color: AppColors.slate500)),
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              // Add New Button
+              Container(
+                margin: const EdgeInsets.only(right: 16),
+                width: 56,
+                height: 56,
+                decoration: BoxDecoration(
+                  color: AppColors.line2,
+                  shape: BoxShape.circle,
+                  border: Border.all(color: AppColors.slate600, width: 1, style: BorderStyle.solid),
+                ),
+                child: const Icon(Icons.add, color: AppColors.primary),
+              ),
+              // Contact Avatars
+              ...contacts.map((c) => Padding(
+                    padding: const EdgeInsets.only(right: 16),
+                    child: Column(
+                      children: [
+                        CircleAvatar(
+                          radius: 28,
+                          backgroundColor: c['color'] as Color,
+                          child: Text(c['initial'] as String, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(c['name'] as String, style: const TextStyle(fontFamily: 'Inter', fontSize: 12, color: AppColors.slate300)),
+                      ],
+                    ),
+                  )).toList(),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPPOBGrid() {
+    final actions = [
+      {'icon': Icons.arrow_outward, 'label': 'Kirim Uang'},
+      {'icon': Icons.add, 'label': 'Top Up'},
+      {'icon': Icons.receipt_long, 'label': 'Mutasi'},
+      {'icon': Icons.payments_outlined, 'label': 'Tagihan'},
+      {'icon': Icons.clean_hands_outlined, 'label': 'Pinjaman'},
+      {'icon': Icons.ac_unit, 'label': 'Bekukan'},
+      {'icon': Icons.tune, 'label': 'Limit'},
+      {'icon': Icons.savings_outlined, 'label': 'Deposito'},
+    ];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text('Aksi Cepat', style: TextStyle(fontFamily: 'Poppins', fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.slate300)),
+        const SizedBox(height: 16),
+        GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 4,
+            mainAxisSpacing: 16,
+            crossAxisSpacing: 12,
+            childAspectRatio: 0.8,
+          ),
+          itemCount: actions.length,
+          itemBuilder: (context, index) {
+            final p = actions[index];
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 56,
+                  height: 56,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFDFF26E).withOpacity(0.08), // Dark transparent green background
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Icon(p['icon'] as IconData, color: const Color(0xFFDFF26E), size: 24),
+                ),
+                const SizedBox(height: 8),
+                Text(p['label'] as String, textAlign: TextAlign.center, style: const TextStyle(fontFamily: 'Inter', fontSize: 10, color: Color(0xFFDFF26E)), maxLines: 1, overflow: TextOverflow.ellipsis),
+              ],
+            );
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildVirtualCard(String name) {
+    return Container(
+      width: double.infinity,
+      height: 220, // Taller to match credit card aspect ratio
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Color(0xFF2B2B2B), // Deep obsidian
+            Color(0xFF111111),
+            Color(0xFF050505),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.white.withOpacity(0.15), width: 1),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.6),
+            offset: const Offset(0, 20),
+            blurRadius: 40,
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          // Header: Logo & NFC
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Mock Brand Logo
+              Row(
+                children: [
+                  Container(
+                    width: 32,
+                    height: 32,
+                    decoration: BoxDecoration(
+                      color: Colors.redAccent.withOpacity(0.8),
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                  Transform.translate(
+                    offset: const Offset(-12, 0),
+                    child: Container(
+                      width: 32,
+                      height: 32,
+                      decoration: BoxDecoration(
+                        color: Colors.orangeAccent.withOpacity(0.8),
+                        shape: BoxShape.circle,
                       ),
                     ),
                   ),
-                );
-              }).toList(),
-            ),
+                ],
+              ),
+              // NFC Icon
+              Transform.rotate(
+                angle: 1.5708, // 90 degrees
+                child: Icon(Icons.wifi, color: Colors.white.withOpacity(0.4), size: 28),
+              ),
+            ],
+          ),
+          
+          // Chip & Card Type
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              // Golden Chip
+              Container(
+                width: 44,
+                height: 34,
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFFE0C879), Color(0xFFA67C00)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(color: Colors.black38, width: 1),
+                ),
+                child: Center(
+                  child: Container(
+                    width: 22,
+                    height: 20,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black26, width: 1),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                ),
+              ),
+              Text(
+                'WORLD ELITE',
+                style: TextStyle(
+                  fontFamily: 'Inter',
+                  fontSize: 10,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 2.0,
+                  color: Colors.white.withOpacity(0.3),
+                ),
+              ),
+            ],
+          ),
+
+          // Card Numbers (Embossed)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              '4123',
+              '8901',
+              '2345',
+              '2026'
+            ].map((num) => Text(
+              num,
+              style: const TextStyle(
+                fontFamily: 'monospace',
+                fontSize: 22, // Reduced from 24 to fix overflow
+                fontWeight: FontWeight.bold,
+                letterSpacing: 1.5, // Reduced from 2.0
+                color: Color(0xFFD1D1D1),
+                shadows: [
+                  Shadow(color: Colors.white24, offset: Offset(1, 1), blurRadius: 1),
+                  Shadow(color: Colors.black87, offset: Offset(-1, -1), blurRadius: 1),
+                ],
+              ),
+            )).toList(),
+          ),
+
+          // Footer: Cardholder & Valid Thru
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'CARDHOLDER',
+                    style: TextStyle(
+                      fontSize: 8,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 1.5,
+                      color: Colors.white.withOpacity(0.4),
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    name.toUpperCase(),
+                    style: const TextStyle(
+                      fontFamily: 'monospace',
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.5,
+                      color: Color(0xFFD1D1D1),
+                      shadows: [
+                        Shadow(color: Colors.white24, offset: Offset(1, 1), blurRadius: 1),
+                        Shadow(color: Colors.black87, offset: Offset(-1, -1), blurRadius: 1),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'VALID THRU',
+                    style: TextStyle(
+                      fontSize: 8,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 1.5,
+                      color: Colors.white.withOpacity(0.4),
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  const Text(
+                    '12/30',
+                    style: TextStyle(
+                      fontFamily: 'monospace',
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.5,
+                      color: Color(0xFFD1D1D1),
+                      shadows: [
+                        Shadow(color: Colors.white24, offset: Offset(1, 1), blurRadius: 1),
+                        Shadow(color: Colors.black87, offset: Offset(-1, -1), blurRadius: 1),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ],
       ),
     );
   }
 
-  Widget _buildPointsRow() {
-    return Row(
-      children: [
-        Expanded(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: AppColors.shadowSoft,
-            ),
-            child: Row(
-              children: [
-                const FeatureIcon(
-                    icon: Icons.star_outline_rounded, tone: 'amber', size: 38, iconSize: 19),
-                const SizedBox(width: 10),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text('Poin Reward',
-                        style: TextStyle(
-                            fontFamily: 'PlusJakartaSans',
-                            fontSize: 11.5,
-                            color: AppColors.slate500,
-                            fontWeight: FontWeight.w600)),
-                    Text('1.250',
-                        style: TextStyle(
-                            fontFamily: 'PlusJakartaSans',
-                            fontSize: 15,
-                            fontWeight: FontWeight.w800,
-                            color: AppColors.ink)),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: AppColors.shadowSoft,
-            ),
-            child: Row(
-              children: [
-                const FeatureIcon(
-                    icon: Icons.qr_code_rounded, tone: 'green', size: 38, iconSize: 19),
-                const SizedBox(width: 10),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text('Rekening Utama',
-                        style: TextStyle(
-                            fontFamily: 'PlusJakartaSans',
-                            fontSize: 11.5,
-                            color: AppColors.slate500,
-                            fontWeight: FontWeight.w600)),
-                    Text('Aktif',
-                        style: TextStyle(
-                            fontFamily: 'PlusJakartaSans',
-                            fontSize: 15,
-                            fontWeight: FontWeight.w800,
-                            color: AppColors.ink)),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildFeatureGrid() {
-    final features = [
-      {'icon': Icons.smartphone_outlined, 'label': 'Pulsa', 'tone': 'blue'},
-      {'icon': Icons.bolt_outlined, 'label': 'PLN', 'tone': 'amber'},
-      {'icon': Icons.water_drop_outlined, 'label': 'PDAM', 'tone': 'blue'},
-      {'icon': Icons.health_and_safety_outlined, 'label': 'BPJS', 'tone': 'green'},
-      {'icon': Icons.wifi_rounded, 'label': 'Internet', 'tone': 'violet'},
-      {'icon': Icons.gamepad_outlined, 'label': 'Games', 'tone': 'red'},
-      {'icon': Icons.favorite_outline_rounded, 'label': 'Donasi', 'tone': 'amber'},
-      {'icon': Icons.more_horiz_rounded, 'label': 'Lainnya', 'tone': 'slate'},
-    ];
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: AppColors.shadowSoft,
-      ),
-      padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 8),
-      child: GridView.count(
-        crossAxisCount: 4,
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        mainAxisSpacing: 18,
-        crossAxisSpacing: 0,
-        children: features.map((f) {
-          return GestureDetector(
-            onTap: () {},
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                FeatureIcon(
-                    icon: f['icon'] as IconData, tone: f['tone'] as String, size: 50, iconSize: 24),
-                const SizedBox(height: 8),
-                Text(f['label'] as String,
-                    style: const TextStyle(
-                      fontFamily: 'PlusJakartaSans',
-                      fontSize: 11.8,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.slate600,
-                    )),
-              ],
-            ),
-          );
-        }).toList(),
-      ),
-    );
-  }
-
-  Widget _buildDeeplinkBanner() {
-    return GestureDetector(
-      onTap: () => context.go('/merchant'),
-      child: Container(
-        decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Color(0xFF0E1726), Color(0xFF21314D)],
-          ),
-          borderRadius: BorderRadius.circular(20),
-        ),
-        padding: const EdgeInsets.all(16),
-        child: Stack(
-          clipBehavior: Clip.none,
-          children: [
-            Positioned(
-              right: -30,
-              top: -40,
-              child: Container(
-                width: 120,
-                height: 120,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: const Color(0xFF5B9BFF).withValues(alpha: 0.18),
-                ),
-              ),
-            ),
-            Row(
-              children: [
-                Container(
-                  width: 46,
-                  height: 46,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  child: const Icon(Icons.link_rounded, size: 24, color: Color(0xFF5B9BFF)),
-                ),
-                const SizedBox(width: 13),
-                const Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Coba bayar dari toko online',
-                          style: TextStyle(
-                            fontFamily: 'PlusJakartaSans',
-                            fontSize: 14.5,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white,
-                          )),
-                      SizedBox(height: 2),
-                      Text('Simulasi checkout e-commerce → bayar via DKG',
-                          style: TextStyle(
-                            fontFamily: 'PlusJakartaSans',
-                            fontSize: 12.5,
-                            color: Colors.white70,
-                          )),
-                    ],
-                  ),
-                ),
-                const Icon(Icons.chevron_right_rounded, size: 20, color: Colors.white60),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTransactions(List<TransactionEntity> txns) {
+  Widget _buildRecentTransactions(List<TransactionEntity> txns) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text('Transaksi terakhir',
-                style: TextStyle(
-                  fontFamily: 'PlusJakartaSans',
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.ink,
-                )),
+            const Text('Transaksi Terakhir', style: TextStyle(fontFamily: 'Poppins', fontSize: 18, fontWeight: FontWeight.w600, color: AppColors.ink)),
             GestureDetector(
               onTap: () => context.go('/history'),
-              child: const Text('Lihat semua',
-                  style: TextStyle(
-                    fontFamily: 'PlusJakartaSans',
-                    color: AppColors.primary,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 13.5,
-                  )),
+              child: Text('Lihat Semua', style: TextStyle(fontFamily: 'Inter', fontSize: 12, color: AppColors.primary)),
             ),
           ],
         ),
-        const SizedBox(height: 13),
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: AppColors.shadowSoft,
-          ),
-          child: txns.isEmpty
-              ? const Padding(
-                  padding: EdgeInsets.all(20),
-                  child: Center(
-                    child: Text('Belum ada transaksi',
-                        style: TextStyle(color: AppColors.slate400, fontFamily: 'PlusJakartaSans')),
-                  ),
-                )
-              : Column(
-                  children: txns
-                      .take(4)
-                      .toList()
-                      .asMap()
-                      .entries
-                      .map((e) => TransactionRow(txn: e.value, divider: e.key > 0))
-                      .toList(),
-                ),
-        ),
+        const SizedBox(height: 16),
+        txns.isEmpty
+            ? const Center(child: Text('Belum ada transaksi', style: TextStyle(color: AppColors.slate500)))
+            : Column(
+                children: txns.take(4).map((txn) {
+                  final isIncome = txn.type == 'topup' || txn.type == 'receive';
+                  return Container(
+                    margin: const EdgeInsets.only(bottom: 12),
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: AppColors.white.withOpacity(0.6),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: AppColors.primary.withOpacity(0.05)),
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 48,
+                          height: 48,
+                          decoration: BoxDecoration(color: AppColors.line2, borderRadius: BorderRadius.circular(12)),
+                          child: Icon(isIncome ? Icons.arrow_downward : Icons.arrow_upward, color: isIncome ? AppColors.primary : AppColors.red),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(txn.description, style: const TextStyle(fontFamily: 'Inter', fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.ink)),
+                              const SizedBox(height: 2),
+                              Text('Trx ID: ${txn.id.toString()}', style: const TextStyle(fontFamily: 'Inter', fontSize: 12, color: AppColors.slate500)),
+                            ],
+                          ),
+                        ),
+                        Text('${isIncome ? '+' : '-'}${CurrencyFormatter.format(txn.amount.abs())}', 
+                          style: TextStyle(fontFamily: 'Inter', fontSize: 14, fontWeight: FontWeight.bold, color: isIncome ? AppColors.green : AppColors.red)),
+                      ],
+                    ),
+                  );
+                }).toList(),
+              ),
       ],
     );
   }
+
 }

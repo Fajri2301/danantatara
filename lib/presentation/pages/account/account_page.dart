@@ -4,8 +4,6 @@ import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../blocs/auth/auth_bloc.dart';
 import '../../widgets/app_avatar.dart';
-import '../../widgets/app_badge.dart';
-import '../../widgets/feature_icon.dart';
 
 class AccountPage extends StatelessWidget {
   const AccountPage({super.key});
@@ -23,188 +21,96 @@ class AccountPage extends StatelessWidget {
 
         return Scaffold(
           backgroundColor: AppColors.bg,
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back, color: AppColors.ink),
+              onPressed: () => context.go('/home'),
+            ),
+            title: const Text('Profil', style: TextStyle(fontFamily: 'Poppins', color: AppColors.ink, fontWeight: FontWeight.bold)),
+            centerTitle: true,
+          ),
           body: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Column(
               children: [
-                // Header
-                Container(
-                  decoration: const BoxDecoration(
-                    gradient: AppColors.primaryGradient,
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(28),
-                      bottomRight: Radius.circular(28),
+                // Avatar Header
+                Column(
+                  children: [
+                    Stack(
+                      clipBehavior: Clip.none,
+                      alignment: Alignment.center,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(color: AppColors.primary, width: 3),
+                          ),
+                          child: AppAvatar(name: user?.name ?? 'User', size: 100, bg: Colors.transparent),
+                        ),
+                        Positioned(
+                          bottom: -10,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: AppColors.primary,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: const Text('PRO', style: TextStyle(fontFamily: 'Inter', fontSize: 10, fontWeight: FontWeight.bold, color: AppColors.bg)),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+                    Text(user?.name ?? 'Pengguna', style: const TextStyle(fontFamily: 'Poppins', fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.ink)),
+                    const SizedBox(height: 4),
+                    Text(user?.email ?? '', style: const TextStyle(fontFamily: 'Inter', fontSize: 14, color: AppColors.slate500)),
+                  ],
+                ),
+                const SizedBox(height: 32),
+                
+                // General Settings
+                _buildSectionTitle('Pengaturan'),
+                _buildSettingsCard(
+                  children: [
+                    _Row(icon: Icons.person_outline, title: 'Informasi Pribadi', onTap: () {}),
+                    _Row(icon: Icons.account_balance_wallet_outlined, title: 'Kartu Tersimpan', onTap: () {}),
+                    _Row(icon: Icons.verified_user_outlined, title: 'Keamanan (2FA)', right: const Text('Aktif', style: TextStyle(color: AppColors.primary, fontSize: 12)), onTap: () {}),
+                  ],
+                ),
+                const SizedBox(height: 24),
+                
+                // Preferences
+                _buildSectionTitle('Preferensi'),
+                _buildSettingsCard(
+                  children: [
+                    _Row(icon: Icons.notifications_none, title: 'Notifikasi', right: _Toggle(), onTap: () {}),
+                    _Row(icon: Icons.dark_mode_outlined, title: 'Mode Gelap', right: _Toggle(), onTap: () {}),
+                    _Row(icon: Icons.language, title: 'Bahasa', right: const Text('ID', style: TextStyle(color: AppColors.slate500, fontSize: 12)), onTap: () {}),
+                  ],
+                ),
+                const SizedBox(height: 32),
+
+                // Logout Button
+                GestureDetector(
+                  onTap: () => context.read<AuthBloc>().add(AuthLogoutRequested()),
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    decoration: BoxDecoration(
+                      color: AppColors.red.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: AppColors.red.withOpacity(0.3)),
+                    ),
+                    child: const Center(
+                      child: Text('Keluar', style: TextStyle(fontFamily: 'Inter', fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.red)),
                     ),
                   ),
-                  padding: EdgeInsets.fromLTRB(
-                      20, MediaQuery.of(context).padding.top + 12, 20, 24),
-                  child: Row(
-                    children: [
-                      AppAvatar(name: user?.name ?? 'User', size: 60, bg: Colors.white.withValues(alpha: 0.25)),
-                      const SizedBox(width: 14),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(user?.name ?? 'Pengguna',
-                                style: const TextStyle(
-                                  fontFamily: 'PlusJakartaSans',
-                                  fontSize: 19,
-                                  fontWeight: FontWeight.w800,
-                                  color: Colors.white,
-                                )),
-                            Text(user?.email ?? '',
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  fontFamily: 'PlusJakartaSans',
-                                  fontSize: 13,
-                                  color: Colors.white70,
-                                )),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.18),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: const Row(
-                          children: [
-                            Icon(Icons.verified_user_outlined, size: 14, color: Colors.white),
-                            SizedBox(width: 5),
-                            Text('Terverifikasi',
-                                style: TextStyle(
-                                  fontFamily: 'PlusJakartaSans',
-                                  fontSize: 11.5,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.white,
-                                )),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
                 ),
-
-                const SizedBox(height: 16),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(left: 4, bottom: 8),
-                        child: Text('Keamanan',
-                            style: TextStyle(
-                              fontFamily: 'PlusJakartaSans',
-                              fontSize: 13,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.slate400,
-                            )),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(18),
-                          boxShadow: AppColors.shadowSoft,
-                        ),
-                        child: Column(
-                          children: [
-                            _Row(
-                              icon: Icons.verified_user_outlined,
-                              tone: 'green',
-                              title: 'Verifikasi 2 langkah (2FA)',
-                              subtitle: 'Aktif · Email OTP',
-                              onTap: () => context.go('/setup-2fa'),
-                              right: const AppBadge(label: 'Aktif', tone: 'green'),
-                            ),
-                            const Divider(height: 1, indent: 56, color: AppColors.line2),
-                            _Row(
-                              icon: Icons.lock_outline_rounded,
-                              tone: 'blue',
-                              title: 'Ubah PIN keamanan',
-                              subtitle: 'Terakhir diubah 2 bln lalu',
-                              onTap: () {},
-                            ),
-                            const Divider(height: 1, indent: 56, color: AppColors.line2),
-                            _Row(
-                              icon: Icons.fingerprint_rounded,
-                              tone: 'violet',
-                              title: 'Login biometrik',
-                              subtitle: 'Sidik jari',
-                              onTap: () {},
-                              right: _Toggle(),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 18),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 4, bottom: 8),
-                        child: Text('Akun',
-                            style: TextStyle(
-                              fontFamily: 'PlusJakartaSans',
-                              fontSize: 13,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.slate400,
-                            )),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(18),
-                          boxShadow: AppColors.shadowSoft,
-                        ),
-                        child: Column(
-                          children: [
-                            _Row(icon: Icons.person_outline_rounded, tone: 'blue', title: 'Data pribadi', onTap: () {}),
-                            const Divider(height: 1, indent: 56, color: AppColors.line2),
-                            _Row(icon: Icons.account_balance_outlined, tone: 'green', title: 'Rekening & kartu tersimpan', onTap: () {}),
-                            const Divider(height: 1, indent: 56, color: AppColors.line2),
-                            _Row(icon: Icons.settings_outlined, tone: 'slate', title: 'Pengaturan aplikasi', onTap: () {}),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 18),
-                      GestureDetector(
-                        onTap: () => context.read<AuthBloc>().add(AuthLogoutRequested()),
-                        child: Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(16),
-                            boxShadow: AppColors.shadowSoft,
-                          ),
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.logout_rounded, size: 20, color: AppColors.red),
-                              SizedBox(width: 9),
-                              Text('Keluar',
-                                  style: TextStyle(
-                                    fontFamily: 'PlusJakartaSans',
-                                    color: AppColors.red,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 15,
-                                  )),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      const Center(
-                        child: Text('Danantara · v1.0.0',
-                            style: TextStyle(
-                              fontFamily: 'PlusJakartaSans',
-                              fontSize: 12,
-                              color: AppColors.slate400,
-                            )),
-                      ),
-                      const SizedBox(height: 24),
-                    ],
-                  ),
-                ),
+                const SizedBox(height: 20),
+                const Center(child: Text('Danantara · v1.0.0', style: TextStyle(fontFamily: 'Inter', fontSize: 12, color: AppColors.slate500))),
+                const SizedBox(height: 40),
               ],
             ),
           ),
@@ -212,24 +118,43 @@ class AccountPage extends StatelessWidget {
       },
     );
   }
+
+  Widget _buildSectionTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8, bottom: 12),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(title, style: const TextStyle(fontFamily: 'Poppins', fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.slate500)),
+      ),
+    );
+  }
+
+  Widget _buildSettingsCard({required List<Widget> children}) {
+    List<Widget> separatedChildren = [];
+    for (int i = 0; i < children.length; i++) {
+      separatedChildren.add(children[i]);
+      if (i < children.length - 1) {
+        separatedChildren.add(const Divider(height: 1, color: AppColors.line2, indent: 56));
+      }
+    }
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.white.withOpacity(0.4),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.primary.withOpacity(0.05)),
+      ),
+      child: Column(children: separatedChildren),
+    );
+  }
 }
 
 class _Row extends StatelessWidget {
   final IconData icon;
-  final String tone;
   final String title;
-  final String? subtitle;
   final VoidCallback onTap;
   final Widget? right;
 
-  const _Row({
-    required this.icon,
-    required this.tone,
-    required this.title,
-    this.subtitle,
-    required this.onTap,
-    this.right,
-  });
+  const _Row({required this.icon, required this.title, required this.onTap, this.right});
 
   @override
   Widget build(BuildContext context) {
@@ -237,35 +162,19 @@ class _Row extends StatelessWidget {
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: Row(
           children: [
-            FeatureIcon(icon: icon, tone: tone, size: 42, iconSize: 20),
-            const SizedBox(width: 14),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(title,
-                      style: const TextStyle(
-                        fontFamily: 'PlusJakartaSans',
-                        fontSize: 14.5,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.ink,
-                      )),
-                  if (subtitle != null) ...[
-                    const SizedBox(height: 2),
-                    Text(subtitle!,
-                        style: const TextStyle(
-                          fontFamily: 'PlusJakartaSans',
-                          fontSize: 12.5,
-                          color: AppColors.slate400,
-                        )),
-                  ],
-                ],
-              ),
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(color: AppColors.line2, borderRadius: BorderRadius.circular(8)),
+              child: Icon(icon, size: 20, color: AppColors.slate600),
             ),
-            right ?? const Icon(Icons.chevron_right_rounded, size: 18, color: AppColors.slate400),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Text(title, style: const TextStyle(fontFamily: 'Inter', fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.ink)),
+            ),
+            right ?? const Icon(Icons.chevron_right_rounded, size: 20, color: AppColors.slate500),
           ],
         ),
       ),
@@ -285,24 +194,23 @@ class _ToggleState extends State<_Toggle> {
     return GestureDetector(
       onTap: () => setState(() => _on = !_on),
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 180),
+        duration: const Duration(milliseconds: 200),
         width: 44,
-        height: 26,
+        height: 24,
         decoration: BoxDecoration(
-          color: _on ? AppColors.green : AppColors.line,
+          color: _on ? AppColors.primary : AppColors.line2,
           borderRadius: BorderRadius.circular(20),
         ),
         child: AnimatedAlign(
-          duration: const Duration(milliseconds: 180),
+          duration: const Duration(milliseconds: 200),
           alignment: _on ? Alignment.centerRight : Alignment.centerLeft,
           child: Container(
-            margin: const EdgeInsets.all(3),
+            margin: const EdgeInsets.all(2),
             width: 20,
             height: 20,
             decoration: const BoxDecoration(
-              color: Colors.white,
+              color: AppColors.bg,
               shape: BoxShape.circle,
-              boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 3, offset: Offset(0, 1))],
             ),
           ),
         ),

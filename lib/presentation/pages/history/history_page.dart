@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/utils/currency_formatter.dart';
 import '../../../domain/entities/transaction_entity.dart';
 import '../../blocs/account/account_bloc.dart';
-import '../../widgets/transaction_row.dart';
 
 class HistoryPage extends StatefulWidget {
   const HistoryPage({super.key});
@@ -24,110 +25,49 @@ class _HistoryPageState extends State<HistoryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.bg,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: AppColors.ink),
+          onPressed: () => context.go('/home'),
+        ),
+        title: const Text('Riwayat', style: TextStyle(fontFamily: 'Poppins', color: AppColors.ink, fontWeight: FontWeight.bold)),
+        centerTitle: true,
+      ),
       body: Column(
         children: [
-          Container(
-            color: Colors.white,
-            padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).padding.top + 12, 20, 0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: Row(
               children: [
-                const Text('Riwayat',
-                    style: TextStyle(
-                      fontFamily: 'PlusJakartaSans',
-                      fontSize: 22,
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.ink,
-                      letterSpacing: -0.3,
-                    )),
-                const SizedBox(height: 16),
-                Row(
-                  children: [['all', 'Semua'], ['out', 'Pengeluaran'], ['in', 'Pemasukan']]
-                      .map((t) => Padding(
-                            padding: const EdgeInsets.only(right: 8),
-                            child: GestureDetector(
-                              onTap: () => setState(() => _tab = t[0]),
-                              child: AnimatedContainer(
-                                duration: const Duration(milliseconds: 150),
-                                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                                decoration: BoxDecoration(
-                                  color: _tab == t[0] ? AppColors.primary : AppColors.bg,
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Text(t[1],
-                                    style: TextStyle(
-                                      fontFamily: 'PlusJakartaSans',
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w700,
-                                      color: _tab == t[0] ? Colors.white : AppColors.slate500,
-                                    )),
-                              ),
-                            ),
-                          ))
-                      .toList(),
-                ),
-                const SizedBox(height: 14),
-                const Divider(height: 1, color: AppColors.line2),
+                _buildFilterTab('all', 'All'),
+                const SizedBox(width: 8),
+                _buildFilterTab('in', 'Income'),
+                const SizedBox(width: 8),
+                _buildFilterTab('out', 'Expense'),
               ],
             ),
           ),
           Expanded(
             child: BlocBuilder<AccountBloc, AccountState>(
               builder: (context, state) {
-                if (state is AccountLoading) {
-                  return const Center(child: CircularProgressIndicator(color: AppColors.primary));
-                }
-                if (state is AccountError) {
-                  return Center(child: Text(state.message, style: const TextStyle(color: AppColors.slate400)));
-                }
+                if (state is AccountLoading) return const Center(child: CircularProgressIndicator(color: AppColors.primary));
+                if (state is AccountError) return Center(child: Text(state.message, style: const TextStyle(color: AppColors.slate500)));
+                
                 if (state is AccountLoaded) {
                   List<TransactionEntity> txns = state.transactions;
                   if (_tab == 'in') txns = txns.where((t) => t.isCredit).toList();
                   if (_tab == 'out') txns = txns.where((t) => !t.isCredit).toList();
 
                   if (txns.isEmpty) {
-                    return const Center(
-                      child: Text('Tidak ada transaksi',
-                          style: TextStyle(fontFamily: 'PlusJakartaSans', color: AppColors.slate400)),
-                    );
+                    return const Center(child: Text('Belum ada transaksi', style: TextStyle(color: AppColors.slate500)));
                   }
-                  return ListView.separated(
-                    padding: const EdgeInsets.all(16),
+                  
+                  return ListView.builder(
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                     itemCount: txns.length,
-                    separatorBuilder: (_, __) => const SizedBox(height: 0),
-                    itemBuilder: (_, i) {
-                      return i == 0
-                          ? Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Padding(
-                                  padding: EdgeInsets.only(left: 4, bottom: 10),
-                                  child: Text('Hari ini',
-                                      style: TextStyle(
-                                        fontFamily: 'PlusJakartaSans',
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w700,
-                                        color: AppColors.slate400,
-                                      )),
-                                ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(20),
-                                    boxShadow: AppColors.shadowSoft,
-                                  ),
-                                  child: Column(
-                                    children: txns
-                                        .asMap()
-                                        .entries
-                                        .map((e) => TransactionRow(txn: e.value, divider: e.key > 0))
-                                        .toList(),
-                                  ),
-                                ),
-                              ],
-                            )
-                          : const SizedBox.shrink();
-                    },
+                    itemBuilder: (context, i) => _NeoTransactionRow(txn: txns[i]),
                   );
                 }
                 return const SizedBox.shrink();
@@ -137,5 +77,76 @@ class _HistoryPageState extends State<HistoryPage> {
         ],
       ),
     );
+  }
+
+  Widget _buildFilterTab(String value, String label) {
+    final active = _tab == value;
+    return GestureDetector(
+      onTap: () => setState(() => _tab = value),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+        decoration: BoxDecoration(
+          color: active ? AppColors.primary : AppColors.line2,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: active ? AppColors.glowLime : null,
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontFamily: 'Inter',
+            fontWeight: FontWeight.bold,
+            color: active ? AppColors.bg : AppColors.slate600,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _NeoTransactionRow extends StatelessWidget {
+  final TransactionEntity txn;
+
+  const _NeoTransactionRow({required this.txn});
+
+  @override
+  Widget build(BuildContext context) {
+    final isCredit = txn.isCredit;
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.white.withOpacity(0.6),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.primary.withOpacity(0.05)),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 48,
+            height: 48,
+            decoration: BoxDecoration(color: AppColors.line2, borderRadius: BorderRadius.circular(12)),
+            child: Icon(isCredit ? Icons.arrow_downward : Icons.arrow_upward, color: isCredit ? AppColors.primary : AppColors.red),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(txn.description, style: const TextStyle(fontFamily: 'Inter', fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.ink)),
+                const SizedBox(height: 2),
+                Text('Trx ID: ${txn.id.toString()} • ${_formatDate(txn.createdAt)}', style: const TextStyle(fontFamily: 'Inter', fontSize: 12, color: AppColors.slate500)),
+              ],
+            ),
+          ),
+          Text('${isCredit ? '+' : '-'}${CurrencyFormatter.format(txn.amount)}', 
+            style: TextStyle(fontFamily: 'Inter', fontSize: 14, fontWeight: FontWeight.bold, color: isCredit ? AppColors.primary : AppColors.red)),
+        ],
+      ),
+    );
+  }
+
+  String _formatDate(DateTime dt) {
+    return '${dt.day}/${dt.month}/${dt.year}';
   }
 }
