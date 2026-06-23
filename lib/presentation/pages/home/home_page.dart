@@ -84,8 +84,6 @@ class _HomePageState extends State<HomePage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _buildFavouriteContacts(),
-                            const SizedBox(height: 24),
                             _buildPPOBGrid(),
                             const SizedBox(height: 24),
                             _buildVirtualCard(fullName),
@@ -249,12 +247,18 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildFavouriteContacts() {
-    final contacts = [
-      {'name': 'Alina', 'initial': 'A', 'color': Colors.pink},
-      {'name': 'Mark', 'initial': 'M', 'color': Colors.blue},
-      {'name': 'Rosie', 'initial': 'R', 'color': Colors.purple},
-      {'name': 'John', 'initial': 'J', 'color': Colors.orange},
+  // Removed _buildFavouriteContacts() as requested
+
+  Widget _buildPPOBGrid() {
+    final actions = [
+      {'icon': Icons.phone_android, 'label': 'Pulsa'},
+      {'icon': Icons.bolt, 'label': 'PLN'},
+      {'icon': Icons.water_drop, 'label': 'PDAM'},
+      {'icon': Icons.health_and_safety, 'label': 'BPJS'},
+      {'icon': Icons.wifi, 'label': 'Internet'},
+      {'icon': Icons.tv, 'label': 'TV Kabel'},
+      {'icon': Icons.train, 'label': 'Tiket'},
+      {'icon': Icons.more_horiz, 'label': 'Lainnya'},
     ];
 
     return Column(
@@ -263,69 +267,14 @@ class _HomePageState extends State<HomePage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text('Kontak Favorit', style: TextStyle(fontFamily: 'Poppins', fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.slate300)),
+            const Text('Pembayaran', style: TextStyle(fontFamily: 'Poppins', fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white)), // Improved contrast
             GestureDetector(
               onTap: () {},
-              child: const Text('Lihat Semua >', style: TextStyle(fontFamily: 'Inter', fontSize: 12, color: AppColors.slate500)),
+              child: const Text('Lihat Semua', style: TextStyle(fontFamily: 'Inter', fontSize: 12, color: Color(0xFFDFF26E))),
             ),
           ],
         ),
-        const SizedBox(height: 16),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              // Add New Button
-              Container(
-                margin: const EdgeInsets.only(right: 16),
-                width: 56,
-                height: 56,
-                decoration: BoxDecoration(
-                  color: AppColors.line2,
-                  shape: BoxShape.circle,
-                  border: Border.all(color: AppColors.slate600, width: 1, style: BorderStyle.solid),
-                ),
-                child: const Icon(Icons.add, color: AppColors.primary),
-              ),
-              // Contact Avatars
-              ...contacts.map((c) => Padding(
-                    padding: const EdgeInsets.only(right: 16),
-                    child: Column(
-                      children: [
-                        CircleAvatar(
-                          radius: 28,
-                          backgroundColor: c['color'] as Color,
-                          child: Text(c['initial'] as String, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(c['name'] as String, style: const TextStyle(fontFamily: 'Inter', fontSize: 12, color: AppColors.slate300)),
-                      ],
-                    ),
-                  )).toList(),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildPPOBGrid() {
-    final actions = [
-      {'icon': Icons.arrow_outward, 'label': 'Kirim Uang'},
-      {'icon': Icons.add, 'label': 'Top Up'},
-      {'icon': Icons.receipt_long, 'label': 'Mutasi'},
-      {'icon': Icons.payments_outlined, 'label': 'Tagihan'},
-      {'icon': Icons.clean_hands_outlined, 'label': 'Pinjaman'},
-      {'icon': Icons.ac_unit, 'label': 'Bekukan'},
-      {'icon': Icons.tune, 'label': 'Limit'},
-      {'icon': Icons.savings_outlined, 'label': 'Deposito'},
-    ];
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text('Aksi Cepat', style: TextStyle(fontFamily: 'Poppins', fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.slate300)),
-        const SizedBox(height: 16),
+        const SizedBox(height: 12), // Reduced spacing from 16 to 12
         GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
@@ -345,13 +294,13 @@ class _HomePageState extends State<HomePage> {
                   width: 56,
                   height: 56,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFDFF26E).withOpacity(0.08), // Dark transparent green background
+                    color: const Color(0xFFDFF26E).withOpacity(0.12), // Slightly more visible background
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Icon(p['icon'] as IconData, color: const Color(0xFFDFF26E), size: 24),
                 ),
                 const SizedBox(height: 8),
-                Text(p['label'] as String, textAlign: TextAlign.center, style: const TextStyle(fontFamily: 'Inter', fontSize: 10, color: Color(0xFFDFF26E)), maxLines: 1, overflow: TextOverflow.ellipsis),
+                Text(p['label'] as String, textAlign: TextAlign.center, style: const TextStyle(fontFamily: 'Inter', fontSize: 11, fontWeight: FontWeight.w500, color: Colors.white70), maxLines: 1, overflow: TextOverflow.ellipsis), // White text for better contrast
               ],
             );
           },
@@ -569,10 +518,10 @@ class _HomePageState extends State<HomePage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text('Transaksi Terakhir', style: TextStyle(fontFamily: 'Poppins', fontSize: 18, fontWeight: FontWeight.w600, color: AppColors.ink)),
+            const Text('Transaksi Terakhir', style: TextStyle(fontFamily: 'Poppins', fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white)), // Improved contrast
             GestureDetector(
               onTap: () => context.go('/history'),
-              child: Text('Lihat Semua', style: TextStyle(fontFamily: 'Inter', fontSize: 12, color: AppColors.primary)),
+              child: const Text('Lihat Semua', style: TextStyle(fontFamily: 'Inter', fontSize: 12, color: Color(0xFFDFF26E))), // Match "Lihat Semua" styling
             ),
           ],
         ),
