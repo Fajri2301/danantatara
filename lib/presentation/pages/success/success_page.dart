@@ -49,12 +49,12 @@ class _SuccessPageState extends State<SuccessPage> {
                       width: 100,
                       height: 100,
                       decoration: BoxDecoration(
-                        color: AppColors.primary.withOpacity(0.2),
+                        color: Colors.white12,
                         shape: BoxShape.circle,
-                        boxShadow: AppColors.glowLime,
+                        boxShadow: [BoxShadow(color: AppColors.neonGreen.withOpacity(0.3), blurRadius: 20)],
                       ),
                       child: const Center(
-                        child: Icon(Icons.check_circle, size: 80, color: AppColors.primary),
+                        child: Icon(Icons.check_circle, size: 80, color: AppColors.neonGreen),
                       ),
                     ),
                     const SizedBox(height: 32),
@@ -64,7 +64,7 @@ class _SuccessPageState extends State<SuccessPage> {
                           fontFamily: 'Poppins',
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
-                          color: AppColors.ink,
+                          color: Colors.white,
                         )),
                     if (widget.subtitle.isNotEmpty) ...[
                       const SizedBox(height: 8),
@@ -73,7 +73,7 @@ class _SuccessPageState extends State<SuccessPage> {
                           style: const TextStyle(
                             fontFamily: 'Inter',
                             fontSize: 16,
-                            color: AppColors.slate500,
+                            color: Colors.white54,
                           )),
                     ],
                     const SizedBox(height: 32),
@@ -82,7 +82,7 @@ class _SuccessPageState extends State<SuccessPage> {
                           fontFamily: 'Poppins',
                           fontSize: 48,
                           fontWeight: FontWeight.bold,
-                          color: AppColors.primary,
+                          color: AppColors.neonGreen,
                         )),
                     if (widget.lines.isNotEmpty) ...[
                       const SizedBox(height: 40),
@@ -90,9 +90,9 @@ class _SuccessPageState extends State<SuccessPage> {
                         width: double.infinity,
                         padding: const EdgeInsets.all(20),
                         decoration: BoxDecoration(
-                          color: AppColors.white.withOpacity(0.4),
+                          color: Colors.black.withOpacity(0.3),
                           borderRadius: BorderRadius.circular(24),
-                          border: Border.all(color: AppColors.primary.withOpacity(0.1)),
+                          border: Border.all(color: Colors.white24),
                         ),
                         child: Column(
                           children: widget.lines.asMap().entries.map((e) {
@@ -100,7 +100,7 @@ class _SuccessPageState extends State<SuccessPage> {
                             final l = e.value;
                             return Column(
                               children: [
-                                if (i > 0) const Divider(height: 1, color: AppColors.line2),
+                                if (i > 0) const Divider(height: 1, color: Colors.white12),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(vertical: 12),
                                   child: Row(
@@ -110,7 +110,7 @@ class _SuccessPageState extends State<SuccessPage> {
                                           style: const TextStyle(
                                             fontFamily: 'Inter',
                                             fontSize: 14,
-                                            color: AppColors.slate500,
+                                            color: Colors.white54,
                                           )),
                                       Text(l[1],
                                           textAlign: TextAlign.right,
@@ -118,7 +118,7 @@ class _SuccessPageState extends State<SuccessPage> {
                                             fontFamily: 'Inter',
                                             fontSize: 14,
                                             fontWeight: FontWeight.bold,
-                                            color: AppColors.ink,
+                                            color: Colors.white,
                                           )),
                                     ],
                                   ),
@@ -144,12 +144,12 @@ class _SuccessPageState extends State<SuccessPage> {
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(vertical: 18),
                       decoration: BoxDecoration(
-                        color: AppColors.primary,
+                        color: AppColors.neonGreen,
                         borderRadius: BorderRadius.circular(16),
-                        boxShadow: AppColors.glowLime,
+                        boxShadow: [BoxShadow(color: AppColors.neonGreen.withOpacity(0.3), blurRadius: 8)],
                       ),
                       child: const Center(
-                        child: Text('Selesai', style: TextStyle(fontFamily: 'Inter', fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.bg)),
+                        child: Text('Selesai', style: TextStyle(fontFamily: 'Inter', fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black)),
                       ),
                     ),
                   ),
@@ -162,10 +162,10 @@ class _SuccessPageState extends State<SuccessPage> {
                       decoration: BoxDecoration(
                         color: Colors.transparent,
                         borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: AppColors.primary),
+                        border: Border.all(color: AppColors.neonGreen),
                       ),
                       child: const Center(
-                        child: Text('Bagikan Resi', style: TextStyle(fontFamily: 'Inter', fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.primary)),
+                        child: Text('Bagikan Resi', style: TextStyle(fontFamily: 'Inter', fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.neonGreen)),
                       ),
                     ),
                   ),

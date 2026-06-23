@@ -247,14 +247,14 @@ class _PinPageState extends State<PinPage> {
         ),
       ],
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.bg,
         body: SafeArea(
           child: Column(
             children: [
               Align(
                 alignment: Alignment.topLeft,
                 child: IconButton(
-                  icon: const Icon(Icons.close_rounded, color: AppColors.ink),
+                  icon: const Icon(Icons.close_rounded, color: Colors.white),
                   onPressed: () {
                     if (_step == _Step.otp && !_busy) {
                       _countdown?.cancel();
@@ -282,14 +282,14 @@ class _PinPageState extends State<PinPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      CircularProgressIndicator(color: AppColors.primary),
+                      CircularProgressIndicator(color: AppColors.neonGreen),
                       SizedBox(height: 18),
                       Text('Memproses transaksi…',
                           style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 15,
                             fontWeight: FontWeight.w700,
-                            color: AppColors.slate600,
+                            color: Colors.white54,
                           )),
                     ],
                   ),
@@ -315,10 +315,10 @@ class _PinPageState extends State<PinPage> {
             width: 54,
             height: 54,
             decoration: BoxDecoration(
-              color: AppColors.primarySurface,
+              color: Colors.white12,
               borderRadius: BorderRadius.circular(16),
             ),
-            child: const Center(child: Icon(Icons.lock_outline_rounded, size: 26, color: AppColors.primary)),
+            child: const Center(child: Icon(Icons.lock_outline_rounded, size: 26, color: AppColors.neonGreen)),
           ),
           const SizedBox(height: 16),
           const Text('Masukkan PIN',
@@ -326,12 +326,12 @@ class _PinPageState extends State<PinPage> {
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 21,
                 fontWeight: FontWeight.w800,
-                color: AppColors.ink,
+                color: Colors.white,
               )),
           const SizedBox(height: 6),
           const Text('Masukkan 6 digit PIN keamanan kamu',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 13.5, color: AppColors.slate500)),
+              style: TextStyle(fontSize: 13.5, color: Colors.white54)),
           const Spacer(),
           PinPad(
             value: _pin,
@@ -341,11 +341,11 @@ class _PinPageState extends State<PinPage> {
           const SizedBox(height: 18),
           const Text.rich(TextSpan(
             text: 'Lupa PIN? ',
-            style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12.5, color: AppColors.slate400),
+            style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12.5, color: Colors.white54),
             children: [
               TextSpan(
                 text: 'Reset',
-                style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.w700),
+                style: TextStyle(color: AppColors.neonGreen, fontWeight: FontWeight.w700),
               ),
             ],
           )),
@@ -368,13 +368,13 @@ class _PinPageState extends State<PinPage> {
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 23,
                 fontWeight: FontWeight.w800,
-                color: AppColors.ink,
+                color: Colors.white,
                 letterSpacing: -0.3,
               )),
           const SizedBox(height: 8),
           Text(header.subtitle,
               textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 14.5, color: AppColors.slate500, height: 1.55)),
+              style: const TextStyle(fontSize: 14.5, color: Colors.white54, height: 1.55)),
           const SizedBox(height: 28),
           AnimatedContainer(
             duration: const Duration(milliseconds: 80),
@@ -395,12 +395,12 @@ class _PinPageState extends State<PinPage> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 10),
             decoration: BoxDecoration(
-              color: AppColors.primarySurface,
+              color: Colors.white12,
               borderRadius: BorderRadius.circular(12),
             ),
             child: Row(
               children: [
-                const Icon(DkgIcons.shieldCheck, size: 18, color: AppColors.primary),
+                const Icon(DkgIcons.shieldCheck, size: 18, color: AppColors.neonGreen),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
@@ -408,7 +408,7 @@ class _PinPageState extends State<PinPage> {
                     style: const TextStyle(
                       fontFamily: 'PlusJakartaSans',
                       fontSize: 12.5,
-                      color: AppColors.primary,
+                      color: Colors.white,
                       fontWeight: FontWeight.w600,
                       height: 1.4,
                     ),
@@ -422,15 +422,15 @@ class _PinPageState extends State<PinPage> {
             _resendTimer > 0
                 ? Text(
                     'Kirim ulang dalam 00:${_resendTimer.toString().padLeft(2, '0')}',
-                    style: const TextStyle(fontSize: 13.5, color: AppColors.slate400),
+                    style: const TextStyle(fontSize: 13.5, color: Colors.white54),
                   )
                 : TextButton.icon(
                     onPressed: _resendOtp,
-                    icon: const Icon(DkgIcons.refresh, size: 16, color: AppColors.primary),
+                    icon: const Icon(DkgIcons.refresh, size: 16, color: AppColors.neonGreen),
                     label: const Text('Kirim ulang kode',
                         style: TextStyle(
                           fontFamily: 'PlusJakartaSans',
-                          color: AppColors.primary,
+                          color: AppColors.neonGreen,
                           fontWeight: FontWeight.w700,
                           fontSize: 14,
                         )),

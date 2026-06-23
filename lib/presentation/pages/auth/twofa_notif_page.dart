@@ -38,14 +38,14 @@ class _TwoFANotifPageState extends State<TwoFANotifPage> {
         }
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.bg,
         body: SafeArea(
           child: Column(
             children: [
               Align(
                 alignment: Alignment.topLeft,
                 child: IconButton(
-                  icon: const Icon(Icons.arrow_back_ios_new_rounded, color: AppColors.ink),
+                  icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white),
                   onPressed: () => context.go(widget.mode == 'setup' ? '/setup-2fa' : '/login'),
                 ),
               ),
@@ -70,7 +70,7 @@ class _TwoFANotifPageState extends State<TwoFANotifPage> {
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 23,
                           fontWeight: FontWeight.w800,
-                          color: AppColors.ink,
+                          color: Colors.white,
                           letterSpacing: -0.3,
                         ),
                         textAlign: TextAlign.center,
@@ -84,7 +84,7 @@ class _TwoFANotifPageState extends State<TwoFANotifPage> {
                         style: const TextStyle(
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 14.5,
-                          color: AppColors.slate500,
+                          color: Colors.white70,
                           height: 1.55,
                         ),
                       ),
@@ -98,7 +98,7 @@ class _TwoFANotifPageState extends State<TwoFANotifPage> {
                               height: 18,
                               child: CircularProgressIndicator(
                                 strokeWidth: 2.4,
-                                valueColor: AlwaysStoppedAnimation(AppColors.green),
+                                valueColor: AlwaysStoppedAnimation(AppColors.neonGreen),
                               ),
                             ),
                             SizedBox(width: 10),
@@ -106,7 +106,7 @@ class _TwoFANotifPageState extends State<TwoFANotifPage> {
                                 style: TextStyle(
                                   fontFamily: 'PlusJakartaSans',
                                   fontSize: 13.5,
-                                  color: AppColors.slate400,
+                                  color: Colors.white54,
                                   fontWeight: FontWeight.w600,
                                 )),
                           ],
@@ -115,7 +115,7 @@ class _TwoFANotifPageState extends State<TwoFANotifPage> {
                       const Spacer(),
                       const Text(
                         'Tidak menerima notifikasi? Kirim ulang',
-                        style: TextStyle(fontSize: 12.5, color: AppColors.slate400),
+                        style: TextStyle(fontSize: 12.5, color: Colors.white54),
                       ),
                     ],
                   ),

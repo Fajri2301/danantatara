@@ -51,7 +51,7 @@ class _TransferAmountPageState extends State<TransferAmountPage> {
     final valid = _amount >= 1000 && enough;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.bg,
       appBar: AppTopBar(title: 'Nominal Transfer', onBack: () => context.go('/transfer')),
       body: Column(
         children: [
@@ -63,8 +63,9 @@ class _TransferAmountPageState extends State<TransferAmountPage> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                   decoration: BoxDecoration(
-                    color: AppColors.bg,
+                    color: Colors.black.withOpacity(0.3),
                     borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: Colors.white24),
                   ),
                   child: Row(
                     children: [
@@ -73,7 +74,7 @@ class _TransferAmountPageState extends State<TransferAmountPage> {
                               width: 42,
                               height: 42,
                               decoration: BoxDecoration(
-                                color: Colors.white,
+                                color: Colors.white12,
                                 borderRadius: BorderRadius.circular(11),
                               ),
                               child: Center(
@@ -81,7 +82,7 @@ class _TransferAmountPageState extends State<TransferAmountPage> {
                                     style: const TextStyle(
                                       fontFamily: 'PlusJakartaSans',
                                       fontWeight: FontWeight.w800,
-                                      color: AppColors.primary,
+                                      color: AppColors.neonGreen,
                                       fontSize: 13,
                                     )),
                               ),
@@ -100,15 +101,15 @@ class _TransferAmountPageState extends State<TransferAmountPage> {
                                 fontFamily: 'PlusJakartaSans',
                                 fontSize: 14.5,
                                 fontWeight: FontWeight.w700,
-                                color: AppColors.ink,
+                                color: Colors.white,
                               ),
                             ),
                             Text(widget.recipient['sub'] as String,
-                                style: const TextStyle(fontSize: 12.5, color: AppColors.slate400)),
+                                style: const TextStyle(fontSize: 12.5, color: Colors.white54)),
                           ],
                         ),
                       ),
-                      const Icon(Icons.verified_user_outlined, size: 20, color: AppColors.green),
+                      const Icon(Icons.verified_user_outlined, size: 20, color: AppColors.neonGreen),
                     ],
                   ),
                 ),
@@ -119,7 +120,7 @@ class _TransferAmountPageState extends State<TransferAmountPage> {
                   child: Column(
                     children: [
                       const Text('Nominal',
-                          style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, color: AppColors.slate400, fontWeight: FontWeight.w600)),
+                          style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, color: Colors.white54, fontWeight: FontWeight.w600)),
                       const SizedBox(height: 6),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -131,7 +132,7 @@ class _TransferAmountPageState extends State<TransferAmountPage> {
                                 fontFamily: 'PlusJakartaSans',
                                 fontSize: 22,
                                 fontWeight: FontWeight.w700,
-                                color: _amount > 0 ? AppColors.ink : AppColors.slate300,
+                                color: _amount > 0 ? Colors.white : Colors.white24,
                               )),
                           Text(
                             _amount > 0 ? _amount.toLocaleString() : '0',
@@ -139,7 +140,7 @@ class _TransferAmountPageState extends State<TransferAmountPage> {
                               fontFamily: 'PlusJakartaSans',
                               fontSize: 42,
                               fontWeight: FontWeight.w800,
-                              color: _amount > 0 ? AppColors.ink : AppColors.slate300,
+                              color: _amount > 0 ? Colors.white : Colors.white24,
                               letterSpacing: -1,
                             ),
                           ),
@@ -152,7 +153,7 @@ class _TransferAmountPageState extends State<TransferAmountPage> {
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 12.5,
                           fontWeight: FontWeight.w600,
-                          color: enough ? AppColors.slate400 : AppColors.red,
+                          color: enough ? Colors.white54 : AppColors.red,
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -163,16 +164,16 @@ class _TransferAmountPageState extends State<TransferAmountPage> {
                           child: Container(
                             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: Colors.transparent,
                               borderRadius: BorderRadius.circular(20),
-                              border: Border.all(color: AppColors.line, width: 1.4),
+                              border: Border.all(color: Colors.white24, width: 1.4),
                             ),
                             child: Text(CurrencyFormatter.formatInt(c),
                                 style: const TextStyle(
                                   fontFamily: 'PlusJakartaSans',
                                   fontSize: 13,
                                   fontWeight: FontWeight.w700,
-                                  color: AppColors.slate600,
+                                  color: Colors.white70,
                                 )),
                           ),
                         )).toList(),

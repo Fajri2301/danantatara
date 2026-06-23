@@ -63,7 +63,7 @@ class _TopUpPageState extends State<TopUpPage> {
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 13,
                             fontWeight: FontWeight.w700,
-                            color: AppColors.slate400,
+                            color: Colors.white54,
                           )),
                     ),
                     GridView.count(
@@ -80,10 +80,10 @@ class _TopUpPageState extends State<TopUpPage> {
                           child: AnimatedContainer(
                             duration: const Duration(milliseconds: 150),
                             decoration: BoxDecoration(
-                              color: selected ? AppColors.primarySurface : Colors.white,
+                              color: selected ? AppColors.neonGreen.withOpacity(0.1) : Colors.black.withOpacity(0.3),
                               borderRadius: BorderRadius.circular(16),
                               border: Border.all(
-                                color: selected ? AppColors.primaryLight : AppColors.line,
+                                color: selected ? AppColors.neonGreen : Colors.white24,
                                 width: 1.8,
                               ),
                             ),
@@ -93,7 +93,7 @@ class _TopUpPageState extends State<TopUpPage> {
                                     fontFamily: 'PlusJakartaSans',
                                     fontSize: 16,
                                     fontWeight: FontWeight.w800,
-                                    color: selected ? AppColors.primary : AppColors.ink,
+                                    color: selected ? AppColors.neonGreen : Colors.white,
                                   )),
                             ),
                           ),
@@ -108,14 +108,14 @@ class _TopUpPageState extends State<TopUpPage> {
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 13,
                             fontWeight: FontWeight.w700,
-                            color: AppColors.slate400,
+                            color: Colors.white54,
                           )),
                     ),
                     Container(
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Colors.black.withOpacity(0.3),
                         borderRadius: BorderRadius.circular(18),
-                        boxShadow: AppColors.shadowSoft,
+                        border: Border.all(color: Colors.white24),
                       ),
                       child: Column(
                         children: _methods.asMap().entries.map((entry) {
@@ -124,7 +124,7 @@ class _TopUpPageState extends State<TopUpPage> {
                           final selected = _method == m['id'];
                           return Column(
                             children: [
-                              if (i > 0) const Divider(height: 1, indent: 16, color: AppColors.line2),
+                              if (i > 0) const Divider(height: 1, indent: 16, color: Colors.white12),
                               GestureDetector(
                                 onTap: () => setState(() => _method = m['id'] as String),
                                 child: Padding(
@@ -139,7 +139,7 @@ class _TopUpPageState extends State<TopUpPage> {
                                               fontFamily: 'PlusJakartaSans',
                                               fontSize: 14.5,
                                               fontWeight: FontWeight.w700,
-                                              color: AppColors.ink,
+                                              color: Colors.white,
                                             )),
                                       ),
                                       AnimatedContainer(
@@ -148,9 +148,9 @@ class _TopUpPageState extends State<TopUpPage> {
                                         height: 20,
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle,
-                                          color: selected ? AppColors.primary : Colors.white,
+                                          color: selected ? AppColors.neonGreen : Colors.white12,
                                           border: Border.all(
-                                            color: selected ? AppColors.primary : AppColors.line,
+                                            color: selected ? AppColors.neonGreen : Colors.white24,
                                             width: 2,
                                           ),
                                         ),
@@ -161,7 +161,7 @@ class _TopUpPageState extends State<TopUpPage> {
                                                   height: 8,
                                                   decoration: const BoxDecoration(
                                                     shape: BoxShape.circle,
-                                                    color: Colors.white,
+                                                    color: Colors.black,
                                                   ),
                                                 ),
                                               )

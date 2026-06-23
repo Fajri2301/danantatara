@@ -73,7 +73,7 @@ class _AppFieldState extends State<AppField> {
               fontFamily: 'PlusJakartaSans',
               fontSize: 13.5,
               fontWeight: FontWeight.w600,
-              color: AppColors.slate600,
+              color: Colors.white70,
             ),
           ),
           const SizedBox(height: 8),
@@ -82,16 +82,16 @@ class _AppFieldState extends State<AppField> {
           duration: const Duration(milliseconds: 150),
           height: 54,
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Colors.black.withOpacity(0.3),
             borderRadius: BorderRadius.circular(14),
             border: Border.all(
-              color: _focused ? AppColors.primary : AppColors.line,
+              color: _focused ? AppColors.neonGreen : Colors.white24,
               width: 1.0,
             ),
             boxShadow: _focused
                 ? [
                     BoxShadow(
-                        color: AppColors.primary.withValues(alpha: 0.1), blurRadius: 0, spreadRadius: 4)
+                        color: AppColors.neonGreen.withOpacity(0.1), blurRadius: 0, spreadRadius: 4)
                   ]
                 : [],
           ),
@@ -101,7 +101,7 @@ class _AppFieldState extends State<AppField> {
                 const SizedBox(width: 14),
                 ColorFiltered(
                   colorFilter: ColorFilter.mode(
-                    _focused ? AppColors.primary : AppColors.slate400,
+                    _focused ? AppColors.neonGreen : Colors.white54,
                     BlendMode.srcIn,
                   ),
                   child: widget.prefixIcon!,
@@ -125,7 +125,7 @@ class _AppFieldState extends State<AppField> {
                       fontFamily: 'PlusJakartaSans',
                       fontSize: 15.5,
                       fontWeight: FontWeight.w500,
-                      color: AppColors.ink,
+                      color: Colors.white,
                     ),
                     decoration: InputDecoration(
                       hintText: widget.placeholder,
@@ -133,7 +133,7 @@ class _AppFieldState extends State<AppField> {
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 15.5,
                         fontWeight: FontWeight.w400,
-                        color: AppColors.slate300,
+                        color: Colors.white38,
                       ),
                       border: InputBorder.none,
                       isDense: true,

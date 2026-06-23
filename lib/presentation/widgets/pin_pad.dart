@@ -46,9 +46,9 @@ class PinPad extends StatelessWidget {
               margin: const EdgeInsets.symmetric(horizontal: 7),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: filled ? AppColors.primary : Colors.transparent,
+                color: filled ? AppColors.neonGreen : Colors.transparent,
                 border: Border.all(
-                  color: filled ? AppColors.primary : AppColors.primaryBorder,
+                  color: filled ? AppColors.neonGreen : Colors.white24,
                   width: 2,
                 ),
               ),
@@ -68,13 +68,13 @@ class PinPad extends StatelessWidget {
             if (k == 'bio') {
               return _KeyButton(
                 onTap: () => onComplete?.call(value),
-                child: const Icon(Icons.fingerprint_rounded, size: 28, color: AppColors.primary),
+                child: const Icon(Icons.fingerprint_rounded, size: 28, color: AppColors.neonGreen),
               );
             }
             if (k == 'del') {
               return _KeyButton(
                 onTap: () => _press('del'),
-                child: const Icon(Icons.arrow_back_ios_rounded, size: 22, color: AppColors.slate600),
+                child: const Icon(Icons.arrow_back_ios_rounded, size: 22, color: Colors.white54),
               );
             }
             return _KeyButton(
@@ -85,7 +85,7 @@ class PinPad extends StatelessWidget {
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 26,
                   fontWeight: FontWeight.w600,
-                  color: AppColors.ink,
+                  color: Colors.white,
                 ),
               ),
             );
@@ -109,9 +109,9 @@ class _KeyButton extends StatelessWidget {
       child: Container(
         height: 62,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Colors.black.withOpacity(0.3),
           borderRadius: BorderRadius.circular(18),
-          boxShadow: AppColors.shadowSoft,
+          border: Border.all(color: Colors.white24),
         ),
         child: Center(child: child),
       ),

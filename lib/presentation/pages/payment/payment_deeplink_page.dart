@@ -44,11 +44,11 @@ class PaymentDeeplinkPage extends StatelessWidget {
                 child: Row(
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.close, color: AppColors.ink),
+                      icon: const Icon(Icons.close, color: Colors.white),
                       onPressed: () => _cancel(context, payload),
                     ),
                     const Expanded(
-                      child: Text('Konfirmasi Pembayaran', textAlign: TextAlign.center, style: TextStyle(fontFamily: 'Poppins', fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.ink)),
+                      child: Text('Konfirmasi Pembayaran', textAlign: TextAlign.center, style: TextStyle(fontFamily: 'Poppins', fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
                     ),
                     const SizedBox(width: 48), // Balance centering
                   ],
@@ -63,31 +63,31 @@ class PaymentDeeplinkPage extends StatelessWidget {
                       Container(
                         width: 80,
                         height: 80,
-                        decoration: BoxDecoration(color: AppColors.primarySurface, shape: BoxShape.circle, border: Border.all(color: AppColors.primary)),
-                        child: const Icon(Icons.storefront, color: AppColors.primary, size: 40),
+                        decoration: BoxDecoration(color: Colors.white12, shape: BoxShape.circle, border: Border.all(color: AppColors.neonGreen)),
+                        child: const Icon(Icons.storefront, color: AppColors.neonGreen, size: 40),
                       ),
                       const SizedBox(height: 16),
-                      Text(payload.merchantName, style: const TextStyle(fontFamily: 'Poppins', fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.ink)),
+                      Text(payload.merchantName, style: const TextStyle(fontFamily: 'Poppins', fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white)),
                       const SizedBox(height: 32),
-                      const Text('Total Pembayaran', style: TextStyle(fontFamily: 'Inter', fontSize: 14, color: AppColors.slate500)),
+                      const Text('Total Pembayaran', style: TextStyle(fontFamily: 'Inter', fontSize: 14, color: Colors.white54)),
                       const SizedBox(height: 8),
-                      Text(CurrencyFormatter.format(payload.amount), style: const TextStyle(fontFamily: 'Poppins', fontSize: 40, fontWeight: FontWeight.bold, color: AppColors.primary)),
+                      Text(CurrencyFormatter.format(payload.amount), style: const TextStyle(fontFamily: 'Poppins', fontSize: 40, fontWeight: FontWeight.bold, color: AppColors.neonGreen)),
                       const SizedBox(height: 40),
                       
                       Container(
                         padding: const EdgeInsets.all(20),
                         decoration: BoxDecoration(
-                          color: AppColors.white.withOpacity(0.4),
+                          color: Colors.black.withOpacity(0.3),
                           borderRadius: BorderRadius.circular(24),
-                          border: Border.all(color: AppColors.primary.withOpacity(0.1)),
+                          border: Border.all(color: Colors.white24),
                         ),
                         child: Column(
                           children: [
                             _DetailRow(label: 'Keterangan', value: payload.description),
-                            const Divider(height: 1, color: AppColors.line2),
+                            const Divider(height: 1, color: Colors.white12),
                             if (payload.reference != null && payload.reference!.isNotEmpty) ...[
                               _DetailRow(label: 'Referensi', value: payload.reference!),
-                              const Divider(height: 1, color: AppColors.line2),
+                              const Divider(height: 1, color: Colors.white12),
                             ],
                             const _DetailRow(label: 'Metode Pembayaran', value: 'Saldo Danantara'),
                           ],
@@ -113,12 +113,12 @@ class PaymentDeeplinkPage extends StatelessWidget {
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(vertical: 18),
                     decoration: BoxDecoration(
-                      color: AppColors.primary,
+                      color: AppColors.neonGreen,
                       borderRadius: BorderRadius.circular(16),
-                      boxShadow: AppColors.glowLime,
+                      boxShadow: [BoxShadow(color: AppColors.neonGreen.withOpacity(0.3), blurRadius: 8)],
                     ),
                     child: Center(
-                      child: Text('Bayar ${CurrencyFormatter.format(payload.amount)}', style: const TextStyle(fontFamily: 'Inter', fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.bg)),
+                      child: Text('Bayar ${CurrencyFormatter.format(payload.amount)}', style: const TextStyle(fontFamily: 'Inter', fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black)),
                     ),
                   ),
                 ),
@@ -144,8 +144,8 @@ class _DetailRow extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(child: Text(label, style: const TextStyle(fontSize: 14, color: AppColors.slate500, fontFamily: 'Inter'))),
-          Expanded(child: Text(value, textAlign: TextAlign.right, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.ink, fontFamily: 'Inter'))),
+          Expanded(child: Text(label, style: const TextStyle(fontSize: 14, color: Colors.white54, fontFamily: 'Inter'))),
+          Expanded(child: Text(value, textAlign: TextAlign.right, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white, fontFamily: 'Inter'))),
         ],
       ),
     );
@@ -168,17 +168,17 @@ class _ErrorView extends StatelessWidget {
             children: [
               const Icon(Icons.error_outline, size: 64, color: AppColors.red),
               const SizedBox(height: 24),
-              const Text('Invalid Payment Link', style: TextStyle(fontFamily: 'Poppins', fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.ink)),
+              const Text('Invalid Payment Link', style: TextStyle(fontFamily: 'Poppins', fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white)),
               const SizedBox(height: 8),
-              Text(message, textAlign: TextAlign.center, style: const TextStyle(fontFamily: 'Inter', fontSize: 16, color: AppColors.slate500)),
+              Text(message, textAlign: TextAlign.center, style: const TextStyle(fontFamily: 'Inter', fontSize: 16, color: Colors.white54)),
               const SizedBox(height: 40),
               GestureDetector(
                 onTap: () => context.go('/home'),
                 child: Container(
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(vertical: 18),
-                  decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(16)),
-                  child: const Center(child: Text('Return to Home', style: TextStyle(fontFamily: 'Inter', fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.bg))),
+                  decoration: BoxDecoration(color: AppColors.neonGreen, borderRadius: BorderRadius.circular(16)),
+                  child: const Center(child: Text('Return to Home', style: TextStyle(fontFamily: 'Inter', fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black))),
                 ),
               ),
             ],

@@ -104,20 +104,20 @@ class _CodeInputState extends State<CodeInput> {
                     height: boxSize > 40 ? 56 : boxSize + 10,
                     margin: const EdgeInsets.symmetric(horizontal: horizontalMargin),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Colors.black.withOpacity(0.3),
                       borderRadius: BorderRadius.circular(13),
                       border: Border.all(
                         color: widget.hasError
                             ? AppColors.red
                             : active
-                                ? AppColors.primary
+                                ? AppColors.neonGreen
                                 : filled
-                                    ? AppColors.primaryBorder
-                                    : AppColors.line,
+                                    ? Colors.white54
+                                    : Colors.white24,
                         width: 1.6,
                       ),
                       boxShadow: active
-                          ? [BoxShadow(color: AppColors.primary.withValues(alpha: 0.1), blurRadius: 0, spreadRadius: 4)]
+                          ? [BoxShadow(color: AppColors.neonGreen.withOpacity(0.1), blurRadius: 0, spreadRadius: 4)]
                           : [],
                     ),
                     child: Center(
@@ -128,7 +128,7 @@ class _CodeInputState extends State<CodeInput> {
                                 fontFamily: 'PlusJakartaSans',
                                 fontSize: 24,
                                 fontWeight: FontWeight.w700,
-                                color: AppColors.ink,
+                                color: Colors.white,
                               ),
                             )
                           : active
@@ -136,7 +136,7 @@ class _CodeInputState extends State<CodeInput> {
                                   width: 2,
                                   height: 24,
                                   decoration: BoxDecoration(
-                                    color: AppColors.primary,
+                                    color: AppColors.neonGreen,
                                     borderRadius: BorderRadius.circular(2),
                                   ),
                                 )

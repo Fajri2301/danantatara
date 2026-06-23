@@ -75,14 +75,14 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.bg,
       body: SafeArea(
         child: Column(
           children: [
             Align(
               alignment: Alignment.topLeft,
               child: IconButton(
-                icon: const Icon(DkgIcons.arrowLeft, color: AppColors.ink),
+                icon: const Icon(DkgIcons.arrowLeft, color: Colors.white),
                 onPressed: () => context.go('/'),
               ),
             ),
@@ -97,12 +97,12 @@ class _RegisterPageState extends State<RegisterPage> {
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 27,
                           fontWeight: FontWeight.w800,
-                          color: AppColors.ink,
+                          color: Colors.white,
                           letterSpacing: -0.4,
                         )),
                     const SizedBox(height: 6),
                     const Text('Daftar gratis dalam 1 menit',
-                        style: TextStyle(fontSize: 14.5, color: AppColors.slate500)),
+                        style: TextStyle(fontSize: 14.5, color: Colors.white70)),
                     const SizedBox(height: 22),
                     const SizedBox(height: 20),
                     AppField(
@@ -131,7 +131,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       prefixIcon: const Icon(DkgIcons.lock, size: 20),
                       suffixIcon: IconButton(
                         icon: Icon(_showPw ? DkgIcons.eyeOff : DkgIcons.eye,
-                            size: 20, color: AppColors.slate400),
+                            size: 20, color: Colors.white54),
                         onPressed: () => setState(() => _showPw = !_showPw),
                       ),
                     ),
@@ -146,15 +146,15 @@ class _RegisterPageState extends State<RegisterPage> {
                             width: 22,
                             height: 22,
                             decoration: BoxDecoration(
-                              color: _agree ? AppColors.primary : Colors.white,
+                              color: _agree ? AppColors.neonGreen : Colors.transparent,
                               borderRadius: BorderRadius.circular(7),
                               border: Border.all(
-                                color: _agree ? AppColors.primary : AppColors.line,
+                                color: _agree ? AppColors.neonGreen : Colors.white54,
                                 width: 1.6,
                               ),
                             ),
                             child: _agree
-                                ? const Icon(DkgIcons.check, size: 14, color: Colors.white)
+                                ? const Icon(DkgIcons.check, size: 14, color: Colors.black)
                                 : null,
                           ),
                           const SizedBox(width: 10),
@@ -164,19 +164,19 @@ class _RegisterPageState extends State<RegisterPage> {
                                 style: TextStyle(
                                   fontFamily: 'PlusJakartaSans',
                                   fontSize: 13,
-                                  color: AppColors.slate500,
+                                  color: Colors.white70,
                                   height: 1.5,
                                 ),
                                 children: [
                                   TextSpan(text: 'Saya setuju dengan '),
                                   TextSpan(
                                     text: 'Syarat & Ketentuan',
-                                    style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.w700),
+                                    style: TextStyle(color: AppColors.neonGreen, fontWeight: FontWeight.w700),
                                   ),
                                   TextSpan(text: ' dan '),
                                   TextSpan(
                                     text: 'Kebijakan Privasi',
-                                    style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.w700),
+                                    style: TextStyle(color: AppColors.neonGreen, fontWeight: FontWeight.w700),
                                   ),
                                   TextSpan(text: '.'),
                                 ],
@@ -189,6 +189,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     const SizedBox(height: 24),
                     AppButton(
                       label: 'Daftar',
+                      variant: AppButtonVariant.primary,
                       onPressed: _valid ? _register : null,
                       isLoading: _loading,
                     ),
@@ -197,13 +198,13 @@ class _RegisterPageState extends State<RegisterPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Text('Sudah punya akun? ',
-                            style: TextStyle(fontSize: 14, color: AppColors.ink)),
+                            style: TextStyle(fontSize: 14, color: Colors.white70)),
                         GestureDetector(
                           onTap: () => context.go('/login'),
                           child: const Text('Masuk',
                               style: TextStyle(
                                 fontFamily: 'PlusJakartaSans',
-                                color: AppColors.primary,
+                                color: AppColors.neonGreen,
                                 fontWeight: FontWeight.w700,
                                 fontSize: 14,
                               )),

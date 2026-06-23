@@ -114,10 +114,10 @@ class _PaymentQrPageState extends State<PaymentQrPage> {
                       height: 34,
                       decoration: BoxDecoration(
                         border: Border(
-                          top: corner[1] == 0 ? const BorderSide(color: Colors.white, width: 3) : BorderSide.none,
-                          bottom: corner[1] == 1 ? const BorderSide(color: Colors.white, width: 3) : BorderSide.none,
-                          left: corner[0] == 0 ? const BorderSide(color: Colors.white, width: 3) : BorderSide.none,
-                          right: corner[0] == 1 ? const BorderSide(color: Colors.white, width: 3) : BorderSide.none,
+                          top: corner[1] == 0 ? const BorderSide(color: AppColors.neonGreen, width: 3) : BorderSide.none,
+                          bottom: corner[1] == 1 ? const BorderSide(color: AppColors.neonGreen, width: 3) : BorderSide.none,
+                          left: corner[0] == 0 ? const BorderSide(color: AppColors.neonGreen, width: 3) : BorderSide.none,
+                          right: corner[0] == 1 ? const BorderSide(color: AppColors.neonGreen, width: 3) : BorderSide.none,
                         ),
                         borderRadius: BorderRadius.only(
                           topLeft: corner[0] == 0 && corner[1] == 0 ? const Radius.circular(6) : Radius.zero,
@@ -136,7 +136,7 @@ class _PaymentQrPageState extends State<PaymentQrPage> {
             children: [
               Icon(
                 _detected ? Icons.check_rounded : null,
-                color: AppColors.green,
+                color: AppColors.neonGreen,
                 size: 16,
               ),
               if (_detected) const SizedBox(width: 8),
@@ -199,17 +199,17 @@ class _PaymentQrPageState extends State<PaymentQrPage> {
         onTap: () {},
         child: Container(
           decoration: const BoxDecoration(
-            color: Colors.white,
+            color: AppColors.bg,
             borderRadius: BorderRadius.only(topLeft: Radius.circular(26), topRight: Radius.circular(26)),
           ),
           padding: const EdgeInsets.fromLTRB(20, 10, 20, 26),
           child: Column(
             children: [
-              Container(width: 42, height: 5, decoration: BoxDecoration(color: AppColors.line, borderRadius: BorderRadius.circular(3))),
+              Container(width: 42, height: 5, decoration: BoxDecoration(color: Colors.white24, borderRadius: BorderRadius.circular(3))),
               const SizedBox(height: 16),
               Row(
                 children: [
-                  const FeatureIcon(icon: Icons.storefront_outlined, tone: 'violet', size: 52, iconSize: 26),
+                  const FeatureIcon(icon: Icons.storefront_outlined, tone: 'green', size: 52, iconSize: 26),
                   const SizedBox(width: 13),
                   Expanded(
                     child: Column(
@@ -220,31 +220,31 @@ class _PaymentQrPageState extends State<PaymentQrPage> {
                               fontFamily: 'PlusJakartaSans',
                               fontSize: 16.5,
                               fontWeight: FontWeight.w800,
-                              color: AppColors.ink,
+                              color: Colors.white,
                             )),
                         Text(_merchant['sub'] as String,
-                            style: const TextStyle(fontSize: 12.5, color: AppColors.slate400)),
+                            style: const TextStyle(fontSize: 12.5, color: Colors.white54)),
                       ],
                     ),
                   ),
-                  const AppBadge(label: 'QRIS', tone: 'violet'),
+                  const AppBadge(label: 'QRIS', tone: 'green'),
                 ],
               ),
               const SizedBox(height: 18),
-              const Text('Total tagihan', style: TextStyle(fontSize: 13, color: AppColors.slate400)),
+              const Text('Total tagihan', style: TextStyle(fontSize: 13, color: Colors.white54)),
               const SizedBox(height: 4),
               Text(CurrencyFormatter.format(amount),
                   style: const TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 38,
                     fontWeight: FontWeight.w800,
-                    color: AppColors.ink,
+                    color: AppColors.neonGreen,
                     letterSpacing: -0.6,
                   )),
               const SizedBox(height: 18),
               AppButton(
                 label: 'Bayar Sekarang',
-                icon: const Icon(Icons.lock_outline_rounded, size: 19, color: Colors.white),
+                icon: const Icon(Icons.lock_outline_rounded, size: 19, color: Colors.black),
                 onPressed: () {
                   setState(() => _sheetShown = true);
                   context.go('/pin', extra: {

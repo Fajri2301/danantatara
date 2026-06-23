@@ -43,9 +43,9 @@ class TransferConfirmPage extends StatelessWidget {
                     width: double.infinity,
                     padding: const EdgeInsets.fromLTRB(18, 22, 18, 22),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Colors.black.withOpacity(0.3),
                       borderRadius: BorderRadius.circular(20),
-                      boxShadow: AppColors.shadowSoft,
+                      border: Border.all(color: Colors.white24),
                     ),
                     child: Column(
                       children: [
@@ -54,7 +54,7 @@ class TransferConfirmPage extends StatelessWidget {
                                 width: 56,
                                 height: 56,
                                 decoration: BoxDecoration(
-                                  color: AppColors.primarySurface,
+                                  color: Colors.white12,
                                   borderRadius: BorderRadius.circular(16),
                                 ),
                                 child: Center(
@@ -62,31 +62,31 @@ class TransferConfirmPage extends StatelessWidget {
                                       style: const TextStyle(
                                         fontFamily: 'PlusJakartaSans',
                                         fontWeight: FontWeight.w800,
-                                        color: AppColors.primary,
+                                        color: AppColors.neonGreen,
                                       )),
                                 ),
                               )
                             : AppAvatar(name: recipient['name'] as String, size: 56),
                         const SizedBox(height: 12),
                         const Text('Transfer ke',
-                            style: TextStyle(fontSize: 13, color: AppColors.slate400)),
+                            style: TextStyle(fontSize: 13, color: Colors.white54)),
                         const SizedBox(height: 2),
                         Text(channel == 'bank' ? (recipient['sub'] as String) : (recipient['name'] as String),
                             style: const TextStyle(
                               fontFamily: 'PlusJakartaSans',
                               fontSize: 18,
                               fontWeight: FontWeight.w800,
-                              color: AppColors.ink,
+                              color: Colors.white,
                             )),
                         Text(recipient['sub'] as String,
-                            style: const TextStyle(fontSize: 13, color: AppColors.slate400)),
+                            style: const TextStyle(fontSize: 13, color: Colors.white54)),
                         const SizedBox(height: 14),
                         Text(CurrencyFormatter.format(amount),
                             style: const TextStyle(
                               fontFamily: 'PlusJakartaSans',
                               fontSize: 34,
                               fontWeight: FontWeight.w800,
-                              color: AppColors.primary,
+                              color: AppColors.neonGreen,
                               letterSpacing: -0.5,
                             )),
                       ],
@@ -97,20 +97,20 @@ class TransferConfirmPage extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 6),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Colors.black.withOpacity(0.3),
                       borderRadius: BorderRadius.circular(20),
-                      boxShadow: AppColors.shadowSoft,
+                      border: Border.all(color: Colors.white24),
                     ),
                     child: Column(
                       children: [
                         _Line(label: 'Nominal', value: CurrencyFormatter.format(amount)),
-                        const Divider(height: 1, color: AppColors.line2),
+                        const Divider(height: 1, color: Colors.white12),
                         _Line(label: 'Biaya admin', value: fee > 0 ? CurrencyFormatter.format(fee) : 'Gratis'),
                         if (note.isNotEmpty) ...[
-                          const Divider(height: 1, color: AppColors.line2),
+                          const Divider(height: 1, color: Colors.white12),
                           _Line(label: 'Catatan', value: note),
                         ],
-                        const Divider(height: 1, color: AppColors.line2),
+                        const Divider(height: 1, color: Colors.white12),
                         _Line(label: 'Total', value: CurrencyFormatter.format(total), bold: true),
                       ],
                     ),
@@ -120,9 +120,9 @@ class TransferConfirmPage extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(13),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Colors.black.withOpacity(0.3),
                       borderRadius: BorderRadius.circular(16),
-                      boxShadow: AppColors.shadowSoft,
+                      border: Border.all(color: Colors.white24),
                     ),
                     child: Row(
                       children: [
@@ -133,13 +133,13 @@ class TransferConfirmPage extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text('Saldo DKG',
-                                  style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13.5, fontWeight: FontWeight.w700, color: AppColors.ink)),
+                                  style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13.5, fontWeight: FontWeight.w700, color: Colors.white)),
                               Text('Sumber dana',
-                                  style: TextStyle(fontSize: 12, color: AppColors.slate400)),
+                                  style: TextStyle(fontSize: 12, color: Colors.white54)),
                             ],
                           ),
                         ),
-                        const Icon(Icons.check_rounded, size: 20, color: AppColors.primary),
+                        const Icon(Icons.check_rounded, size: 20, color: AppColors.neonGreen),
                       ],
                     ),
                   ),
@@ -152,7 +152,7 @@ class TransferConfirmPage extends StatelessWidget {
             color: AppColors.bg,
             child: AppButton(
               label: 'Konfirmasi & Bayar',
-              icon: const Icon(Icons.lock_outline_rounded, size: 19, color: Colors.white),
+              icon: const Icon(Icons.lock_outline_rounded, size: 19, color: Colors.black),
               onPressed: () => context.go('/pin', extra: {
                 'kind': 'transfer',
                 'recipient': recipient,
@@ -187,14 +187,14 @@ class _Line extends StatelessWidget {
                 fontFamily: 'PlusJakartaSans',
                 fontSize: bold ? 15.5 : 14,
                 fontWeight: bold ? FontWeight.w700 : FontWeight.w500,
-                color: AppColors.slate500,
+                color: Colors.white54,
               )),
           Text(value,
               style: TextStyle(
                 fontFamily: 'PlusJakartaSans',
                 fontSize: bold ? 15.5 : 14,
                 fontWeight: bold ? FontWeight.w800 : FontWeight.w700,
-                color: AppColors.ink,
+                color: Colors.white,
               )),
         ],
       ),

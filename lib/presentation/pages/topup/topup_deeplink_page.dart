@@ -41,14 +41,14 @@ class _TopupDeeplinkPageState extends State<TopupDeeplinkPage> {
           ? widget.data as String
           : 'Link top-up tidak ditemukan atau tidak valid.';
       return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.bg,
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Icon(Icons.error_outline, color: AppColors.red, size: 60),
               const SizedBox(height: 16),
-              Text(message, textAlign: TextAlign.center, style: const TextStyle(color: AppColors.ink)),
+              Text(message, textAlign: TextAlign.center, style: const TextStyle(color: Colors.white)),
               const SizedBox(height: 24),
               AppButton(label: 'Kembali', onPressed: () => context.go('/home'), fullWidth: false),
             ],
@@ -74,17 +74,17 @@ class _TopupDeeplinkPageState extends State<TopupDeeplinkPage> {
         }
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.bg,
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               if (_isProcessing) ...[
-                const CircularProgressIndicator(color: AppColors.primary),
+                const CircularProgressIndicator(color: AppColors.neonGreen),
                 const SizedBox(height: 24),
-                const Text('Memproses Top-up...', style: TextStyle(color: AppColors.ink, fontSize: 16, fontWeight: FontWeight.bold)),
+                const Text('Memproses Top-up...', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
               ] else ...[
-                const Icon(Icons.account_balance_wallet_rounded, color: AppColors.primary, size: 60),
+                const Icon(Icons.account_balance_wallet_rounded, color: AppColors.neonGreen, size: 60),
                 const SizedBox(height: 16),
                 const Text('Top-up Gagal', style: TextStyle(color: AppColors.red, fontSize: 20, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 24),

@@ -109,14 +109,14 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
     final email = FirebaseAuth.instance.currentUser?.email ?? 'email kamu';
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.bg,
       body: SafeArea(
         child: Column(
           children: [
             Align(
               alignment: Alignment.topLeft,
               child: IconButton(
-                icon: const Icon(DkgIcons.arrowLeft, color: AppColors.ink),
+                icon: const Icon(DkgIcons.arrowLeft, color: Colors.white),
                 onPressed: () => context.go('/register'),
               ),
             ),
@@ -132,11 +132,11 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                           width: 78,
                           height: 78,
                           decoration: BoxDecoration(
-                            color: AppColors.primarySurface,
+                            color: AppColors.neonGreen.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(24),
                           ),
                           child: const Center(
-                            child: Icon(DkgIcons.mail, size: 36, color: AppColors.primary),
+                            child: Icon(DkgIcons.mail, size: 36, color: AppColors.neonGreen),
                           ),
                         ),
                         Positioned(
@@ -146,11 +146,11 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                             width: 26,
                             height: 26,
                             decoration: BoxDecoration(
-                              color: AppColors.green,
+                              color: AppColors.neonGreen,
                               shape: BoxShape.circle,
-                              border: Border.all(color: Colors.white, width: 3),
+                              border: Border.all(color: AppColors.bg, width: 3),
                             ),
-                            child: const Icon(DkgIcons.check, size: 13, color: Colors.white),
+                            child: const Icon(DkgIcons.check, size: 13, color: Colors.black),
                           ),
                         ),
                       ],
@@ -162,7 +162,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 23,
                         fontWeight: FontWeight.w800,
-                        color: AppColors.ink,
+                        color: Colors.white,
                         letterSpacing: -0.3,
                       ),
                     ),
@@ -173,7 +173,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                         style: const TextStyle(
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 14.5,
-                          color: AppColors.slate500,
+                          color: Colors.white70,
                           height: 1.55,
                         ),
                         children: [
@@ -181,7 +181,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                             text: email,
                             style: const TextStyle(
                               fontWeight: FontWeight.w700,
-                              color: AppColors.ink,
+                              color: Colors.white,
                             ),
                           ),
                         ],
@@ -207,7 +207,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                         height: 24,
                         child: CircularProgressIndicator(
                           strokeWidth: 2.5,
-                          valueColor: AlwaysStoppedAnimation(AppColors.primary),
+                          valueColor: AlwaysStoppedAnimation(AppColors.neonGreen),
                         ),
                       ),
                     ] else if (_hasError && _errorMessage != null) ...[
@@ -229,17 +229,17 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                             style: const TextStyle(
                               fontFamily: 'PlusJakartaSans',
                               fontSize: 13.5,
-                              color: AppColors.slate400,
+                              color: Colors.white54,
                             ),
                           )
                         : TextButton.icon(
                             onPressed: _resend,
-                            icon: const Icon(DkgIcons.refresh, size: 16, color: AppColors.primary),
+                            icon: const Icon(DkgIcons.refresh, size: 16, color: AppColors.neonGreen),
                             label: const Text(
                               'Kirim ulang kode',
                               style: TextStyle(
                                 fontFamily: 'PlusJakartaSans',
-                                color: AppColors.primary,
+                                color: AppColors.neonGreen,
                                 fontWeight: FontWeight.w700,
                                 fontSize: 14,
                               ),

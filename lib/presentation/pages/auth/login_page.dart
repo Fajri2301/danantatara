@@ -107,14 +107,14 @@ class _LoginPageState extends State<LoginPage> {
         }
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.bg,
         body: SafeArea(
           child: Column(
             children: [
               Align(
                 alignment: Alignment.topLeft,
                 child: IconButton(
-                  icon: const Icon(DkgIcons.arrowLeft, color: AppColors.ink),
+                  icon: const Icon(DkgIcons.arrowLeft, color: Colors.white),
                   onPressed: () => context.go('/'),
                 ),
               ),
@@ -124,19 +124,19 @@ class _LoginPageState extends State<LoginPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const AppLogo(size: 50),
+                      const AppLogo(size: 50, light: true),
                       const SizedBox(height: 22),
                       const Text('Masuk',
                           style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 27,
                             fontWeight: FontWeight.w800,
-                            color: AppColors.ink,
+                            color: Colors.white,
                             letterSpacing: -0.4,
                           )),
                       const SizedBox(height: 6),
                       const Text('Selamat datang kembali',
-                          style: TextStyle(fontSize: 14.5, color: AppColors.slate500)),
+                          style: TextStyle(fontSize: 14.5, color: Colors.white70)),
                       const SizedBox(height: 24),
                       // Google sign in
                       BlocBuilder<AuthBloc, AuthState>(
@@ -147,10 +147,9 @@ class _LoginPageState extends State<LoginPage> {
                             child: Container(
                               height: 54,
                               decoration: BoxDecoration(
-                                color: Colors.white,
+                                color: Colors.black.withOpacity(0.3),
                                 borderRadius: BorderRadius.circular(14),
-                                border: Border.all(color: AppColors.line, width: 1.5),
-                                boxShadow: AppColors.shadowSoft,
+                                border: Border.all(color: Colors.white24, width: 1.5),
                               ),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -161,7 +160,7 @@ class _LoginPageState extends State<LoginPage> {
                                           height: 20,
                                           child: CircularProgressIndicator(
                                             strokeWidth: 2.4,
-                                            valueColor: AlwaysStoppedAnimation(AppColors.primary),
+                                            valueColor: AlwaysStoppedAnimation(AppColors.neonGreen),
                                           ),
                                         ),
                                         SizedBox(width: 11),
@@ -170,6 +169,7 @@ class _LoginPageState extends State<LoginPage> {
                                               fontFamily: 'PlusJakartaSans',
                                               fontSize: 15.5,
                                               fontWeight: FontWeight.w700,
+                                              color: Colors.white,
                                             )),
                                       ]
                                     : const [
@@ -180,7 +180,7 @@ class _LoginPageState extends State<LoginPage> {
                                               fontFamily: 'PlusJakartaSans',
                                               fontSize: 15.5,
                                               fontWeight: FontWeight.w700,
-                                              color: AppColors.ink,
+                                              color: Colors.white,
                                             )),
                                       ],
                               ),
@@ -190,7 +190,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       const SizedBox(height: 22),
                       Row(children: [
-                        const Expanded(child: Divider(color: AppColors.line)),
+                        const Expanded(child: Divider(color: Colors.white24)),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 12),
                           child: const Text('atau email',
@@ -198,10 +198,10 @@ class _LoginPageState extends State<LoginPage> {
                                 fontFamily: 'PlusJakartaSans',
                                 fontSize: 12.5,
                                 fontWeight: FontWeight.w600,
-                                color: AppColors.slate400,
+                                color: Colors.white54,
                               )),
                         ),
-                        const Expanded(child: Divider(color: AppColors.line)),
+                        const Expanded(child: Divider(color: Colors.white24)),
                       ]),
                       const SizedBox(height: 22),
                       AppField(
@@ -222,7 +222,7 @@ class _LoginPageState extends State<LoginPage> {
                         prefixIcon: const Icon(DkgIcons.lock, size: 20),
                         suffixIcon: IconButton(
                           icon: Icon(_showPw ? DkgIcons.eyeOff : DkgIcons.eye,
-                              size: 20, color: AppColors.slate400),
+                              size: 20, color: Colors.white54),
                           onPressed: () => setState(() => _showPw = !_showPw),
                         ),
                       ),
@@ -233,7 +233,7 @@ class _LoginPageState extends State<LoginPage> {
                           child: const Text('Lupa kata sandi?',
                               style: TextStyle(
                                 fontFamily: 'PlusJakartaSans',
-                                color: AppColors.primary,
+                                color: AppColors.neonGreen,
                                 fontWeight: FontWeight.w700,
                                 fontSize: 13.5,
                               )),
@@ -243,6 +243,7 @@ class _LoginPageState extends State<LoginPage> {
                       BlocBuilder<AuthBloc, AuthState>(
                         builder: (context, state) => AppButton(
                           label: 'Masuk',
+                          variant: AppButtonVariant.primary,
                           onPressed: _valid ? _loginWithEmail : null,
                           isLoading: state is AuthLoading,
                         ),
@@ -252,13 +253,13 @@ class _LoginPageState extends State<LoginPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Text('Belum punya akun? ',
-                              style: TextStyle(fontSize: 14, color: AppColors.slate500)),
+                              style: TextStyle(fontSize: 14, color: Colors.white70)),
                           GestureDetector(
                             onTap: () => context.go('/register'),
                             child: const Text('Daftar',
                                 style: TextStyle(
                                   fontFamily: 'PlusJakartaSans',
-                                  color: AppColors.primary,
+                                  color: AppColors.neonGreen,
                                   fontWeight: FontWeight.w700,
                                   fontSize: 14,
                                 )),

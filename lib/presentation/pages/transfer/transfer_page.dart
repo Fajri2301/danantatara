@@ -33,10 +33,10 @@ class _TransferPageState extends State<TransferPage> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.ink),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => context.go('/home'),
         ),
-        title: const Text('Kirim Uang', style: TextStyle(fontFamily: 'Poppins', color: AppColors.ink, fontWeight: FontWeight.bold)),
+        title: const Text('Kirim Uang', style: TextStyle(fontFamily: 'Poppins', color: Colors.white, fontWeight: FontWeight.bold)),
         centerTitle: true,
       ),
       body: Column(
@@ -46,7 +46,7 @@ class _TransferPageState extends State<TransferPage> {
             child: Container(
               padding: const EdgeInsets.all(4),
               decoration: BoxDecoration(
-                color: AppColors.line2,
+                color: Colors.white12,
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Row(
@@ -62,18 +62,18 @@ class _TransferPageState extends State<TransferPage> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(
-                color: AppColors.white.withOpacity(0.4),
+                color: Colors.black.withOpacity(0.3),
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppColors.slate500.withOpacity(0.2)),
+                border: Border.all(color: Colors.white24),
               ),
               child: TextField(
-                style: const TextStyle(color: AppColors.ink),
+                style: const TextStyle(color: Colors.white),
                 onChanged: (v) => setState(() => _q = v),
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: _tab == 'dkg' ? 'Cari kontak...' : 'Cari bank...',
-                  hintStyle: const TextStyle(color: AppColors.slate500),
-                  icon: const Icon(Icons.search, color: AppColors.slate500),
+                  hintStyle: const TextStyle(color: Colors.white54),
+                  icon: const Icon(Icons.search, color: Colors.white54),
                 ),
               ),
             ),
@@ -95,15 +95,15 @@ class _TransferPageState extends State<TransferPage> {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 12),
           decoration: BoxDecoration(
-            color: active ? AppColors.primary : Colors.transparent,
+            color: active ? AppColors.neonGreen : Colors.transparent,
             borderRadius: BorderRadius.circular(12),
-            boxShadow: active ? AppColors.glowLime : null,
+            boxShadow: active ? [BoxShadow(color: AppColors.neonGreen.withOpacity(0.3), blurRadius: 8)] : null,
           ),
           child: Center(
             child: Text(label, style: TextStyle(
               fontFamily: 'Inter',
               fontWeight: FontWeight.bold,
-              color: active ? AppColors.bg : AppColors.slate600,
+              color: active ? Colors.black : Colors.white70,
             )),
           ),
         ),
@@ -124,24 +124,24 @@ class _TransferPageState extends State<TransferPage> {
             margin: const EdgeInsets.only(bottom: 12),
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: AppColors.white.withOpacity(0.6),
+              color: Colors.black.withOpacity(0.3),
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: AppColors.primary.withOpacity(0.05)),
+              border: Border.all(color: Colors.white24),
             ),
             child: Row(
               children: [
-                AppAvatar(name: c['name'] as String, size: 48, bg: AppColors.line2),
+                AppAvatar(name: c['name'] as String, size: 48, bg: Colors.white12),
                 const SizedBox(width: 16),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(c['name'] as String, style: const TextStyle(fontFamily: 'Inter', fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.ink)),
-                      Text(c['sub'] as String, style: const TextStyle(fontFamily: 'Inter', fontSize: 12, color: AppColors.slate500)),
+                      Text(c['name'] as String, style: const TextStyle(fontFamily: 'Inter', fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
+                      Text(c['sub'] as String, style: const TextStyle(fontFamily: 'Inter', fontSize: 12, color: Colors.white54)),
                     ],
                   ),
                 ),
-                const Icon(Icons.chevron_right, color: AppColors.slate500),
+                const Icon(Icons.chevron_right, color: Colors.white54),
               ],
             ),
           ),
@@ -163,29 +163,29 @@ class _TransferPageState extends State<TransferPage> {
             margin: const EdgeInsets.only(bottom: 12),
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: AppColors.white.withOpacity(0.6),
+              color: Colors.black.withOpacity(0.3),
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: AppColors.primary.withOpacity(0.05)),
+              border: Border.all(color: Colors.white24),
             ),
             child: Row(
               children: [
                 Container(
                   width: 48,
                   height: 48,
-                  decoration: BoxDecoration(color: AppColors.line2, borderRadius: BorderRadius.circular(12)),
-                  child: Center(child: Text(b['name'] as String, style: const TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold, color: AppColors.primary))),
+                  decoration: BoxDecoration(color: Colors.white12, borderRadius: BorderRadius.circular(12)),
+                  child: Center(child: Text(b['name'] as String, style: const TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold, color: AppColors.neonGreen))),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(b['sub'] as String, style: const TextStyle(fontFamily: 'Inter', fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.ink)),
-                      const Text('Fee: \$0.00', style: TextStyle(fontFamily: 'Inter', fontSize: 12, color: AppColors.slate500)),
+                      Text(b['sub'] as String, style: const TextStyle(fontFamily: 'Inter', fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
+                      const Text('Fee: \$0.00', style: TextStyle(fontFamily: 'Inter', fontSize: 12, color: Colors.white54)),
                     ],
                   ),
                 ),
-                const Icon(Icons.chevron_right, color: AppColors.slate500),
+                const Icon(Icons.chevron_right, color: Colors.white54),
               ],
             ),
           ),

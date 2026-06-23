@@ -20,7 +20,7 @@ class PromoPage extends StatelessWidget {
       body: Column(
         children: [
           Container(
-            color: Colors.white,
+            color: AppColors.bg,
             padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).padding.top + 12, 20, 18),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -30,10 +30,10 @@ class PromoPage extends StatelessWidget {
                       fontFamily: 'PlusJakartaSans',
                       fontSize: 22,
                       fontWeight: FontWeight.w800,
-                      color: AppColors.ink,
+                      color: Colors.white,
                       letterSpacing: -0.3,
                     )),
-                Divider(height: 18, color: AppColors.line2),
+                Divider(height: 18, color: Colors.white24),
               ],
             ),
           ),
@@ -44,7 +44,8 @@ class PromoPage extends StatelessWidget {
                 // Hero card
                 Container(
                   decoration: BoxDecoration(
-                    gradient: AppColors.primaryGradient,
+                    color: AppColors.neonGreen.withOpacity(0.1),
+                    border: Border.all(color: AppColors.neonGreen),
                     borderRadius: BorderRadius.circular(22),
                   ),
                   padding: const EdgeInsets.all(20),
@@ -59,14 +60,14 @@ class PromoPage extends StatelessWidget {
                           height: 140,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Colors.white.withValues(alpha: 0.1),
+                            color: AppColors.neonGreen.withOpacity(0.05),
                           ),
                         ),
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: const [
-                          AppBadge(label: 'SPESIAL PENGGUNA BARU', tone: 'amber'),
+                          AppBadge(label: 'SPESIAL PENGGUNA BARU', tone: 'green'),
                           SizedBox(height: 12),
                           Text('Bayar tagihan,\ndapat cashback 💸',
                               style: TextStyle(
@@ -92,9 +93,9 @@ class PromoPage extends StatelessWidget {
                 ...promos.map((p) => Container(
                       margin: const EdgeInsets.only(bottom: 12),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Colors.black.withOpacity(0.3),
                         borderRadius: BorderRadius.circular(18),
-                        boxShadow: AppColors.shadowSoft,
+                        border: Border.all(color: Colors.white24),
                       ),
                       padding: const EdgeInsets.all(14),
                       child: Row(
@@ -110,7 +111,7 @@ class PromoPage extends StatelessWidget {
                                       fontFamily: 'PlusJakartaSans',
                                       fontSize: 14.5,
                                       fontWeight: FontWeight.w700,
-                                      color: AppColors.ink,
+                                      color: Colors.white,
                                       height: 1.3,
                                     )),
                                 const SizedBox(height: 3),
@@ -118,7 +119,7 @@ class PromoPage extends StatelessWidget {
                                     style: const TextStyle(
                                       fontFamily: 'PlusJakartaSans',
                                       fontSize: 12.5,
-                                      color: AppColors.slate400,
+                                      color: Colors.white54,
                                     )),
                               ],
                             ),

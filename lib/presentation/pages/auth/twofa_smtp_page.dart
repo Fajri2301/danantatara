@@ -75,14 +75,14 @@ class _TwoFASmtpPageState extends State<TwoFASmtpPage> {
         }
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.bg,
         body: SafeArea(
           child: Column(
             children: [
               Align(
                 alignment: Alignment.topLeft,
                 child: IconButton(
-                  icon: const Icon(DkgIcons.arrowLeft, color: AppColors.ink),
+                  icon: const Icon(DkgIcons.arrowLeft, color: Colors.white),
                   onPressed: () => context.go(widget.mode == 'setup' ? '/setup-2fa' : '/login'),
                 ),
               ),
@@ -91,20 +91,20 @@ class _TwoFASmtpPageState extends State<TwoFASmtpPage> {
                   padding: const EdgeInsets.fromLTRB(28, 8, 28, 24),
                   child: Column(
                     children: [
-                      const FeatureIcon(icon: DkgIcons.mail, tone: 'blue', size: 74, iconSize: 36),
+                      const FeatureIcon(icon: DkgIcons.mail, tone: 'green', size: 74, iconSize: 36),
                       const SizedBox(height: 18),
                       const Text('Masukkan Email OTP',
                           style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 23,
                             fontWeight: FontWeight.w800,
-                            color: AppColors.ink,
+                            color: Colors.white,
                             letterSpacing: -0.3,
                           )),
                       const SizedBox(height: 8),
                       const Text('Kode 6 digit dikirim ke email kamu via SMTP',
                           textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 14.5, color: AppColors.slate500, height: 1.55)),
+                          style: TextStyle(fontSize: 14.5, color: Colors.white70, height: 1.55)),
                       const SizedBox(height: 28),
                       AnimatedContainer(
                         duration: const Duration(milliseconds: 80),
@@ -125,19 +125,19 @@ class _TwoFASmtpPageState extends State<TwoFASmtpPage> {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 8),
                         decoration: BoxDecoration(
-                          color: AppColors.amberSurface,
+                          color: AppColors.neonGreen.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: const [
-                            Icon(DkgIcons.info, size: 16, color: Color(0xFFB5760B)),
+                            Icon(DkgIcons.info, size: 16, color: AppColors.neonGreen),
                             SizedBox(width: 8),
                             Text('Cek email inbox atau spam kamu',
                                 style: TextStyle(
                                   fontFamily: 'PlusJakartaSans',
                                   fontSize: 12.5,
-                                  color: Color(0xFF8A5A06),
+                                  color: AppColors.neonGreen,
                                   fontWeight: FontWeight.w600,
                                 )),
                           ],
@@ -147,18 +147,18 @@ class _TwoFASmtpPageState extends State<TwoFASmtpPage> {
                       _timer > 0
                           ? Text(
                               'Kirim ulang dalam 00:${_timer.toString().padLeft(2, '0')}',
-                              style: const TextStyle(fontSize: 13.5, color: AppColors.slate400),
+                              style: const TextStyle(fontSize: 13.5, color: Colors.white54),
                             )
                           : TextButton.icon(
                               onPressed: () {
                                 context.read<OtpBloc>().add(OtpSendEmail());
                                 _startTimer();
                               },
-                              icon: const Icon(DkgIcons.refresh, size: 16, color: AppColors.primary),
+                              icon: const Icon(DkgIcons.refresh, size: 16, color: AppColors.neonGreen),
                               label: const Text('Kirim ulang kode',
                                   style: TextStyle(
                                     fontFamily: 'PlusJakartaSans',
-                                    color: AppColors.primary,
+                                    color: AppColors.neonGreen,
                                     fontWeight: FontWeight.w700,
                                     fontSize: 14,
                                   )),

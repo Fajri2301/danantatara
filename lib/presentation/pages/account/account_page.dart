@@ -25,10 +25,10 @@ class AccountPage extends StatelessWidget {
             backgroundColor: Colors.transparent,
             elevation: 0,
             leading: IconButton(
-              icon: const Icon(Icons.arrow_back, color: AppColors.ink),
+              icon: const Icon(Icons.arrow_back, color: Colors.white),
               onPressed: () => context.go('/home'),
             ),
-            title: const Text('Profil', style: TextStyle(fontFamily: 'Poppins', color: AppColors.ink, fontWeight: FontWeight.bold)),
+            title: const Text('Profil', style: TextStyle(fontFamily: 'Poppins', color: Colors.white, fontWeight: FontWeight.bold)),
             centerTitle: true,
           ),
           body: SingleChildScrollView(
@@ -45,7 +45,7 @@ class AccountPage extends StatelessWidget {
                         Container(
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            border: Border.all(color: AppColors.primary, width: 3),
+                            border: Border.all(color: AppColors.neonGreen, width: 3),
                           ),
                           child: AppAvatar(name: user?.name ?? 'User', size: 100, bg: Colors.transparent),
                         ),
@@ -54,18 +54,18 @@ class AccountPage extends StatelessWidget {
                           child: Container(
                             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                             decoration: BoxDecoration(
-                              color: AppColors.primary,
+                              color: AppColors.neonGreen,
                               borderRadius: BorderRadius.circular(20),
                             ),
-                            child: const Text('PRO', style: TextStyle(fontFamily: 'Inter', fontSize: 10, fontWeight: FontWeight.bold, color: AppColors.bg)),
+                            child: const Text('PRO', style: TextStyle(fontFamily: 'Inter', fontSize: 10, fontWeight: FontWeight.bold, color: Colors.black)),
                           ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 24),
-                    Text(user?.name ?? 'Pengguna', style: const TextStyle(fontFamily: 'Poppins', fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.ink)),
+                    Text(user?.name ?? 'Pengguna', style: const TextStyle(fontFamily: 'Poppins', fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white)),
                     const SizedBox(height: 4),
-                    Text(user?.email ?? '', style: const TextStyle(fontFamily: 'Inter', fontSize: 14, color: AppColors.slate500)),
+                    Text(user?.email ?? '', style: const TextStyle(fontFamily: 'Inter', fontSize: 14, color: Colors.white54)),
                   ],
                 ),
                 const SizedBox(height: 32),
@@ -76,7 +76,7 @@ class AccountPage extends StatelessWidget {
                   children: [
                     _Row(icon: Icons.person_outline, title: 'Informasi Pribadi', onTap: () {}),
                     _Row(icon: Icons.account_balance_wallet_outlined, title: 'Kartu Tersimpan', onTap: () {}),
-                    _Row(icon: Icons.verified_user_outlined, title: 'Keamanan (2FA)', right: const Text('Aktif', style: TextStyle(color: AppColors.primary, fontSize: 12)), onTap: () {}),
+                    _Row(icon: Icons.verified_user_outlined, title: 'Keamanan (2FA)', right: const Text('Aktif', style: TextStyle(color: AppColors.neonGreen, fontSize: 12)), onTap: () {}),
                   ],
                 ),
                 const SizedBox(height: 24),
@@ -87,7 +87,7 @@ class AccountPage extends StatelessWidget {
                   children: [
                     _Row(icon: Icons.notifications_none, title: 'Notifikasi', right: _Toggle(), onTap: () {}),
                     _Row(icon: Icons.dark_mode_outlined, title: 'Mode Gelap', right: _Toggle(), onTap: () {}),
-                    _Row(icon: Icons.language, title: 'Bahasa', right: const Text('ID', style: TextStyle(color: AppColors.slate500, fontSize: 12)), onTap: () {}),
+                    _Row(icon: Icons.language, title: 'Bahasa', right: const Text('ID', style: TextStyle(color: Colors.white54, fontSize: 12)), onTap: () {}),
                   ],
                 ),
                 const SizedBox(height: 32),
@@ -109,7 +109,7 @@ class AccountPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
-                const Center(child: Text('Danantara · v1.0.0', style: TextStyle(fontFamily: 'Inter', fontSize: 12, color: AppColors.slate500))),
+                const Center(child: Text('Danantara · v1.0.0', style: TextStyle(fontFamily: 'Inter', fontSize: 12, color: Colors.white54))),
                 const SizedBox(height: 40),
               ],
             ),
@@ -124,7 +124,7 @@ class AccountPage extends StatelessWidget {
       padding: const EdgeInsets.only(left: 8, bottom: 12),
       child: Align(
         alignment: Alignment.centerLeft,
-        child: Text(title, style: const TextStyle(fontFamily: 'Poppins', fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.slate500)),
+        child: Text(title, style: const TextStyle(fontFamily: 'Poppins', fontSize: 14, fontWeight: FontWeight.w600, color: Colors.white54)),
       ),
     );
   }
@@ -134,14 +134,14 @@ class AccountPage extends StatelessWidget {
     for (int i = 0; i < children.length; i++) {
       separatedChildren.add(children[i]);
       if (i < children.length - 1) {
-        separatedChildren.add(const Divider(height: 1, color: AppColors.line2, indent: 56));
+        separatedChildren.add(const Divider(height: 1, color: Colors.white12, indent: 56));
       }
     }
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.white.withOpacity(0.4),
+        color: Colors.black.withOpacity(0.3),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.primary.withOpacity(0.05)),
+        border: Border.all(color: Colors.white24),
       ),
       child: Column(children: separatedChildren),
     );
@@ -167,14 +167,14 @@ class _Row extends StatelessWidget {
           children: [
             Container(
               padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(color: AppColors.line2, borderRadius: BorderRadius.circular(8)),
-              child: Icon(icon, size: 20, color: AppColors.slate600),
+              decoration: BoxDecoration(color: Colors.white12, borderRadius: BorderRadius.circular(8)),
+              child: Icon(icon, size: 20, color: Colors.white),
             ),
             const SizedBox(width: 16),
             Expanded(
-              child: Text(title, style: const TextStyle(fontFamily: 'Inter', fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.ink)),
+              child: Text(title, style: const TextStyle(fontFamily: 'Inter', fontSize: 14, fontWeight: FontWeight.w600, color: Colors.white)),
             ),
-            right ?? const Icon(Icons.chevron_right_rounded, size: 20, color: AppColors.slate500),
+            right ?? const Icon(Icons.chevron_right_rounded, size: 20, color: Colors.white54),
           ],
         ),
       ),
@@ -198,7 +198,7 @@ class _ToggleState extends State<_Toggle> {
         width: 44,
         height: 24,
         decoration: BoxDecoration(
-          color: _on ? AppColors.primary : AppColors.line2,
+          color: _on ? AppColors.neonGreen : Colors.white24,
           borderRadius: BorderRadius.circular(20),
         ),
         child: AnimatedAlign(
@@ -209,7 +209,7 @@ class _ToggleState extends State<_Toggle> {
             width: 20,
             height: 20,
             decoration: const BoxDecoration(
-              color: AppColors.bg,
+              color: Colors.black,
               shape: BoxShape.circle,
             ),
           ),

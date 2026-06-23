@@ -7,6 +7,10 @@ class AppColors {
   static const Color primaryDark = Color(0xFFA5D700);
   static const Color primarySurface = Color(0xFF152315);
   static const Color primaryBorder = Color(0xFF444935);
+  
+  // Custom Dribbble Colors
+  static const Color neonGreen = Color(0xFFDFF26E);
+  static const Color darkGreen = Color(0xFFAACF31);
 
   // Semantic
   static const Color green = Color(0xFFBDF510); // Using neon lime as green

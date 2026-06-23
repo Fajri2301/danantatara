@@ -64,14 +64,14 @@ class _Setup2FAPageState extends State<Setup2FAPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.bg,
       body: SafeArea(
         child: Column(
           children: [
             Align(
               alignment: Alignment.topLeft,
               child: IconButton(
-                icon: const Icon(DkgIcons.arrowLeft, color: AppColors.ink),
+                icon: const Icon(DkgIcons.arrowLeft, color: Colors.white),
                 onPressed: () => context.canPop() ? context.pop() : context.go('/akun'),
               ),
             ),
@@ -84,11 +84,11 @@ class _Setup2FAPageState extends State<Setup2FAPage> {
                     width: 60,
                     height: 60,
                     decoration: BoxDecoration(
-                      color: AppColors.primarySurface,
+                      color: AppColors.neonGreen.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(18),
                     ),
                     child: const Center(
-                      child: Icon(DkgIcons.shieldCheck, size: 30, color: AppColors.primary),
+                      child: Icon(DkgIcons.shieldCheck, size: 30, color: AppColors.neonGreen),
                     ),
                   ),
                   const SizedBox(height: 18),
@@ -97,7 +97,7 @@ class _Setup2FAPageState extends State<Setup2FAPage> {
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 25,
                         fontWeight: FontWeight.w800,
-                        color: AppColors.ink,
+                        color: Colors.white,
                         letterSpacing: -0.4,
                       )),
                   const SizedBox(height: 7),
@@ -106,7 +106,7 @@ class _Setup2FAPageState extends State<Setup2FAPage> {
                     style: TextStyle(
                       fontFamily: 'PlusJakartaSans',
                       fontSize: 14.5,
-                      color: AppColors.slate500,
+                      color: Colors.white70,
                       height: 1.5,
                     ),
                   ),
@@ -125,14 +125,14 @@ class _Setup2FAPageState extends State<Setup2FAPage> {
                       margin: const EdgeInsets.only(bottom: 13),
                       padding: const EdgeInsets.all(15),
                       decoration: BoxDecoration(
-                        color: on ? AppColors.primarySurface : Colors.white,
+                        color: on ? AppColors.neonGreen.withOpacity(0.1) : Colors.black.withOpacity(0.3),
                         borderRadius: BorderRadius.circular(18),
                         border: Border.all(
-                          color: on ? AppColors.primaryLight : AppColors.line,
+                          color: on ? AppColors.neonGreen : Colors.white24,
                           width: 1.8,
                         ),
                         boxShadow: on
-                            ? [BoxShadow(color: AppColors.primary.withValues(alpha: 0.08), blurRadius: 0, spreadRadius: 4)]
+                            ? [BoxShadow(color: AppColors.neonGreen.withOpacity(0.1), blurRadius: 0, spreadRadius: 4)]
                             : [],
                       ),
                       child: Row(
@@ -152,7 +152,7 @@ class _Setup2FAPageState extends State<Setup2FAPage> {
                                             fontFamily: 'PlusJakartaSans',
                                             fontSize: 15.5,
                                             fontWeight: FontWeight.w700,
-                                            color: AppColors.ink,
+                                            color: Colors.white,
                                           )),
                                     ),
                                     if (m.badge != null) ...[
@@ -166,7 +166,7 @@ class _Setup2FAPageState extends State<Setup2FAPage> {
                                     style: const TextStyle(
                                       fontFamily: 'PlusJakartaSans',
                                       fontSize: 12.8,
-                                      color: AppColors.slate500,
+                                      color: Colors.white54,
                                       height: 1.45,
                                     )),
                               ],
@@ -179,9 +179,9 @@ class _Setup2FAPageState extends State<Setup2FAPage> {
                             height: 22,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: on ? AppColors.primary : Colors.white,
+                              color: on ? AppColors.neonGreen : Colors.transparent,
                               border: Border.all(
-                                color: on ? AppColors.primary : AppColors.line,
+                                color: on ? AppColors.neonGreen : Colors.white54,
                                 width: 2,
                               ),
                             ),
@@ -192,7 +192,7 @@ class _Setup2FAPageState extends State<Setup2FAPage> {
                                       height: 9,
                                       decoration: const BoxDecoration(
                                         shape: BoxShape.circle,
-                                        color: Colors.white,
+                                        color: Colors.black,
                                       ),
                                     ),
                                   )
@@ -209,6 +209,7 @@ class _Setup2FAPageState extends State<Setup2FAPage> {
               padding: const EdgeInsets.fromLTRB(26, 14, 26, 22),
               child: AppButton(
                 label: 'Lanjutkan',
+                variant: AppButtonVariant.primary,
                 onPressed: () {
                   final m = _twoFaMethods.firstWhere((m) => m.key == _selected);
                   context.go(m.route, extra: {'mode': 'setup'});
