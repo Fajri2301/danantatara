@@ -24,6 +24,7 @@ import '../../presentation/pages/promo/promo_page.dart';
 import '../../presentation/pages/splash/splash_page.dart';
 import '../../presentation/pages/success/success_page.dart';
 import '../../presentation/pages/topup/topup_page.dart';
+import '../../presentation/pages/topup/topup_deeplink_page.dart';
 import '../../presentation/pages/transfer/transfer_amount_page.dart';
 import '../../presentation/pages/transfer/transfer_confirm_page.dart';
 import '../../presentation/pages/transfer/transfer_page.dart';
@@ -163,10 +164,13 @@ class AppRouter {
             },
           ),
           GoRoute(path: '/merchant', builder: (_, __) => _withPayment(const MerchantCheckoutPage())),
-          // Pembayaran via deeplink merchant (dompetkampus://pay?... atau https://dompetkampus.app/pay?...)
           GoRoute(
             path: '/pay',
             builder: (_, state) => _withPayment(PaymentDeeplinkPage(data: state.extra)),
+          ),
+          GoRoute(
+            path: '/topup_deeplink',
+            builder: (_, state) => _withPayment(TopupDeeplinkPage(data: state.extra)),
           ),
         ],
       );
