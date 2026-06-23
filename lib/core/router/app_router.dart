@@ -100,20 +100,20 @@ class AppRouter {
                 backgroundColor: AppColors.bg, // Base dark background
                 body: child,
                 floatingActionButton: SizedBox(
-                  width: 64,
-                  height: 64,
+                  width: 56,
+                  height: 56,
                   child: FloatingActionButton(
                     onPressed: () => context.go('/payment'),
                     backgroundColor: const Color(0xFFDFF26E), // Neon background for scan button
                     elevation: 8,
                     shape: const CircleBorder(),
                     child: Container(
-                      padding: const EdgeInsets.all(12),
+                      padding: const EdgeInsets.all(10),
                       decoration: const BoxDecoration(
                         shape: BoxShape.circle,
                         color: Colors.transparent, 
                       ),
-                      child: const Icon(Icons.qr_code_scanner_rounded, color: Colors.black, size: 28),
+                      child: const Icon(Icons.qr_code_scanner_rounded, color: Colors.black, size: 24),
                     ),
                   ),
                 ),

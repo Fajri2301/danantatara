@@ -114,11 +114,11 @@ class _HomePageState extends State<HomePage> {
                 shape: BoxShape.circle,
                 border: Border.all(color: AppColors.bg, width: 2), // Changed to dark border
               ),
-              child: AppAvatar(name: fullName, size: 40, bg: Colors.transparent),
+              child: AppAvatar(name: fullName, size: 32, bg: Colors.transparent),
             ),
             Positioned(
-              bottom: -4,
-              right: -4,
+              bottom: -2,
+              right: -2,
               child: Container(
                 padding: const EdgeInsets.all(2),
                 decoration: const BoxDecoration(
@@ -130,18 +130,18 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: 10),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(fullName, style: const TextStyle(fontFamily: 'Inter', fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black)),
-              const Text('@danantara_user', style: TextStyle(fontFamily: 'Inter', fontSize: 12, color: Colors.black54)),
+              Text(fullName, style: const TextStyle(fontFamily: 'Inter', fontSize: 12, fontWeight: FontWeight.bold, color: Colors.black)),
+              const Text('@danantara_user', style: TextStyle(fontFamily: 'Inter', fontSize: 10, color: Colors.black54)),
             ],
           ),
         ),
         _buildIconBtn(Icons.emoji_events),
-        const SizedBox(width: 12),
+        const SizedBox(width: 8),
         _buildIconBtn(Icons.notifications),
       ],
     );
@@ -149,13 +149,13 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildIconBtn(IconData icon) {
     return Container(
-      width: 40,
-      height: 40,
+      width: 32,
+      height: 32,
       decoration: BoxDecoration(
         color: Colors.black.withOpacity(0.8), // Dark icons on green background
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(10),
       ),
-      child: Icon(icon, color: AppColors.primary, size: 20),
+      child: Icon(icon, color: AppColors.primary, size: 16),
     );
   }
 
@@ -163,51 +163,51 @@ class _HomePageState extends State<HomePage> {
     return Container(
       decoration: BoxDecoration(
         color: const Color(0xFFDFF26E), // Lighter green for balance card
-        borderRadius: BorderRadius.circular(32), // Rounder to match dribbble
+        borderRadius: BorderRadius.circular(24), // Rounder to match dribbble
         border: Border.all(color: Colors.black.withOpacity(0.05)),
       ),
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(18),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('Total Saldo', style: TextStyle(fontFamily: 'Inter', fontSize: 13, fontWeight: FontWeight.w600, color: Colors.black87)),
+              const Text('Total Saldo', style: TextStyle(fontFamily: 'Inter', fontSize: 11, fontWeight: FontWeight.w600, color: Colors.black87)),
               GestureDetector(
                 onTap: () {},
-                child: const Icon(Icons.more_horiz, color: Colors.black, size: 24),
+                child: const Icon(Icons.more_horiz, color: Colors.black, size: 18),
               )
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           Row(
             children: [
               Text(_hideBalance ? CurrencyFormatter.maskBalance() : CurrencyFormatter.format(balance),
-                  style: const TextStyle(fontFamily: 'Poppins', fontSize: 32, fontWeight: FontWeight.bold, color: Colors.black, letterSpacing: -1)),
-              const SizedBox(width: 12),
+                  style: const TextStyle(fontFamily: 'Poppins', fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black, letterSpacing: -1)),
+              const SizedBox(width: 8),
               GestureDetector(
                 onTap: () => setState(() => _hideBalance = !_hideBalance),
-                child: Icon(_hideBalance ? Icons.visibility_off : Icons.visibility, color: Colors.black54, size: 24),
+                child: Icon(_hideBalance ? Icons.visibility_off : Icons.visibility, color: Colors.black54, size: 18),
               )
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-            decoration: BoxDecoration(color: Colors.black.withOpacity(0.05), borderRadius: BorderRadius.circular(16)),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(color: Colors.black.withOpacity(0.05), borderRadius: BorderRadius.circular(12)),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: const [
-                Icon(Icons.arrow_upward, color: Colors.green, size: 14),
+                Icon(Icons.arrow_upward, color: Colors.green, size: 12),
                 SizedBox(width: 4),
-                Text('24%', style: TextStyle(fontFamily: 'Inter', fontSize: 11, fontWeight: FontWeight.bold, color: Colors.black)),
+                Text('24%', style: TextStyle(fontFamily: 'Inter', fontSize: 9, fontWeight: FontWeight.bold, color: Colors.black)),
                 SizedBox(width: 6),
-                Text('Minggu lalu', style: TextStyle(fontFamily: 'Inter', fontSize: 11, color: Colors.black54)),
+                Text('Minggu lalu', style: TextStyle(fontFamily: 'Inter', fontSize: 9, color: Colors.black54)),
               ],
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 18),
           _buildQuickActions(context), // Quick actions moved inside
         ],
       ),
@@ -230,17 +230,17 @@ class _HomePageState extends State<HomePage> {
             GestureDetector(
               onTap: () => context.go(a['route'] as String),
               child: Container(
-                width: 56, // Slightly smaller since it is nested
-                height: 56,
+                width: 44, // Slightly smaller since it is nested
+                height: 44,
                 decoration: BoxDecoration(
                   color: Colors.black.withOpacity(0.85), // Dark buttons on green background
-                  borderRadius: BorderRadius.circular(18),
+                  borderRadius: BorderRadius.circular(14),
                 ),
-                child: Icon(a['icon'] as IconData, color: const Color(0xFFDFF26E), size: 24),
+                child: Icon(a['icon'] as IconData, color: const Color(0xFFDFF26E), size: 20),
               ),
             ),
-            const SizedBox(height: 8),
-            Text(a['label'] as String, style: const TextStyle(fontFamily: 'Inter', fontSize: 11, fontWeight: FontWeight.bold, color: Colors.black)),
+            const SizedBox(height: 6),
+            Text(a['label'] as String, style: const TextStyle(fontFamily: 'Inter', fontSize: 9, fontWeight: FontWeight.bold, color: Colors.black)),
           ],
         );
       }).toList(),
@@ -267,10 +267,10 @@ class _HomePageState extends State<HomePage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text('Pembayaran', style: TextStyle(fontFamily: 'Poppins', fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white)), // Improved contrast
+            const Text('Pembayaran', style: TextStyle(fontFamily: 'Poppins', fontSize: 14, fontWeight: FontWeight.w600, color: Colors.white)), // Improved contrast
             GestureDetector(
               onTap: () {},
-              child: const Text('Lihat Semua', style: TextStyle(fontFamily: 'Inter', fontSize: 12, color: Color(0xFFDFF26E))),
+              child: const Text('Lihat Semua', style: TextStyle(fontFamily: 'Inter', fontSize: 10, color: Color(0xFFDFF26E))),
             ),
           ],
         ),
@@ -281,9 +281,9 @@ class _HomePageState extends State<HomePage> {
           physics: const NeverScrollableScrollPhysics(),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 4,
-            mainAxisSpacing: 16,
-            crossAxisSpacing: 12,
-            childAspectRatio: 0.8,
+            mainAxisSpacing: 12,
+            crossAxisSpacing: 8,
+            childAspectRatio: 0.85,
           ),
           itemCount: actions.length,
           itemBuilder: (context, index) {
@@ -292,16 +292,16 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  width: 56,
-                  height: 56,
+                  width: 44,
+                  height: 44,
                   decoration: BoxDecoration(
                     color: const Color(0xFFDFF26E).withOpacity(0.12), // Slightly more visible background
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(14),
                   ),
-                  child: Icon(p['icon'] as IconData, color: const Color(0xFFDFF26E), size: 24),
+                  child: Icon(p['icon'] as IconData, color: const Color(0xFFDFF26E), size: 20),
                 ),
-                const SizedBox(height: 8),
-                Text(p['label'] as String, textAlign: TextAlign.center, style: const TextStyle(fontFamily: 'Inter', fontSize: 11, fontWeight: FontWeight.w500, color: Colors.white70), maxLines: 1, overflow: TextOverflow.ellipsis), // White text for better contrast
+                const SizedBox(height: 6),
+                Text(p['label'] as String, textAlign: TextAlign.center, style: const TextStyle(fontFamily: 'Inter', fontSize: 9, fontWeight: FontWeight.w500, color: Colors.white70), maxLines: 1, overflow: TextOverflow.ellipsis), // White text for better contrast
               ],
             );
           },
@@ -313,7 +313,7 @@ class _HomePageState extends State<HomePage> {
   Widget _buildVirtualCard(String name) {
     return Container(
       width: double.infinity,
-      height: 220, // Taller to match credit card aspect ratio
+      height: 170, // Taller to match credit card aspect ratio
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           begin: Alignment.topLeft,
@@ -324,17 +324,17 @@ class _HomePageState extends State<HomePage> {
             Color(0xFF050505),
           ],
         ),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(16),
         border: Border.all(color: Colors.white.withOpacity(0.15), width: 1),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.6),
-            offset: const Offset(0, 20),
-            blurRadius: 40,
+            offset: const Offset(0, 16),
+            blurRadius: 30,
           ),
         ],
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 24),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -348,18 +348,18 @@ class _HomePageState extends State<HomePage> {
               Row(
                 children: [
                   Container(
-                    width: 32,
-                    height: 32,
+                    width: 24,
+                    height: 24,
                     decoration: BoxDecoration(
                       color: Colors.redAccent.withOpacity(0.8),
                       shape: BoxShape.circle,
                     ),
                   ),
                   Transform.translate(
-                    offset: const Offset(-12, 0),
+                    offset: const Offset(-8, 0),
                     child: Container(
-                      width: 32,
-                      height: 32,
+                      width: 24,
+                      height: 24,
                       decoration: BoxDecoration(
                         color: Colors.orangeAccent.withOpacity(0.8),
                         shape: BoxShape.circle,
@@ -371,7 +371,7 @@ class _HomePageState extends State<HomePage> {
               // NFC Icon
               Transform.rotate(
                 angle: 1.5708, // 90 degrees
-                child: Icon(Icons.wifi, color: Colors.white.withOpacity(0.4), size: 28),
+                child: Icon(Icons.wifi, color: Colors.white.withOpacity(0.4), size: 20),
               ),
             ],
           ),
@@ -383,8 +383,8 @@ class _HomePageState extends State<HomePage> {
             children: [
               // Golden Chip
               Container(
-                width: 44,
-                height: 34,
+                width: 34,
+                height: 26,
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
                     colors: [Color(0xFFE0C879), Color(0xFFA67C00)],
@@ -396,8 +396,8 @@ class _HomePageState extends State<HomePage> {
                 ),
                 child: Center(
                   child: Container(
-                    width: 22,
-                    height: 20,
+                    width: 18,
+                    height: 16,
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.black26, width: 1),
                       borderRadius: BorderRadius.circular(4),
@@ -409,7 +409,7 @@ class _HomePageState extends State<HomePage> {
                 'WORLD ELITE',
                 style: TextStyle(
                   fontFamily: 'Inter',
-                  fontSize: 10,
+                  fontSize: 8,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 2.0,
                   color: Colors.white.withOpacity(0.3),
@@ -430,7 +430,7 @@ class _HomePageState extends State<HomePage> {
               num,
               style: const TextStyle(
                 fontFamily: 'monospace',
-                fontSize: 22, // Reduced from 24 to fix overflow
+                fontSize: 18, // Reduced from 24 to fix overflow
                 fontWeight: FontWeight.bold,
                 letterSpacing: 1.5, // Reduced from 2.0
                 color: Color(0xFFD1D1D1),
@@ -453,18 +453,18 @@ class _HomePageState extends State<HomePage> {
                   Text(
                     'CARDHOLDER',
                     style: TextStyle(
-                      fontSize: 8,
+                      fontSize: 7,
                       fontWeight: FontWeight.w600,
                       letterSpacing: 1.5,
                       color: Colors.white.withOpacity(0.4),
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 2),
                   Text(
                     name.toUpperCase(),
                     style: const TextStyle(
                       fontFamily: 'monospace',
-                      fontSize: 14,
+                      fontSize: 12,
                       fontWeight: FontWeight.bold,
                       letterSpacing: 1.5,
                       color: Color(0xFFD1D1D1),
@@ -482,18 +482,18 @@ class _HomePageState extends State<HomePage> {
                   Text(
                     'VALID THRU',
                     style: TextStyle(
-                      fontSize: 8,
+                      fontSize: 7,
                       fontWeight: FontWeight.w600,
                       letterSpacing: 1.5,
                       color: Colors.white.withOpacity(0.4),
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 2),
                   const Text(
                     '12/30',
                     style: TextStyle(
                       fontFamily: 'monospace',
-                      fontSize: 14,
+                      fontSize: 12,
                       fontWeight: FontWeight.bold,
                       letterSpacing: 1.5,
                       color: Color(0xFFD1D1D1),
@@ -519,10 +519,10 @@ class _HomePageState extends State<HomePage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text('Transaksi Terakhir', style: TextStyle(fontFamily: 'Poppins', fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white)), // Improved contrast
+            const Text('Transaksi Terakhir', style: TextStyle(fontFamily: 'Poppins', fontSize: 14, fontWeight: FontWeight.w600, color: Colors.white)), // Improved contrast
             GestureDetector(
               onTap: () => context.go('/history'),
-              child: const Text('Lihat Semua', style: TextStyle(fontFamily: 'Inter', fontSize: 12, color: Color(0xFFDFF26E))), // Match "Lihat Semua" styling
+              child: const Text('Lihat Semua', style: TextStyle(fontFamily: 'Inter', fontSize: 10, color: Color(0xFFDFF26E))), // Match "Lihat Semua" styling
             ),
           ],
         ),
@@ -534,34 +534,34 @@ class _HomePageState extends State<HomePage> {
                   final isIncome = txn.isCredit;
                   
                   return Container(
-                    margin: const EdgeInsets.only(bottom: 12),
-                    padding: const EdgeInsets.all(16),
+                    margin: const EdgeInsets.only(bottom: 10),
+                    padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: Colors.black.withOpacity(0.3), // Darker transparent card
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(14),
                       border: Border.all(color: Colors.white.withOpacity(0.05)),
                     ),
                     child: Row(
                       children: [
                         Container(
-                          width: 48,
-                          height: 48,
-                          decoration: BoxDecoration(color: Colors.white.withOpacity(0.05), borderRadius: BorderRadius.circular(12)),
-                          child: Icon(isIncome ? Icons.arrow_downward : Icons.arrow_upward, color: isIncome ? const Color(0xFFDFF26E) : Colors.redAccent),
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(color: Colors.white.withOpacity(0.05), borderRadius: BorderRadius.circular(10)),
+                          child: Icon(isIncome ? Icons.arrow_downward : Icons.arrow_upward, size: 18, color: isIncome ? const Color(0xFFDFF26E) : Colors.redAccent),
                         ),
                         const SizedBox(width: 12),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(txn.description, style: const TextStyle(fontFamily: 'Inter', fontSize: 14, fontWeight: FontWeight.w600, color: Colors.white)),
+                              Text(txn.description, style: const TextStyle(fontFamily: 'Inter', fontSize: 12, fontWeight: FontWeight.w600, color: Colors.white)),
                               const SizedBox(height: 2),
-                              Text('Trx ID: ${txn.id.toString()}', style: const TextStyle(fontFamily: 'Inter', fontSize: 12, color: Colors.white54)),
+                              Text('Trx ID: ${txn.id.toString()}', style: const TextStyle(fontFamily: 'Inter', fontSize: 10, color: Colors.white54)),
                             ],
                           ),
                         ),
                         Text('${isIncome ? '+' : '-'}${CurrencyFormatter.format(txn.amount.abs())}', 
-                          style: TextStyle(fontFamily: 'Inter', fontSize: 14, fontWeight: FontWeight.bold, color: isIncome ? const Color(0xFFDFF26E) : Colors.redAccent)),
+                          style: TextStyle(fontFamily: 'Inter', fontSize: 12, fontWeight: FontWeight.bold, color: isIncome ? const Color(0xFFDFF26E) : Colors.redAccent)),
                       ],
                     ),
                   );

@@ -24,7 +24,7 @@ class AppTabBar extends StatelessWidget {
         notchMargin: 8.0,
         padding: EdgeInsets.zero, // Remove default padding
         child: SizedBox(
-          height: 70, // Fixed height for exact proportions
+          height: 56, // Fixed height for exact proportions
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Row(
@@ -75,7 +75,7 @@ class _TabItem extends StatelessWidget {
         children: [
           Icon(
             icon,
-            size: 24,
+            size: 20,
             color: isActive ? Colors.black : Colors.black45, // Black icons on green background
           ),
           const SizedBox(height: 4),
@@ -83,7 +83,7 @@ class _TabItem extends StatelessWidget {
             label,
             style: TextStyle(
               fontFamily: 'Inter',
-              fontSize: 10,
+              fontSize: 9,
               fontWeight: isActive ? FontWeight.bold : FontWeight.w500,
               color: isActive ? Colors.black : Colors.black45,
             ),
