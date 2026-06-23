@@ -19,7 +19,7 @@ class _PaymentQrPageState extends State<PaymentQrPage> {
   final _controller = MobileScannerController();
 
   // Mock merchant data for demo
-  final _merchant = {'name': 'Kantin Teknik UI', 'sub': 'NMID: ID2024088123 · QRIS', 'amount': 27000.0};
+  final _merchant = {'name': 'Kopi Kenangan', 'sub': 'NMID: ID2024088123 · QRIS', 'amount': 27000.0};
 
   @override
   void dispose() {

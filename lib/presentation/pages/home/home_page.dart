@@ -303,7 +303,7 @@ class _HomePageState extends State<HomePage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: const [
-                    Text('Poin Kampus',
+                    Text('Poin Reward',
                         style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 11.5,
@@ -338,7 +338,7 @@ class _HomePageState extends State<HomePage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: const [
-                    Text('KTM Digital',
+                    Text('Rekening Utama',
                         style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 11.5,
@@ -364,10 +364,10 @@ class _HomePageState extends State<HomePage> {
     final features = [
       {'icon': Icons.smartphone_outlined, 'label': 'Pulsa', 'tone': 'blue'},
       {'icon': Icons.bolt_outlined, 'label': 'PLN', 'tone': 'amber'},
-      {'icon': Icons.restaurant_outlined, 'label': 'Kantin', 'tone': 'red'},
-      {'icon': Icons.receipt_long_outlined, 'label': 'UKT', 'tone': 'violet'},
-      {'icon': Icons.wifi_rounded, 'label': 'Paket Data', 'tone': 'green'},
-      {'icon': Icons.card_giftcard_rounded, 'label': 'Voucher', 'tone': 'red'},
+      {'icon': Icons.water_drop_outlined, 'label': 'PDAM', 'tone': 'blue'},
+      {'icon': Icons.health_and_safety_outlined, 'label': 'BPJS', 'tone': 'green'},
+      {'icon': Icons.wifi_rounded, 'label': 'Internet', 'tone': 'violet'},
+      {'icon': Icons.gamepad_outlined, 'label': 'Games', 'tone': 'red'},
       {'icon': Icons.favorite_outline_rounded, 'label': 'Donasi', 'tone': 'amber'},
       {'icon': Icons.more_horiz_rounded, 'label': 'Lainnya', 'tone': 'slate'},
     ];
