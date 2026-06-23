@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             _buildPPOBGrid(),
-                            const SizedBox(height: 16),
+                            const SizedBox(height: 4), // Extremely tight gap as requested
                             _buildVirtualCard(fullName),
                             const SizedBox(height: 16),
                             _buildRecentTransactions(txns),
@@ -276,6 +276,7 @@ class _HomePageState extends State<HomePage> {
         ),
         const SizedBox(height: 12), // Reduced spacing from 16 to 12
         GridView.builder(
+          padding: EdgeInsets.zero, // Remove implicit GridView padding
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
