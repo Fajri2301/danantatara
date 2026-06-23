@@ -11,10 +11,10 @@ class PersonalInfoPage extends StatefulWidget {
 }
 
 class _PersonalInfoPageState extends State<PersonalInfoPage> {
-  final TextEditingController _nameController = TextEditingController(text: 'Fajri Khaerullah');
-  final TextEditingController _emailController = TextEditingController(text: 'fajrisantuy23@gmail.com');
-  final TextEditingController _phoneController = TextEditingController(text: '+62 812 3456 7890');
-  final TextEditingController _dobController = TextEditingController(text: '23 Januari 2001');
+  String _name = 'Fajri Khaerullah';
+  String _email = 'fajrisantuy23@gmail.com';
+  String _phone = '+62 812 3456 7890';
+  String _dob = '23 Januari 2001';
 
   @override
   Widget build(BuildContext context) {
@@ -45,25 +45,29 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
               child: Column(
                 children: [
                   AppField(
-                    controller: _nameController,
+                    value: _name,
+                    onChanged: (v) => setState(() => _name = v),
                     label: 'Nama Lengkap',
                     keyboardType: TextInputType.name,
                   ),
                   const SizedBox(height: 16),
                   AppField(
-                    controller: _emailController,
+                    value: _email,
+                    onChanged: (v) => setState(() => _email = v),
                     label: 'Email',
                     keyboardType: TextInputType.emailAddress,
                   ),
                   const SizedBox(height: 16),
                   AppField(
-                    controller: _phoneController,
+                    value: _phone,
+                    onChanged: (v) => setState(() => _phone = v),
                     label: 'Nomor Telepon',
                     keyboardType: TextInputType.phone,
                   ),
                   const SizedBox(height: 16),
                   AppField(
-                    controller: _dobController,
+                    value: _dob,
+                    onChanged: (v) => setState(() => _dob = v),
                     label: 'Tanggal Lahir',
                     keyboardType: TextInputType.datetime,
                   ),
