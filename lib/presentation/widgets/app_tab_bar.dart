@@ -19,7 +19,7 @@ class AppTabBar extends StatelessWidget {
         topRight: Radius.circular(32),
       ),
       child: BottomAppBar(
-        color: Colors.black, // Dark background
+        color: const Color(0xFFDFF26E), // Revert to Neon Green background
         shape: const CircularNotchedRectangle(), // Creates the transparent 'U' cutout
         notchMargin: 8.0,
         padding: EdgeInsets.zero, // Remove default padding
@@ -76,7 +76,7 @@ class _TabItem extends StatelessWidget {
           Icon(
             icon,
             size: 24,
-            color: isActive ? const Color(0xFFDFF26E) : Colors.white38, // Neon on dark background
+            color: isActive ? Colors.black : Colors.black45, // Black icons on green background
           ),
           const SizedBox(height: 4),
           Text(
@@ -85,7 +85,7 @@ class _TabItem extends StatelessWidget {
               fontFamily: 'Inter',
               fontSize: 10,
               fontWeight: isActive ? FontWeight.bold : FontWeight.w500,
-              color: isActive ? const Color(0xFFDFF26E) : Colors.white38,
+              color: isActive ? Colors.black : Colors.black45,
             ),
           ),
         ],
