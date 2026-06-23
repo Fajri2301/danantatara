@@ -7,9 +7,9 @@ import 'package:go_router/go_router.dart';
 /// Payload yang diterima dari deeplink pembayaran merchant.
 ///
 /// Format URL yang didukung:
-///   dompetkampus://pay?merchant_id=...&merchant_name=...&amount=...
+///   danantara://pay?merchant_id=...&merchant_name=...&amount=...
 ///                      &description=...&reference=...&callback=...
-///   https://dompetkampus.app/pay?merchant_id=...&...  (App Link, opsional)
+///   https://danantara.app/pay?merchant_id=...&...  (App Link, opsional)
 @immutable
 class DeeplinkPaymentData {
   final String merchantId;
@@ -188,9 +188,9 @@ class DeeplinkService {
   }
 
   bool _isPaymentLink(Uri uri) {
-    if (uri.scheme == 'dompetkampus' && (uri.host == 'pay' || uri.host == 'topup')) return true;
+    if (uri.scheme == 'danantara' && (uri.host == 'pay' || uri.host == 'topup')) return true;
     if (uri.scheme == 'https' &&
-        uri.host == 'dompetkampus.app' &&
+        uri.host == 'danantara.app' &&
         (uri.path.startsWith('/pay') || uri.path.startsWith('/topup'))) {
       return true;
     }
