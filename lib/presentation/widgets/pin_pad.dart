@@ -82,10 +82,15 @@ class PinPad extends StatelessWidget {
               child: Text(
                 k,
                 style: const TextStyle(
-                  fontFamily: 'PlusJakartaSans',
-                  fontSize: 26,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
+                  fontFamily: 'monospace',
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1.5,
+                  color: Color(0xFFD1D1D1),
+                  shadows: [
+                    Shadow(color: Colors.white24, offset: Offset(1, 1), blurRadius: 1),
+                    Shadow(color: Colors.black87, offset: Offset(-1, -1), blurRadius: 1),
+                  ],
                 ),
               ),
             );
@@ -109,9 +114,9 @@ class _KeyButton extends StatelessWidget {
       child: Container(
         height: 62,
         decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.3),
+          color: Colors.black.withOpacity(0.85), // Darker background to match home screen quick actions
           borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: Colors.white24),
+          border: Border.all(color: Colors.white.withOpacity(0.05)), // Subtle border
         ),
         child: Center(child: child),
       ),
