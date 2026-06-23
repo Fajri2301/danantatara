@@ -9,6 +9,8 @@ abstract class PaymentRemoteDatasource {
     required String description,
     required String otpCode,
     required String otpType,
+    String? reference,
+    String? merchantId,
   });
 }
 
@@ -32,13 +34,19 @@ class PaymentRemoteDatasourceImpl implements PaymentRemoteDatasource {
     required String description,
     required String otpCode,
     required String otpType,
+    String? reference,
+    String? merchantId,
   }) async {
-    final response = await _client.post(ApiEndpoints.transfer, data: {
+    final Map<String, dynamic> body = {
       'amount': amount,
       'description': description,
       'otp_code': otpCode,
       'otp_type': otpType,
-    });
+    };
+    if (reference != null) body['reference'] = reference;
+    if (merchantId != null) body['merchant_id'] = merchantId;
+
+    final response = await _client.post(ApiEndpoints.transfer, data: body);
     final data = response['data'] as Map<String, dynamic>;
     return TransferResultEntity(
       transactionId: (data['transaction_id'] as num).toInt(),

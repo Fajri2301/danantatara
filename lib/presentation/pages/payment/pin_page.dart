@@ -151,6 +151,8 @@ class _PinPageState extends State<PinPage> {
       description: _descriptionFor(flow),
       otpCode: code,
       otpType: _otpType,
+      reference: flow['reference'] as String?,
+      merchantId: flow['merchantId'] as String?,
     ));
   }
 

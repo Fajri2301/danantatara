@@ -22,14 +22,19 @@ class PaymentTransferRequested extends PaymentEvent {
   final String description;
   final String otpCode;
   final String otpType;
+  final String? reference;
+  final String? merchantId;
+
   PaymentTransferRequested({
     required this.amount,
     required this.description,
     required this.otpCode,
     required this.otpType,
+    this.reference,
+    this.merchantId,
   });
   @override
-  List<Object?> get props => [amount, description, otpCode, otpType];
+  List<Object?> get props => [amount, description, otpCode, otpType, reference, merchantId];
 }
 
 class PaymentReset extends PaymentEvent {}
@@ -113,6 +118,8 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
         description: event.description,
         otpCode: event.otpCode,
         otpType: event.otpType,
+        reference: event.reference,
+        merchantId: event.merchantId,
       );
       emit(PaymentTransferSuccess(result));
     } on InvalidOtpFailure catch (e) {

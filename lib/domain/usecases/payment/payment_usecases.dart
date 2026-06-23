@@ -16,11 +16,15 @@ class TransferUsecase {
     required String description,
     required String otpCode,
     required String otpType,
+    String? reference,
+    String? merchantId,
   }) =>
       _repository.transfer(
         amount: amount,
         description: description,
         otpCode: otpCode,
         otpType: otpType,
+        reference: reference,
+        merchantId: merchantId,
       );
 }

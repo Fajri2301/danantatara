@@ -25,6 +25,8 @@ class PaymentRepositoryImpl implements PaymentRepository {
     required String description,
     required String otpCode,
     required String otpType,
+    String? reference,
+    String? merchantId,
   }) async {
     try {
       return await _remote.transfer(
@@ -32,6 +34,8 @@ class PaymentRepositoryImpl implements PaymentRepository {
         description: description,
         otpCode: otpCode,
         otpType: otpType,
+        reference: reference,
+        merchantId: merchantId,
       );
     } on InvalidOtpException catch (e) {
       throw InvalidOtpFailure(e.message);
