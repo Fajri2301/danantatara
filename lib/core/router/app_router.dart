@@ -102,16 +102,16 @@ class AppRouter {
                   height: 64,
                   child: FloatingActionButton(
                     onPressed: () => context.go('/payment'),
-                    backgroundColor: AppColors.bg, // Dark background for the scan button
+                    backgroundColor: const Color(0xFFDFF26E), // Neon background for scan button
                     elevation: 8,
                     shape: const CircleBorder(),
                     child: Container(
                       padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         shape: BoxShape.circle,
-                        color: const Color(0xFFDFF26E).withOpacity(0.15), // Subtle green glow inside
+                        color: Colors.transparent, 
                       ),
-                      child: const Icon(Icons.qr_code_scanner_rounded, color: Color(0xFFDFF26E), size: 28),
+                      child: const Icon(Icons.qr_code_scanner_rounded, color: Colors.black, size: 28),
                     ),
                   ),
                 ),
