@@ -97,6 +97,7 @@ class AppRouter {
 
               return _withAccount(Scaffold(
                 extendBody: true, // Allow body to scroll under the transparent nav parts
+                resizeToAvoidBottomInset: false, // Prevent bottom nav from moving up when typing
                 backgroundColor: AppColors.bg, // Base dark background
                 body: child,
                 floatingActionButton: SizedBox(

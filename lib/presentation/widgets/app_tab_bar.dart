@@ -15,16 +15,16 @@ class AppTabBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: const BorderRadius.only(
-        topLeft: Radius.circular(32),
-        topRight: Radius.circular(32),
+        topLeft: Radius.circular(24),
+        topRight: Radius.circular(24),
       ),
       child: BottomAppBar(
         color: const Color(0xFFDFF26E), // Revert to Neon Green background
         shape: const CircularNotchedRectangle(), // Creates the transparent 'U' cutout
-        notchMargin: 8.0,
+        notchMargin: 6.0,
         padding: EdgeInsets.zero, // Remove default padding
         child: SizedBox(
-          height: 56, // Fixed height for exact proportions
+          height: 52, // Fixed height for exact proportions
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Row(
