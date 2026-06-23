@@ -128,6 +128,7 @@ class _AppFieldState extends State<AppField> {
                       color: Colors.white,
                     ),
                     decoration: InputDecoration(
+                      filled: false,
                       hintText: widget.placeholder,
                       hintStyle: const TextStyle(
                         fontFamily: 'PlusJakartaSans',
@@ -136,6 +137,8 @@ class _AppFieldState extends State<AppField> {
                         color: Colors.white38,
                       ),
                       border: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
                       isDense: true,
                       counterText: '',
                       contentPadding: EdgeInsets.zero,
