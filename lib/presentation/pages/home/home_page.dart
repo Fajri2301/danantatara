@@ -85,9 +85,9 @@ class _HomePageState extends State<HomePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             _buildPPOBGrid(),
-                            const SizedBox(height: 24),
+                            const SizedBox(height: 16),
                             _buildVirtualCard(fullName),
-                            const SizedBox(height: 24),
+                            const SizedBox(height: 16),
                             _buildRecentTransactions(txns),
                           ],
                         ),
@@ -530,36 +530,38 @@ class _HomePageState extends State<HomePage> {
             ? const Center(child: Text('Belum ada transaksi', style: TextStyle(color: AppColors.slate500)))
             : Column(
                 children: txns.take(4).map((txn) {
-                  final isIncome = txn.type == 'topup' || txn.type == 'receive';
+                  final typeStr = txn.type.toLowerCase();
+                  final isIncome = typeStr.contains('topup') || typeStr.contains('receive') || typeStr.contains('deposit') || typeStr.contains('income');
+                  
                   return Container(
                     margin: const EdgeInsets.only(bottom: 12),
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: AppColors.white.withOpacity(0.6),
+                      color: Colors.black.withOpacity(0.3), // Darker transparent card
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: AppColors.primary.withOpacity(0.05)),
+                      border: Border.all(color: Colors.white.withOpacity(0.05)),
                     ),
                     child: Row(
                       children: [
                         Container(
                           width: 48,
                           height: 48,
-                          decoration: BoxDecoration(color: AppColors.line2, borderRadius: BorderRadius.circular(12)),
-                          child: Icon(isIncome ? Icons.arrow_downward : Icons.arrow_upward, color: isIncome ? AppColors.primary : AppColors.red),
+                          decoration: BoxDecoration(color: Colors.white.withOpacity(0.05), borderRadius: BorderRadius.circular(12)),
+                          child: Icon(isIncome ? Icons.arrow_downward : Icons.arrow_upward, color: isIncome ? const Color(0xFFDFF26E) : Colors.redAccent),
                         ),
                         const SizedBox(width: 12),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(txn.description, style: const TextStyle(fontFamily: 'Inter', fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.ink)),
+                              Text(txn.description, style: const TextStyle(fontFamily: 'Inter', fontSize: 14, fontWeight: FontWeight.w600, color: Colors.white)),
                               const SizedBox(height: 2),
-                              Text('Trx ID: ${txn.id.toString()}', style: const TextStyle(fontFamily: 'Inter', fontSize: 12, color: AppColors.slate500)),
+                              Text('Trx ID: ${txn.id.toString()}', style: const TextStyle(fontFamily: 'Inter', fontSize: 12, color: Colors.white54)),
                             ],
                           ),
                         ),
                         Text('${isIncome ? '+' : '-'}${CurrencyFormatter.format(txn.amount.abs())}', 
-                          style: TextStyle(fontFamily: 'Inter', fontSize: 14, fontWeight: FontWeight.bold, color: isIncome ? AppColors.green : AppColors.red)),
+                          style: TextStyle(fontFamily: 'Inter', fontSize: 14, fontWeight: FontWeight.bold, color: isIncome ? const Color(0xFFDFF26E) : Colors.redAccent)),
                       ],
                     ),
                   );
