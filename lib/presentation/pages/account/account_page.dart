@@ -74,9 +74,9 @@ class AccountPage extends StatelessWidget {
                 _buildSectionTitle('Pengaturan'),
                 _buildSettingsCard(
                   children: [
-                    _Row(icon: Icons.person_outline, title: 'Informasi Pribadi', onTap: () {}),
-                    _Row(icon: Icons.account_balance_wallet_outlined, title: 'Kartu Tersimpan', onTap: () {}),
-                    _Row(icon: Icons.verified_user_outlined, title: 'Keamanan (2FA)', right: const Text('Aktif', style: TextStyle(color: AppColors.neonGreen, fontSize: 12)), onTap: () {}),
+                    _Row(icon: Icons.person_outline, title: 'Informasi Pribadi', onTap: () => context.go('/akun/personal-info')),
+                    _Row(icon: Icons.account_balance_wallet_outlined, title: 'Kartu Tersimpan', onTap: () => context.go('/akun/saved-cards')),
+                    _Row(icon: Icons.verified_user_outlined, title: 'Keamanan (2FA)', right: const Text('Aktif', style: TextStyle(color: AppColors.neonGreen, fontSize: 12)), onTap: () => context.go('/setup-2fa')),
                   ],
                 ),
                 const SizedBox(height: 24),

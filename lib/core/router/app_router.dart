@@ -8,6 +8,8 @@ import '../../presentation/blocs/auth/auth_bloc.dart';
 import '../../presentation/blocs/auth/otp_bloc.dart';
 import '../../presentation/blocs/payment/payment_bloc.dart';
 import '../../presentation/pages/account/account_page.dart';
+import '../../presentation/pages/account/personal_info_page.dart';
+import '../../presentation/pages/account/saved_cards_page.dart';
 import '../../presentation/pages/auth/login_page.dart';
 import '../../presentation/pages/auth/register_page.dart';
 import '../../presentation/pages/auth/setup_2fa_page.dart';
@@ -134,6 +136,8 @@ class AppRouter {
               GoRoute(path: '/history', builder: (_, __) => const HistoryPage()),
               GoRoute(path: '/promo', builder: (_, __) => const PromoPage()),
               GoRoute(path: '/akun', builder: (_, __) => const AccountPage()),
+              GoRoute(path: '/akun/personal-info', builder: (_, __) => const PersonalInfoPage()),
+              GoRoute(path: '/akun/saved-cards', builder: (_, __) => const SavedCardsPage()),
             ],
           ),
           // Payment flows (no tab bar)
