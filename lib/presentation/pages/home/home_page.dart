@@ -530,8 +530,7 @@ class _HomePageState extends State<HomePage> {
             ? const Center(child: Text('Belum ada transaksi', style: TextStyle(color: AppColors.slate500)))
             : Column(
                 children: txns.take(4).map((txn) {
-                  final typeStr = txn.type.toLowerCase();
-                  final isIncome = typeStr.contains('topup') || typeStr.contains('receive') || typeStr.contains('deposit') || typeStr.contains('income');
+                  final isIncome = txn.isCredit;
                   
                   return Container(
                     margin: const EdgeInsets.only(bottom: 12),
