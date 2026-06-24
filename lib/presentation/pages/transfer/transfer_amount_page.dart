@@ -147,13 +147,21 @@ class _TransferAmountPageState extends State<TransferAmountPage> {
                         ],
                       ),
                       const SizedBox(height: 8),
-                      Text(
-                        enough ? 'Saldo: ${CurrencyFormatter.format(balance)}' : 'Saldo tidak cukup',
-                        style: TextStyle(
-                          fontFamily: 'PlusJakartaSans',
-                          fontSize: 12.5,
-                          fontWeight: FontWeight.w600,
-                          color: enough ? Colors.white54 : AppColors.red,
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: enough ? AppColors.neonGreen.withOpacity(0.1) : AppColors.red.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: enough ? AppColors.neonGreen.withOpacity(0.3) : AppColors.red.withOpacity(0.3)),
+                        ),
+                        child: Text(
+                          enough ? 'Total Saldo: ${CurrencyFormatter.format(balance)}' : 'Saldo tidak cukup (${CurrencyFormatter.format(balance)})',
+                          style: TextStyle(
+                            fontFamily: 'PlusJakartaSans',
+                            fontSize: 13,
+                            fontWeight: FontWeight.w700,
+                            color: enough ? AppColors.neonGreen : AppColors.red,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 16),
