@@ -133,6 +133,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       return;
     }
     emit(AuthAuthenticated(user));
+
+    // Tarik data terbaru di belakang layar untuk sinkronisasi jika ada data usang
+    try {
+      final freshUser = await _getMe();
+      if (!emit.isDone) {
+        emit(AuthAuthenticated(freshUser));
+      }
+    } catch (_) {
+      // Abaikan jika gagal (misalnya tidak ada internet)
+    }
   }
 
   Future<void> _onLoginWithFirebase(AuthLoginWithFirebase event, Emitter<AuthState> emit) async {
