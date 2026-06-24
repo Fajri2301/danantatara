@@ -15,6 +15,8 @@ class AppField extends StatefulWidget {
   final int? maxLength;
   final TextInputAction? textInputAction;
   final VoidCallback? onEditingComplete;
+  final bool readOnly;
+  final VoidCallback? onTap;
 
   const AppField({
     super.key,
@@ -30,6 +32,8 @@ class AppField extends StatefulWidget {
     this.maxLength,
     this.textInputAction,
     this.onEditingComplete,
+    this.readOnly = false,
+    this.onTap,
   });
 
   @override
@@ -121,6 +125,8 @@ class _AppFieldState extends State<AppField> {
                     maxLength: widget.maxLength,
                     textInputAction: widget.textInputAction,
                     onEditingComplete: widget.onEditingComplete,
+                    readOnly: widget.readOnly,
+                    onTap: widget.onTap,
                     style: const TextStyle(
                       fontFamily: 'PlusJakartaSans',
                       fontSize: 15.5,

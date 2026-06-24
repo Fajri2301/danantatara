@@ -22,16 +22,44 @@ class _EditProfilePageState extends State<EditProfilePage> {
   void initState() {
     super.initState();
     final authState = context.read<AuthBloc>().state;
-    if (authState is AuthAuthenticated) {
-      _name = authState.user.name;
-      _phone = authState.user.phone ?? '';
-      _dob = authState.user.dob ?? '';
-      _address = authState.user.address ?? '';
+    if (authState is AuthAuthenticated || authState is AuthProfileUpdateSuccess) {
+      final user = authState is AuthAuthenticated ? authState.user : (authState as AuthProfileUpdateSuccess).user;
+      _name = user.name;
+      _phone = user.phone ?? '';
+      _dob = user.dob ?? '';
+      _address = user.address ?? '';
     } else {
       _name = '';
       _phone = '';
       _dob = '';
       _address = '';
+    }
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.dark(
+              primary: AppColors.neonGreen,
+              onPrimary: Colors.black,
+              surface: AppColors.card,
+              onSurface: Colors.white,
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+    if (picked != null) {
+      setState(() {
+        _dob = "${picked.day.toString().padLeft(2, '0')} ${picked.month.toString().padLeft(2, '0')} ${picked.year}";
+      });
     }
   }
 
@@ -113,9 +141,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     const SizedBox(height: 16),
                     AppField(
                       value: _dob,
-                      onChanged: (v) => setState(() => _dob = v),
                       label: 'Tanggal Lahir',
-                      keyboardType: TextInputType.datetime,
+                      readOnly: true,
+                      onTap: () => _selectDate(context),
+                      suffixIcon: const Icon(Icons.calendar_month_outlined, color: Colors.white54),
                     ),
                   ],
                 ),

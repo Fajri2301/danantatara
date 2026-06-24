@@ -171,6 +171,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         photoUrl: event.photoUrl,
       ));
       emit(AuthProfileUpdateSuccess(user));
+      emit(AuthAuthenticated(user));
     } on AuthFailure catch (e) {
       emit(AuthError(e.message));
     } on ServerFailure catch (e) {
