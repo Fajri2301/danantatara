@@ -115,7 +115,7 @@ Future<void> init() async {
         registerTotp: sl(),
         verifyTotp: sl(),
       ));
-  sl.registerFactory(() => AccountBloc(
+  sl.registerLazySingleton(() => AccountBloc(
         getAccount: sl(),
         getTransactions: sl(),
       ));
