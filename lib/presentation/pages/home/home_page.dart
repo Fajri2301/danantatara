@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
@@ -63,7 +64,9 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             _buildHeader(fullName),
                             const SizedBox(height: 24),
-                            _buildBalanceCard(balance, context),
+                            _buildDanantaraCard(balance, user?.id ?? 0),
+                            const SizedBox(height: 24),
+                            _buildQuickActions(context),
                             const SizedBox(height: 8),
                             // Downward indicator tab
                             Container(
@@ -85,9 +88,7 @@ class _HomePageState extends State<HomePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             _buildPPOBGrid(),
-                            const SizedBox(height: 4), // Extremely tight gap as requested
-                            _buildVirtualCard(fullName),
-                            const SizedBox(height: 16),
+                            const SizedBox(height: 20),
                             _buildRecentTransactions(txns),
                             const SizedBox(height: 100),
                           ],
@@ -160,56 +161,149 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildBalanceCard(double balance, BuildContext context) {
+  Widget _buildDanantaraCard(double balance, int userId) {
+    // Generate mock account number based on userId
+    final String accountNo = "1000 0000 0000 ${userId.toString().padLeft(4, '0')}";
+
     return Container(
+      width: double.infinity,
       decoration: BoxDecoration(
-        color: const Color(0xFFDFF26E), // Lighter green for balance card
-        borderRadius: BorderRadius.circular(24), // Rounder to match dribbble
-        border: Border.all(color: Colors.black.withOpacity(0.05)),
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Color(0xFF2B2B2B), // Deep obsidian
+            Color(0xFF111111),
+            Color(0xFF050505),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.white.withOpacity(0.15), width: 1),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.4),
+            offset: const Offset(0, 10),
+            blurRadius: 20,
+          ),
+        ],
       ),
-      padding: const EdgeInsets.all(18),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text('Total Saldo', style: TextStyle(fontFamily: 'Inter', fontSize: 11, fontWeight: FontWeight.w600, color: Colors.black87)),
-              GestureDetector(
-                onTap: () {},
-                child: const Icon(Icons.more_horiz, color: Colors.black, size: 18),
-              )
-            ],
-          ),
-          const SizedBox(height: 8),
-          Row(
-            children: [
-              Text(_hideBalance ? CurrencyFormatter.maskBalance() : CurrencyFormatter.format(balance),
-                  style: const TextStyle(fontFamily: 'Poppins', fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black, letterSpacing: -1)),
-              const SizedBox(width: 8),
-              GestureDetector(
-                onTap: () => setState(() => _hideBalance = !_hideBalance),
-                child: Icon(_hideBalance ? Icons.visibility_off : Icons.visibility, color: Colors.black54, size: 18),
-              )
-            ],
-          ),
-          const SizedBox(height: 8),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(color: Colors.black.withOpacity(0.05), borderRadius: BorderRadius.circular(12)),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: const [
-                Icon(Icons.arrow_upward, color: Colors.green, size: 12),
-                SizedBox(width: 4),
-                Text('24%', style: TextStyle(fontFamily: 'Inter', fontSize: 9, fontWeight: FontWeight.bold, color: Colors.black)),
-                SizedBox(width: 6),
-                Text('Minggu lalu', style: TextStyle(fontFamily: 'Inter', fontSize: 9, color: Colors.black54)),
+          // Left Column
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Total Saldo',
+                  style: TextStyle(fontFamily: 'Inter', fontSize: 12, fontWeight: FontWeight.w500, color: Colors.white70),
+                ),
+                const SizedBox(height: 6),
+                Row(
+                  children: [
+                    Text(
+                      _hideBalance ? CurrencyFormatter.maskBalance() : CurrencyFormatter.format(balance),
+                      style: const TextStyle(fontFamily: 'Poppins', fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white, letterSpacing: -0.5),
+                    ),
+                    const SizedBox(width: 10),
+                    GestureDetector(
+                      onTap: () => setState(() => _hideBalance = !_hideBalance),
+                      child: Icon(_hideBalance ? Icons.visibility_off : Icons.visibility, color: Colors.white54, size: 20),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 28),
+                Row(
+                  children: [
+                    Text(
+                      accountNo,
+                      style: const TextStyle(
+                        fontFamily: 'monospace',
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1.5,
+                        color: Color(0xFFD1D1D1),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    GestureDetector(
+                      onTap: () {
+                        Clipboard.setData(ClipboardData(text: accountNo));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: const Text('Nomor Rekening berhasil disalin', style: TextStyle(fontFamily: 'Inter', color: Colors.black)),
+                            backgroundColor: AppColors.neonGreen,
+                            behavior: SnackBarBehavior.floating,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                          ),
+                        );
+                      },
+                      child: const Icon(Icons.copy_rounded, color: AppColors.neonGreen, size: 16),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
-          const SizedBox(height: 18),
-          _buildQuickActions(context), // Quick actions moved inside
+          
+          // Right Column
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // Logo
+              Row(
+                children: [
+                  Container(
+                    width: 20,
+                    height: 20,
+                    decoration: BoxDecoration(
+                      color: Colors.redAccent.withOpacity(0.9),
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                  Transform.translate(
+                    offset: const Offset(-8, 0),
+                    child: Container(
+                      width: 20,
+                      height: 20,
+                      decoration: BoxDecoration(
+                        color: Colors.orangeAccent.withOpacity(0.9),
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 32),
+              // Golden Chip
+              Container(
+                width: 34,
+                height: 26,
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFFE0C879), Color(0xFFA67C00)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(color: Colors.black38, width: 1),
+                ),
+                child: Center(
+                  child: Container(
+                    width: 18,
+                    height: 16,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black26, width: 1),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -231,17 +325,17 @@ class _HomePageState extends State<HomePage> {
             GestureDetector(
               onTap: () => context.go(a['route'] as String),
               child: Container(
-                width: 44, // Slightly smaller since it is nested
-                height: 44,
+                width: 50,
+                height: 50,
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.85), // Dark buttons on green background
-                  borderRadius: BorderRadius.circular(14),
+                  color: Colors.black.withOpacity(0.85),
+                  borderRadius: BorderRadius.circular(16),
                 ),
-                child: Icon(a['icon'] as IconData, color: const Color(0xFFDFF26E), size: 20),
+                child: Icon(a['icon'] as IconData, color: const Color(0xFFDFF26E), size: 24),
               ),
             ),
-            const SizedBox(height: 6),
-            Text(a['label'] as String, style: const TextStyle(fontFamily: 'Inter', fontSize: 9, fontWeight: FontWeight.bold, color: Colors.black)),
+            const SizedBox(height: 8),
+            Text(a['label'] as String, style: const TextStyle(fontFamily: 'Inter', fontSize: 11, fontWeight: FontWeight.bold, color: Colors.black)),
           ],
         );
       }).toList(),
@@ -311,207 +405,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildVirtualCard(String name) {
-    return Container(
-      width: double.infinity,
-      height: 170, // Taller to match credit card aspect ratio
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            Color(0xFF2B2B2B), // Deep obsidian
-            Color(0xFF111111),
-            Color(0xFF050505),
-          ],
-        ),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withOpacity(0.15), width: 1),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.6),
-            offset: const Offset(0, 16),
-            blurRadius: 30,
-          ),
-        ],
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          // Header: Logo & NFC
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Mock Brand Logo
-              Row(
-                children: [
-                  Container(
-                    width: 24,
-                    height: 24,
-                    decoration: BoxDecoration(
-                      color: Colors.redAccent.withOpacity(0.8),
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                  Transform.translate(
-                    offset: const Offset(-8, 0),
-                    child: Container(
-                      width: 24,
-                      height: 24,
-                      decoration: BoxDecoration(
-                        color: Colors.orangeAccent.withOpacity(0.8),
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              // NFC Icon
-              Transform.rotate(
-                angle: 1.5708, // 90 degrees
-                child: Icon(Icons.wifi, color: Colors.white.withOpacity(0.4), size: 20),
-              ),
-            ],
-          ),
-          
-          // Chip & Card Type
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              // Golden Chip
-              Container(
-                width: 34,
-                height: 26,
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFFE0C879), Color(0xFFA67C00)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.circular(6),
-                  border: Border.all(color: Colors.black38, width: 1),
-                ),
-                child: Center(
-                  child: Container(
-                    width: 18,
-                    height: 16,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black26, width: 1),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                  ),
-                ),
-              ),
-              Text(
-                'WORLD ELITE',
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 8,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: 2.0,
-                  color: Colors.white.withOpacity(0.3),
-                ),
-              ),
-            ],
-          ),
-
-          // Card Numbers (Embossed)
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              '4123',
-              '8901',
-              '2345',
-              '2026'
-            ].map((num) => Text(
-              num,
-              style: const TextStyle(
-                fontFamily: 'monospace',
-                fontSize: 18, // Reduced from 24 to fix overflow
-                fontWeight: FontWeight.bold,
-                letterSpacing: 1.5, // Reduced from 2.0
-                color: Color(0xFFD1D1D1),
-                shadows: [
-                  Shadow(color: Colors.white24, offset: Offset(1, 1), blurRadius: 1),
-                  Shadow(color: Colors.black87, offset: Offset(-1, -1), blurRadius: 1),
-                ],
-              ),
-            )).toList(),
-          ),
-
-          // Footer: Cardholder & Valid Thru
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'CARDHOLDER',
-                    style: TextStyle(
-                      fontSize: 7,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 1.5,
-                      color: Colors.white.withOpacity(0.4),
-                    ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    name.toUpperCase(),
-                    style: const TextStyle(
-                      fontFamily: 'monospace',
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 1.5,
-                      color: Color(0xFFD1D1D1),
-                      shadows: [
-                        Shadow(color: Colors.white24, offset: Offset(1, 1), blurRadius: 1),
-                        Shadow(color: Colors.black87, offset: Offset(-1, -1), blurRadius: 1),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'VALID THRU',
-                    style: TextStyle(
-                      fontSize: 7,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 1.5,
-                      color: Colors.white.withOpacity(0.4),
-                    ),
-                  ),
-                  const SizedBox(height: 2),
-                  const Text(
-                    '12/30',
-                    style: TextStyle(
-                      fontFamily: 'monospace',
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 1.5,
-                      color: Color(0xFFD1D1D1),
-                      shadows: [
-                        Shadow(color: Colors.white24, offset: Offset(1, 1), blurRadius: 1),
-                        Shadow(color: Colors.black87, offset: Offset(-1, -1), blurRadius: 1),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
 
   Widget _buildRecentTransactions(List<TransactionEntity> txns) {
     return Column(
