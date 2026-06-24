@@ -9,9 +9,11 @@ abstract class PaymentRemoteDatasource {
     required String description,
     required String otpCode,
     required String otpType,
+    String? recipientAccount,
     String? reference,
     String? merchantId,
   });
+  Future<Map<String, dynamic>> resolveAccount(String accountNumber);
 }
 
 class PaymentRemoteDatasourceImpl implements PaymentRemoteDatasource {
@@ -34,6 +36,7 @@ class PaymentRemoteDatasourceImpl implements PaymentRemoteDatasource {
     required String description,
     required String otpCode,
     required String otpType,
+    String? recipientAccount,
     String? reference,
     String? merchantId,
   }) async {
@@ -43,6 +46,7 @@ class PaymentRemoteDatasourceImpl implements PaymentRemoteDatasource {
       'otp_code': otpCode,
       'otp_type': otpType,
     };
+    if (recipientAccount != null) body['recipient_account'] = recipientAccount;
     if (reference != null) body['reference'] = reference;
     if (merchantId != null) body['merchant_id'] = merchantId;
 
@@ -56,5 +60,11 @@ class PaymentRemoteDatasourceImpl implements PaymentRemoteDatasource {
       balanceAfter: (data['balance_after'] as num).toDouble(),
       createdAt: DateTime.tryParse(data['created_at'] as String? ?? '') ?? DateTime.now(),
     );
+  }
+
+  @override
+  Future<Map<String, dynamic>> resolveAccount(String accountNumber) async {
+    final response = await _client.get('/v1/account/resolve/$accountNumber');
+    return response['data'] as Map<String, dynamic>;
   }
 }

@@ -14,6 +14,7 @@ class UserEntity extends Equatable {
   final String? dob;
   final String? address;
   final String? photoUrl;
+  final String? accountNumber;
 
   const UserEntity({
     required this.id,
@@ -28,6 +29,7 @@ class UserEntity extends Equatable {
     this.dob,
     this.address,
     this.photoUrl,
+    this.accountNumber,
   });
 
   String get firstName => name.split(' ').first;
@@ -46,5 +48,6 @@ class UserEntity extends Equatable {
         dob,
         address,
         photoUrl,
+        accountNumber,
       ];
 }

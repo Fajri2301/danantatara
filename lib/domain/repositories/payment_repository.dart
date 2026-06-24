@@ -7,6 +7,7 @@ abstract class PaymentRepository {
     required String description,
     required String otpCode,
     required String otpType,
+    String? recipientAccount,
     String? reference,
     String? merchantId,
   });

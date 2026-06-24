@@ -25,6 +25,7 @@ class PaymentRepositoryImpl implements PaymentRepository {
     required String description,
     required String otpCode,
     required String otpType,
+    String? recipientAccount,
     String? reference,
     String? merchantId,
   }) async {
@@ -34,6 +35,7 @@ class PaymentRepositoryImpl implements PaymentRepository {
         description: description,
         otpCode: otpCode,
         otpType: otpType,
+        recipientAccount: recipientAccount,
         reference: reference,
         merchantId: merchantId,
       );

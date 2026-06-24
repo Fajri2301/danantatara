@@ -3,17 +3,9 @@ import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../widgets/app_avatar.dart';
 
-const _contacts = [
-  {'id': '1', 'name': 'Alina', 'sub': '0812-3456-7890', 'fav': true},
-  {'id': '2', 'name': 'Mark', 'sub': '0856-1122-3344', 'fav': true},
-  {'id': '3', 'name': 'Rosa', 'sub': '0813-9988-7766', 'fav': false},
-  {'id': '4', 'name': 'David', 'sub': '0821-4455-6677', 'fav': false},
-];
-
-const _banks = [
-  {'id': 'bca', 'name': 'BCA', 'sub': 'Bank Central Asia', 'tone': 'blue'},
-  {'id': 'bni', 'name': 'BNI', 'sub': 'Bank Negara Indonesia', 'tone': 'amber'},
-];
+import '../../../injection/injection_container.dart';
+import '../../../data/datasources/remote/payment_remote_datasource.dart';
+import '../../widgets/app_button.dart';
 
 class TransferPage extends StatefulWidget {
   const TransferPage({super.key});
@@ -23,7 +15,48 @@ class TransferPage extends StatefulWidget {
 
 class _TransferPageState extends State<TransferPage> {
   String _tab = 'dkg';
-  String _q = '';
+  final TextEditingController _accountCtrl = TextEditingController();
+  bool _isLoading = false;
+  String? _errorMsg;
+
+  @override
+  void dispose() {
+    _accountCtrl.dispose();
+    super.dispose();
+  }
+
+  Future<void> _resolveAccount() async {
+    final acc = _accountCtrl.text.trim();
+    if (acc.isEmpty) return;
+
+    setState(() {
+      _isLoading = true;
+      _errorMsg = null;
+    });
+
+    try {
+      final remote = sl<PaymentRemoteDatasource>();
+      final data = await remote.resolveAccount(acc);
+      
+      if (mounted) {
+        // Construct recipient object as expected by TransferAmountPage
+        final recipient = {
+          'id': data['account_number'],
+          'name': data['name'],
+          'sub': 'Rekening Danantara: ${data['account_number']}',
+        };
+        context.go('/transfer/amount', extra: {'recipient': recipient, 'channel': 'dkg'});
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() => _errorMsg = 'Rekening tidak ditemukan atau koneksi bermasalah');
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,30 +90,8 @@ class _TransferPageState extends State<TransferPage> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.3),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.white24),
-              ),
-              child: TextField(
-                style: const TextStyle(color: Colors.white),
-                onChanged: (v) => setState(() => _q = v),
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: _tab == 'dkg' ? 'Cari kontak...' : 'Cari bank...',
-                  hintStyle: const TextStyle(color: Colors.white54),
-                  icon: const Icon(Icons.search, color: Colors.white54),
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 24),
           Expanded(
-            child: _tab == 'dkg' ? _buildContacts() : _buildBanks(),
+            child: _tab == 'dkg' ? _buildDkgTab() : _buildBanksTab(),
           ),
         ],
       ),
@@ -91,7 +102,7 @@ class _TransferPageState extends State<TransferPage> {
     final active = _tab == value;
     return Expanded(
       child: GestureDetector(
-        onTap: () => setState(() { _tab = value; _q = ''; }),
+        onTap: () => setState(() { _tab = value; _errorMsg = null; }),
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 12),
           decoration: BoxDecoration(
@@ -111,86 +122,51 @@ class _TransferPageState extends State<TransferPage> {
     );
   }
 
-  Widget _buildContacts() {
-    final filtered = _contacts.where((c) => (c['name'] as String).toLowerCase().contains(_q.toLowerCase())).toList();
-    return ListView.builder(
+  Widget _buildDkgTab() {
+    return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      itemCount: filtered.length,
-      itemBuilder: (context, i) {
-        final c = filtered[i];
-        return GestureDetector(
-          onTap: () => context.go('/transfer/amount', extra: {'recipient': c, 'channel': 'dkg'}),
-          child: Container(
-            margin: const EdgeInsets.only(bottom: 12),
-            padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text('Kirim ke Sesama Danantara', style: TextStyle(fontFamily: 'Inter', fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
+          const SizedBox(height: 16),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             decoration: BoxDecoration(
               color: Colors.black.withOpacity(0.3),
               borderRadius: BorderRadius.circular(16),
               border: Border.all(color: Colors.white24),
             ),
-            child: Row(
-              children: [
-                AppAvatar(name: c['name'] as String, size: 48, bg: Colors.white12),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(c['name'] as String, style: const TextStyle(fontFamily: 'Inter', fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
-                      Text(c['sub'] as String, style: const TextStyle(fontFamily: 'Inter', fontSize: 12, color: Colors.white54)),
-                    ],
-                  ),
-                ),
-                const Icon(Icons.chevron_right, color: Colors.white54),
-              ],
+            child: TextField(
+              controller: _accountCtrl,
+              keyboardType: TextInputType.number,
+              style: const TextStyle(color: Colors.white, fontFamily: 'monospace', fontSize: 18, letterSpacing: 2),
+              decoration: const InputDecoration(
+                border: InputBorder.none,
+                hintText: 'Contoh: 2362...',
+                hintStyle: TextStyle(color: Colors.white54, letterSpacing: 0),
+                icon: Icon(Icons.account_balance_wallet_rounded, color: Colors.white54),
+              ),
             ),
           ),
-        );
-      },
+          if (_errorMsg != null) ...[
+            const SizedBox(height: 8),
+            Text(_errorMsg!, style: const TextStyle(color: AppColors.red, fontSize: 12)),
+          ],
+          const SizedBox(height: 24),
+          AppButton(
+            label: 'Cari Rekening',
+            isLoading: _isLoading,
+            onPressed: _resolveAccount,
+          ),
+        ],
+      ),
     );
   }
 
-  Widget _buildBanks() {
-    final filtered = _banks.where((b) => (b['name'] as String).toLowerCase().contains(_q.toLowerCase())).toList();
-    return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      itemCount: filtered.length,
-      itemBuilder: (context, i) {
-        final b = filtered[i];
-        return GestureDetector(
-          onTap: () => context.go('/transfer/amount', extra: {'recipient': b, 'channel': 'bank'}),
-          child: Container(
-            margin: const EdgeInsets.only(bottom: 12),
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.3),
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Colors.white24),
-            ),
-            child: Row(
-              children: [
-                Container(
-                  width: 48,
-                  height: 48,
-                  decoration: BoxDecoration(color: Colors.white12, borderRadius: BorderRadius.circular(12)),
-                  child: Center(child: Text(b['name'] as String, style: const TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold, color: AppColors.neonGreen))),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(b['sub'] as String, style: const TextStyle(fontFamily: 'Inter', fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
-                      const Text('Fee: \$0.00', style: TextStyle(fontFamily: 'Inter', fontSize: 12, color: Colors.white54)),
-                    ],
-                  ),
-                ),
-                const Icon(Icons.chevron_right, color: Colors.white54),
-              ],
-            ),
-          ),
-        );
-      },
+  Widget _buildBanksTab() {
+    return const Center(
+      child: Text('Daftar Bank belum tersedia.', style: TextStyle(color: Colors.white54)),
     );
   }
 }

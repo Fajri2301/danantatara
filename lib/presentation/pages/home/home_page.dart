@@ -64,7 +64,7 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             _buildHeader(fullName),
                             const SizedBox(height: 24),
-                            _buildDanantaraCard(balance, user?.id ?? 0),
+                            _buildDanantaraCard(balance, user),
                             const SizedBox(height: 24),
                             _buildQuickActions(context),
                             const SizedBox(height: 8),
@@ -161,9 +161,13 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildDanantaraCard(double balance, int userId) {
-    // Generate 7-digit mock account number based on userId
-    final String accountNo = "88${userId.toString().padLeft(5, '0')}";
+  Widget _buildDanantaraCard(double balance, UserEntity? user) {
+    // Gunakan nomor rekening asli atau fallback 2362000 jika null
+    final String rawAccountNo = user?.accountNumber ?? "2362000";
+    // Format sebagai "2362 XXX"
+    final String accountNo = rawAccountNo.length == 7 
+        ? "${rawAccountNo.substring(0, 4)} ${rawAccountNo.substring(4)}" 
+        : rawAccountNo;
 
     return Container(
       width: double.infinity,

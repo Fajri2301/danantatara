@@ -180,6 +180,7 @@ class _PinPageState extends State<PinPage> {
       description: _descriptionFor(flow),
       otpCode: code,
       otpType: _otpType,
+      recipientAccount: flow['recipient']?['id'] as String?,
       reference: flow['reference'] as String?,
       merchantId: flow['merchantId'] as String?,
     ));

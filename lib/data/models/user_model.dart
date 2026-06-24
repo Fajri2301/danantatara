@@ -12,9 +12,9 @@ class UserModel extends UserEntity {
     required super.totpEnabled,
     super.twoFaMethod,
     super.phone,
-    super.dob,
     super.address,
     super.photoUrl,
+    super.accountNumber,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -31,6 +31,7 @@ class UserModel extends UserEntity {
       dob: json['dob'] as String?,
       address: json['address'] as String?,
       photoUrl: json['photo_url'] as String?,
+      accountNumber: json['account_number'] as String?,
     );
   }
 
@@ -48,6 +49,7 @@ class UserModel extends UserEntity {
       'dob': dob,
       'address': address,
       'photo_url': photoUrl,
+      'account_number': accountNumber,
     };
   }
 

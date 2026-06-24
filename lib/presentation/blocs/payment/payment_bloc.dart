@@ -22,19 +22,22 @@ class PaymentTransferRequested extends PaymentEvent {
   final String description;
   final String otpCode;
   final String otpType;
+  final String? recipientAccount;
   final String? reference;
   final String? merchantId;
 
-  PaymentTransferRequested({
+  const PaymentTransferRequested({
     required this.amount,
     required this.description,
     required this.otpCode,
     required this.otpType,
+    this.recipientAccount,
     this.reference,
     this.merchantId,
   });
+
   @override
-  List<Object?> get props => [amount, description, otpCode, otpType, reference, merchantId];
+  List<Object?> get props => [amount, description, otpCode, otpType, recipientAccount, reference, merchantId];
 }
 
 class PaymentReset extends PaymentEvent {}
@@ -118,6 +121,7 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
         description: event.description,
         otpCode: event.otpCode,
         otpType: event.otpType,
+        recipientAccount: event.recipientAccount,
         reference: event.reference,
         merchantId: event.merchantId,
       );
