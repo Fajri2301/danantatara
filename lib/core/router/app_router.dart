@@ -222,7 +222,7 @@ class AppRouter {
   static Widget _withAccount(Widget child) {
     return MultiBlocProvider(providers: [
       BlocProvider.value(value: sl<AuthBloc>()),
-      BlocProvider.value(value: sl<AccountBloc>()..add(AccountFetchRequested())),
+      BlocProvider.value(value: sl<AccountBloc>()..add(AccountLoadRequested())),
     ], child: child);
   }
 
