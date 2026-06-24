@@ -214,7 +214,12 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 28),
+                const SizedBox(height: 20),
+                const Text(
+                  'Nomor Rekening',
+                  style: TextStyle(fontFamily: 'Inter', fontSize: 10, fontWeight: FontWeight.w500, color: Colors.white54),
+                ),
+                const SizedBox(height: 4),
                 Row(
                   children: [
                     Text(
