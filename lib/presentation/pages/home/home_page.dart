@@ -162,8 +162,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildDanantaraCard(double balance, int userId) {
-    // Generate mock account number based on userId
-    final String accountNo = "1000 0000 0000 ${userId.toString().padLeft(4, '0')}";
+    // Generate 7-digit mock account number based on userId
+    final String accountNo = "88${userId.toString().padLeft(5, '0')}";
 
     return Container(
       width: double.infinity,
