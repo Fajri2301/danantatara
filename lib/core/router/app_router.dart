@@ -222,14 +222,14 @@ class AppRouter {
   static Widget _withAccount(Widget child) {
     return MultiBlocProvider(providers: [
       BlocProvider.value(value: sl<AuthBloc>()),
-      BlocProvider(create: (_) => sl<AccountBloc>()),
+      BlocProvider.value(value: sl<AccountBloc>()..add(AccountFetchRequested())),
     ], child: child);
   }
 
   static Widget _withPayment(Widget child) {
     return MultiBlocProvider(providers: [
       BlocProvider.value(value: sl<AuthBloc>()),
-      BlocProvider(create: (_) => sl<AccountBloc>()),
+      BlocProvider.value(value: sl<AccountBloc>()),
       BlocProvider(create: (_) => sl<PaymentBloc>()),
       BlocProvider(create: (_) => sl<OtpBloc>()),
     ], child: child);
