@@ -12,6 +12,10 @@ abstract class SecureStorageDatasource {
   Future<String?> getUserJson();
   Future<void> saveAuthVerified(bool verified);
   Future<bool> getAuthVerified();
+  Future<void> saveBiometricEnabled(bool enabled);
+  Future<bool> getBiometricEnabled();
+  Future<void> saveAppLockPin(String pin);
+  Future<String?> getAppLockPin();
   Future<void> clearAll();
 }
 
@@ -72,6 +76,27 @@ class SecureStorageDatasourceImpl implements SecureStorageDatasource {
   Future<bool> getAuthVerified() async {
     final value = await _storage.read(key: AppConstants.kAuthVerified);
     return value == 'true';
+  }
+
+  @override
+  Future<void> saveBiometricEnabled(bool enabled) async {
+    await _storage.write(key: AppConstants.kBiometricEnabled, value: enabled.toString());
+  }
+
+  @override
+  Future<bool> getBiometricEnabled() async {
+    final value = await _storage.read(key: AppConstants.kBiometricEnabled);
+    return value == 'true';
+  }
+
+  @override
+  Future<void> saveAppLockPin(String pin) async {
+    await _storage.write(key: AppConstants.kAppLockPin, value: pin);
+  }
+
+  @override
+  Future<String?> getAppLockPin() async {
+    return _storage.read(key: AppConstants.kAppLockPin);
   }
 
   @override

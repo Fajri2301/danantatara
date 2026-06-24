@@ -164,26 +164,28 @@ class SavedCardsPage extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  ...'4123 8901 2345 2026'.split(' ').map((num) => Padding(
-                    padding: const EdgeInsets.only(right: 12),
-                    child: Text(
-                      num,
-                      style: const TextStyle(
-                        fontFamily: 'monospace',
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 1.5,
-                        color: Color(0xFFD1D1D1),
-                        shadows: [
-                          Shadow(color: Colors.white24, offset: Offset(1, 1), blurRadius: 1),
-                          Shadow(color: Colors.black87, offset: Offset(-1, -1), blurRadius: 1),
-                        ],
+              Expanded(
+                child: Row(
+                  children: [
+                    ...'4123 8901 2345 2026'.split(' ').map((num) => Padding(
+                      padding: const EdgeInsets.only(right: 8),
+                      child: Text(
+                        num,
+                        style: const TextStyle(
+                          fontFamily: 'monospace',
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1.5,
+                          color: Color(0xFFD1D1D1),
+                          shadows: [
+                            Shadow(color: Colors.white24, offset: Offset(1, 1), blurRadius: 1),
+                            Shadow(color: Colors.black87, offset: Offset(-1, -1), blurRadius: 1),
+                          ],
+                        ),
                       ),
-                    ),
-                  )).toList(),
-                ],
+                    )).toList(),
+                  ],
+                ),
               ),
               GestureDetector(
                 onTap: () {

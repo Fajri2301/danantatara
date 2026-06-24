@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/services/deeplink_service.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../data/datasources/local/secure_storage_datasource.dart';
+import '../../../injection/injection_container.dart';
 import '../../blocs/auth/auth_bloc.dart';
 import '../../widgets/app_button.dart';
 import '../../widgets/app_logo.dart';
@@ -47,13 +49,23 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state is AuthAuthenticated) {
-          final pending = DeeplinkService.consumePending();
-          if (pending != null) {
-            context.go('/pay', extra: pending);
+          final storage = sl<SecureStorageDatasource>();
+          final hasPin = await storage.getAppLockPin();
+          final bioEnabled = await storage.getBiometricEnabled();
+
+          if (!context.mounted) return;
+
+          if ((hasPin != null && hasPin.isNotEmpty) || bioEnabled) {
+            context.go('/app-lock');
           } else {
-            context.go('/home');
+            final pending = DeeplinkService.consumePending();
+            if (pending != null) {
+              context.go('/pay', extra: pending);
+            } else {
+              context.go('/home');
+            }
           }
         }
       },

@@ -4,15 +4,17 @@ import '../../core/theme/app_colors.dart';
 class PinPad extends StatelessWidget {
   final String value;
   final int length;
-  final ValueChanged<String> onChanged;
+  final ValueChanged<String>? onChanged;
   final ValueChanged<String>? onComplete;
+  final VoidCallback? onBiometric;
 
   const PinPad({
     super.key,
     required this.value,
-    required this.onChanged,
+    this.onChanged,
     this.length = 6,
     this.onComplete,
+    this.onBiometric,
   });
 
   void _press(String key) {
@@ -23,7 +25,7 @@ class PinPad extends StatelessWidget {
       if (value.length >= length) return;
       next = value + key;
     }
-    onChanged(next);
+    onChanged?.call(next);
     if (next.length == length) {
       Future.delayed(const Duration(milliseconds: 140), () => onComplete?.call(next));
     }
@@ -67,7 +69,7 @@ class PinPad extends StatelessWidget {
           children: keys.map((k) {
             if (k == 'bio') {
               return _KeyButton(
-                onTap: () => onComplete?.call(value),
+                onTap: () => onBiometric?.call(),
                 child: const Icon(Icons.fingerprint_rounded, size: 28, color: AppColors.neonGreen),
               );
             }

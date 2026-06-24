@@ -89,6 +89,7 @@ class _HomePageState extends State<HomePage> {
                             _buildVirtualCard(fullName),
                             const SizedBox(height: 16),
                             _buildRecentTransactions(txns),
+                            const SizedBox(height: 100),
                           ],
                         ),
                       ),

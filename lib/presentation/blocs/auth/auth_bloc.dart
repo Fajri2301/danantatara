@@ -5,6 +5,7 @@ import '../../../domain/usecases/auth/verify_firebase_token_usecase.dart';
 import '../../../domain/usecases/auth/get_me_usecase.dart';
 import '../../../domain/usecases/auth/logout_usecase.dart';
 import '../../../domain/usecases/auth/send_otp_usecase.dart';
+import '../../../domain/usecases/update_profile.dart';
 import '../../../domain/repositories/auth_repository.dart';
 import '../../../core/error/failures.dart';
 
@@ -27,6 +28,24 @@ class AuthUpdateFcmToken extends AuthEvent {
   AuthUpdateFcmToken(this.fcmToken);
   @override
   List<Object?> get props => [fcmToken];
+}
+class AuthUpdateProfileRequested extends AuthEvent {
+  final String name;
+  final String phone;
+  final String dob;
+  final String address;
+  final String photoUrl;
+
+  AuthUpdateProfileRequested({
+    required this.name,
+    this.phone = '',
+    this.dob = '',
+    this.address = '',
+    this.photoUrl = '',
+  });
+
+  @override
+  List<Object?> get props => [name, phone, dob, address, photoUrl];
 }
 
 // States
@@ -57,27 +76,37 @@ class AuthError extends AuthState {
   @override
   List<Object?> get props => [message];
 }
+class AuthProfileUpdateSuccess extends AuthState {
+  final UserEntity user;
+  AuthProfileUpdateSuccess(this.user);
+  @override
+  List<Object?> get props => [user];
+}
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final VerifyFirebaseTokenUsecase _verifyToken;
   final GetMeUsecase _getMe;
   final LogoutUsecase _logout;
   final AuthRepository _authRepo;
+  final UpdateProfile _updateProfile;
 
   AuthBloc({
     required VerifyFirebaseTokenUsecase verifyToken,
     required GetMeUsecase getMe,
     required LogoutUsecase logout,
     required AuthRepository authRepo,
+    required UpdateProfile updateProfile,
   })  : _verifyToken = verifyToken,
         _getMe = getMe,
         _logout = logout,
         _authRepo = authRepo,
+        _updateProfile = updateProfile,
         super(AuthInitial()) {
     on<AuthCheckRequested>(_onCheckRequested);
     on<AuthLoginWithFirebase>(_onLoginWithFirebase);
     on<AuthLogoutRequested>(_onLogout);
     on<AuthUpdateFcmToken>(_onUpdateFcm);
+    on<AuthUpdateProfileRequested>(_onUpdateProfileRequested);
   }
 
   Future<void> _onCheckRequested(AuthCheckRequested event, Emitter<AuthState> emit) async {
@@ -129,5 +158,27 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _onUpdateFcm(AuthUpdateFcmToken event, Emitter<AuthState> emit) async {
     await _authRepo.updateFcmToken(event.fcmToken);
+  }
+
+  Future<void> _onUpdateProfileRequested(AuthUpdateProfileRequested event, Emitter<AuthState> emit) async {
+    emit(AuthLoading());
+    try {
+      final user = await _updateProfile(UpdateProfileParams(
+        name: event.name,
+        phone: event.phone,
+        dob: event.dob,
+        address: event.address,
+        photoUrl: event.photoUrl,
+      ));
+      emit(AuthProfileUpdateSuccess(user));
+    } on AuthFailure catch (e) {
+      emit(AuthError(e.message));
+    } on ServerFailure catch (e) {
+      emit(AuthError(e.message));
+    } on NetworkFailure catch (e) {
+      emit(AuthError(e.message));
+    } catch (e) {
+      emit(AuthError('Terjadi kesalahan. Silakan coba lagi.'));
+    }
   }
 }

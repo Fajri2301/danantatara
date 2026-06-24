@@ -5,6 +5,7 @@ abstract class AuthRepository {
   Future<({UserEntity user, String token})> registerWithOtp(String firebaseToken);
   Future<void> verifyEmailOtp(String code);
   Future<UserEntity> getMe();
+  Future<UserEntity> updateProfile(Map<String, dynamic> data);
   Future<void> updateFcmToken(String fcmToken);
   Future<void> logout();
   Future<String?> getSavedToken();

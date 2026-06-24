@@ -11,6 +11,10 @@ class UserModel extends UserEntity {
     required super.emailVerified,
     required super.totpEnabled,
     super.twoFaMethod,
+    super.phone,
+    super.dob,
+    super.address,
+    super.photoUrl,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -23,6 +27,10 @@ class UserModel extends UserEntity {
       emailVerified: json['email_verified'] as bool? ?? false,
       totpEnabled: json['totp_enabled'] as bool? ?? false,
       twoFaMethod: json['two_fa_method'] as String?,
+      phone: json['phone'] as String?,
+      dob: json['dob'] as String?,
+      address: json['address'] as String?,
+      photoUrl: json['photo_url'] as String?,
     );
   }
 
@@ -36,6 +44,10 @@ class UserModel extends UserEntity {
       'email_verified': emailVerified,
       'totp_enabled': totpEnabled,
       'two_fa_method': twoFaMethod,
+      'phone': phone,
+      'dob': dob,
+      'address': address,
+      'photo_url': photoUrl,
     };
   }
 

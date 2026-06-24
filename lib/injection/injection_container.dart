@@ -2,6 +2,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import '../core/constants/app_constants.dart';
 import '../core/network/api_client.dart';
+import '../core/services/biometric_service.dart';
 import '../data/datasources/local/secure_storage_datasource.dart';
 import '../data/datasources/remote/account_remote_datasource.dart';
 import '../data/datasources/remote/auth_remote_datasource.dart';
@@ -22,6 +23,7 @@ import '../domain/usecases/auth/register_with_otp_usecase.dart';
 import '../domain/usecases/auth/send_otp_usecase.dart';
 import '../domain/usecases/auth/verify_email_otp_usecase.dart';
 import '../domain/usecases/auth/verify_firebase_token_usecase.dart';
+import '../domain/usecases/update_profile.dart';
 import '../domain/usecases/payment/payment_usecases.dart';
 import '../presentation/blocs/account/account_bloc.dart';
 import '../presentation/blocs/auth/auth_bloc.dart';
@@ -42,6 +44,7 @@ Future<void> init() async {
 
   // Core
   sl.registerLazySingleton<ApiClient>(() => ApiClient(token: savedToken));
+  sl.registerLazySingleton<BiometricService>(() => BiometricService());
 
   // Local datasource
   sl.registerLazySingleton<SecureStorageDatasource>(
@@ -87,6 +90,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => ConfirmOtpUsecase(sl()));
   sl.registerLazySingleton(() => RegisterTotpUsecase(sl()));
   sl.registerLazySingleton(() => VerifyTotpUsecase(sl()));
+  sl.registerLazySingleton(() => UpdateProfile(sl()));
 
   // Use Cases — Account
   sl.registerLazySingleton(() => GetAccountUsecase(sl()));
@@ -102,6 +106,7 @@ Future<void> init() async {
         getMe: sl(),
         logout: sl(),
         authRepo: sl(),
+        updateProfile: sl(),
       ));
   sl.registerFactory(() => OtpBloc(
         sendFirebase: sl(),

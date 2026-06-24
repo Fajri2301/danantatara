@@ -8,8 +8,10 @@ import '../../presentation/blocs/auth/auth_bloc.dart';
 import '../../presentation/blocs/auth/otp_bloc.dart';
 import '../../presentation/blocs/payment/payment_bloc.dart';
 import '../../presentation/pages/account/account_page.dart';
+import '../../presentation/pages/account/edit_profile_page.dart';
 import '../../presentation/pages/account/personal_info_page.dart';
 import '../../presentation/pages/account/saved_cards_page.dart';
+import '../../presentation/pages/auth/app_lock_page.dart';
 import '../../presentation/pages/auth/login_page.dart';
 import '../../presentation/pages/auth/register_page.dart';
 import '../../presentation/pages/auth/setup_2fa_page.dart';
@@ -60,7 +62,11 @@ class AppRouter {
           ),
           GoRoute(
             path: '/setup-2fa',
-            builder: (_, __) => const Setup2FAPage(),
+            builder: (context, state) => const Setup2FAPage(),
+          ),
+          GoRoute(
+            path: '/app-lock',
+            builder: (context, state) => const AppLockPage(),
           ),
           GoRoute(
             path: '/2fa/smtp',
@@ -141,6 +147,7 @@ class AppRouter {
               GoRoute(path: '/akun/saved-cards', builder: (_, __) => const SavedCardsPage()),
             ],
           ),
+          GoRoute(path: '/edit-profile', builder: (_, __) => _withAuth(const EditProfilePage())),
           // Payment flows (no tab bar)
           GoRoute(path: '/topup', builder: (_, __) => _withPayment(const TopUpPage())),
           GoRoute(path: '/transfer', builder: (_, __) => const TransferPage()),

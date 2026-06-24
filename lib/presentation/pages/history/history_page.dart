@@ -65,7 +65,7 @@ class _HistoryPageState extends State<HistoryPage> {
                   }
                   
                   return ListView.builder(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 100),
                     itemCount: txns.length,
                     itemBuilder: (context, i) => _NeoTransactionRow(txn: txns[i]),
                   );

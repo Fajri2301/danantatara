@@ -3,7 +3,7 @@ class AppConstants {
   static const String appVersion = '1.0.0';
 
   // API
-  static const String baseUrl = 'http://192.168.115.10:8080'; // Android emulator → localhost
+  static const String baseUrl = 'http://192.168.1.5:8080'; // Android emulator → localhost
   static const String apiVersion = '/v1';
   static const int connectTimeout = 30;
   static const int receiveTimeout = 30;
@@ -14,6 +14,8 @@ class AppConstants {
   static const String k2faMethod = 'twofa_method';
   static const String kFcmToken = 'fcm_token';
   static const String kAuthVerified = 'auth_verified';
+  static const String kBiometricEnabled = 'biometric_enabled';
+  static const String kAppLockPin = 'app_lock_pin';
 
   // 2FA Method identifiers
   static const String twoFaSmtp = 'smtp';

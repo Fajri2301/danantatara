@@ -39,7 +39,7 @@ class PromoPage extends StatelessWidget {
           ),
           Expanded(
             child: ListView(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
               children: [
                 // Hero card
                 Container(

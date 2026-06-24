@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../data/datasources/local/secure_storage_datasource.dart';
+import '../../../injection/injection_container.dart';
 import '../../blocs/auth/auth_bloc.dart';
 import '../../widgets/app_avatar.dart';
 
@@ -32,7 +34,7 @@ class AccountPage extends StatelessWidget {
             centerTitle: true,
           ),
           body: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            padding: const EdgeInsets.fromLTRB(20, 10, 20, 100),
             child: Column(
               children: [
                 // Avatar Header
@@ -77,6 +79,12 @@ class AccountPage extends StatelessWidget {
                     _Row(icon: Icons.person_outline, title: 'Informasi Pribadi', onTap: () => context.go('/akun/personal-info')),
                     _Row(icon: Icons.account_balance_wallet_outlined, title: 'Kartu Tersimpan', onTap: () => context.go('/akun/saved-cards')),
                     _Row(icon: Icons.verified_user_outlined, title: 'Keamanan (2FA)', right: const Text('Aktif', style: TextStyle(color: AppColors.neonGreen, fontSize: 12)), onTap: () => context.go('/setup-2fa')),
+                    _Row(
+                      icon: Icons.fingerprint_rounded, 
+                      title: 'Sidik Jari / Biometrik', 
+                      right: _BiometricToggle(), 
+                      onTap: () {},
+                    ),
                   ],
                 ),
                 const SizedBox(height: 24),
@@ -193,6 +201,74 @@ class _ToggleState extends State<_Toggle> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => setState(() => _on = !_on),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        width: 44,
+        height: 24,
+        decoration: BoxDecoration(
+          color: _on ? AppColors.neonGreen : Colors.white24,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: AnimatedAlign(
+          duration: const Duration(milliseconds: 200),
+          alignment: _on ? Alignment.centerRight : Alignment.centerLeft,
+          child: Container(
+            margin: const EdgeInsets.all(2),
+            width: 20,
+            height: 20,
+            decoration: const BoxDecoration(
+              color: Colors.black,
+              shape: BoxShape.circle,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _BiometricToggle extends StatefulWidget {
+  @override
+  State<_BiometricToggle> createState() => _BiometricToggleState();
+}
+
+class _BiometricToggleState extends State<_BiometricToggle> {
+  bool _on = false;
+  final _storage = sl<SecureStorageDatasource>();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadState();
+  }
+
+  Future<void> _loadState() async {
+    final enabled = await _storage.getBiometricEnabled();
+    if (mounted) {
+      setState(() => _on = enabled);
+    }
+  }
+
+  void _toggle() async {
+    final newState = !_on;
+    await _storage.saveBiometricEnabled(newState);
+    
+    // Auto-set dummy PIN to fulfill 'hasPin' if enabling biometrics
+    // In a real app, this should navigate to an App PIN Setup page
+    if (newState) {
+      final existingPin = await _storage.getAppLockPin();
+      if (existingPin == null || existingPin.isEmpty) {
+        await _storage.saveAppLockPin('123456');
+      }
+    }
+
+    setState(() => _on = newState);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: _toggle,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         width: 44,

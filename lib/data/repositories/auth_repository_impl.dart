@@ -71,6 +71,19 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<UserEntity> updateProfile(Map<String, dynamic> data) async {
+    try {
+      final updatedUser = await _remote.updateProfile(data);
+      await _local.saveUserJson(updatedUser.toJsonString());
+      return updatedUser;
+    } on ServerException catch (e) {
+      throw ServerFailure(e.message);
+    } on NetworkException catch (e) {
+      throw NetworkFailure(e.message);
+    }
+  }
+
+  @override
   Future<void> updateFcmToken(String fcmToken) async {
     try {
       await _remote.updateFcmToken(fcmToken);
