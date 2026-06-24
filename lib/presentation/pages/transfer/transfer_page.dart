@@ -6,6 +6,7 @@ import '../../widgets/app_avatar.dart';
 import '../../../injection/injection_container.dart';
 import '../../../data/datasources/remote/payment_remote_datasource.dart';
 import '../../widgets/app_button.dart';
+import '../../widgets/app_field.dart';
 
 class TransferPage extends StatefulWidget {
   const TransferPage({super.key});
@@ -26,7 +27,7 @@ class _TransferPageState extends State<TransferPage> {
   }
 
   Future<void> _resolveAccount() async {
-    final acc = _accountCtrl.text.trim();
+    final acc = _accountCtrl.text.trim().replaceAll(' ', '');
     if (acc.isEmpty) return;
 
     setState(() {
@@ -123,31 +124,25 @@ class _TransferPageState extends State<TransferPage> {
   }
 
   Widget _buildDkgTab() {
-    return Padding(
+    return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text('Kirim ke Sesama Danantara', style: TextStyle(fontFamily: 'Inter', fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
           const SizedBox(height: 16),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.3),
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Colors.white24),
-            ),
-            child: TextField(
-              controller: _accountCtrl,
-              keyboardType: TextInputType.number,
-              style: const TextStyle(color: Colors.white, fontFamily: 'monospace', fontSize: 18, letterSpacing: 2),
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Contoh: 2362...',
-                hintStyle: TextStyle(color: Colors.white54, letterSpacing: 0),
-                icon: Icon(Icons.account_balance_wallet_rounded, color: Colors.white54),
-              ),
-            ),
+          AppField(
+            label: 'Nomor Rekening',
+            value: _accountCtrl.text,
+            onChanged: (v) {
+              if (_accountCtrl.text != v) {
+                _accountCtrl.text = v;
+                _accountCtrl.selection = TextSelection.collapsed(offset: v.length);
+              }
+            },
+            keyboardType: TextInputType.number,
+            placeholder: 'Contoh: 2362...',
+            prefixIcon: const Icon(Icons.account_balance_wallet_rounded, size: 20),
           ),
           if (_errorMsg != null) ...[
             const SizedBox(height: 8),

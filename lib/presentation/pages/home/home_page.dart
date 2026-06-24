@@ -240,13 +240,13 @@ class _HomePageState extends State<HomePage> {
                     const SizedBox(width: 8),
                     GestureDetector(
                       onTap: () {
-                        Clipboard.setData(ClipboardData(text: accountNo));
+                        Clipboard.setData(ClipboardData(text: rawAccountNo));
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: const Text('Nomor Rekening berhasil disalin', style: TextStyle(fontFamily: 'Inter', color: Colors.black)),
+                          const SnackBar(
+                            content: Text('Nomor rekening disalin!'),
                             backgroundColor: AppColors.neonGreen,
                             behavior: SnackBarBehavior.floating,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8))),
                           ),
                         );
                       },
