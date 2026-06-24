@@ -112,36 +112,39 @@ class _NeoTransactionRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isCredit = txn.isCredit;
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.3),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white24),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(color: Colors.white12, borderRadius: BorderRadius.circular(12)),
-            child: Icon(isCredit ? Icons.arrow_downward : Icons.arrow_upward, color: isCredit ? AppColors.neonGreen : AppColors.red),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(txn.description, style: const TextStyle(fontFamily: 'Inter', fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white)),
-                const SizedBox(height: 2),
-                Text('Trx ID: ${txn.id.toString()} • ${_formatDate(txn.createdAt)}', style: const TextStyle(fontFamily: 'Inter', fontSize: 12, color: Colors.white54)),
-              ],
+    return GestureDetector(
+      onTap: () => context.push('/history/receipt', extra: txn),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.black.withOpacity(0.3),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: Colors.white24),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(color: Colors.white12, borderRadius: BorderRadius.circular(12)),
+              child: Icon(isCredit ? Icons.arrow_downward : Icons.arrow_upward, color: isCredit ? AppColors.neonGreen : AppColors.red),
             ),
-          ),
-          Text('${isCredit ? '+' : '-'}${CurrencyFormatter.format(txn.amount)}', 
-            style: TextStyle(fontFamily: 'Inter', fontSize: 14, fontWeight: FontWeight.bold, color: isCredit ? AppColors.neonGreen : AppColors.red)),
-        ],
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(txn.description, style: const TextStyle(fontFamily: 'Inter', fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white)),
+                  const SizedBox(height: 2),
+                  Text('Trx ID: ${txn.id.toString()} • ${_formatDate(txn.createdAt)}', style: const TextStyle(fontFamily: 'Inter', fontSize: 12, color: Colors.white54)),
+                ],
+              ),
+            ),
+            Text('${isCredit ? '+' : '-'}${CurrencyFormatter.format(txn.amount)}', 
+              style: TextStyle(fontFamily: 'Inter', fontSize: 14, fontWeight: FontWeight.bold, color: isCredit ? AppColors.neonGreen : AppColors.red)),
+          ],
+        ),
       ),
     );
   }

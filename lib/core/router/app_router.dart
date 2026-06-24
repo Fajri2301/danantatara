@@ -19,7 +19,9 @@ import '../../presentation/pages/auth/twofa_notif_page.dart';
 import '../../presentation/pages/auth/twofa_smtp_page.dart';
 import '../../presentation/pages/auth/twofa_totp_page.dart';
 import '../../presentation/pages/auth/verify_email_page.dart';
+import '../../domain/entities/transaction_entity.dart';
 import '../../presentation/pages/history/history_page.dart';
+import '../../presentation/pages/history/receipt_page.dart';
 import '../../presentation/pages/home/home_page.dart';
 import '../../presentation/pages/merchant/merchant_checkout_page.dart';
 import '../../presentation/pages/payment/payment_deeplink_page.dart';
@@ -146,6 +148,10 @@ class AppRouter {
               GoRoute(path: '/akun/personal-info', builder: (_, __) => const PersonalInfoPage()),
               GoRoute(path: '/akun/saved-cards', builder: (_, __) => const SavedCardsPage()),
             ],
+          ),
+          GoRoute(
+            path: '/history/receipt',
+            builder: (_, state) => ReceiptPage(transaction: state.extra as TransactionEntity),
           ),
           GoRoute(path: '/edit-profile', builder: (_, __) => _withAuth(const EditProfilePage())),
           // Payment flows (no tab bar)
