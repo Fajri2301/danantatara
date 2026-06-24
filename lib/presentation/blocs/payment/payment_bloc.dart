@@ -26,7 +26,7 @@ class PaymentTransferRequested extends PaymentEvent {
   final String? reference;
   final String? merchantId;
 
-  const PaymentTransferRequested({
+  PaymentTransferRequested({
     required this.amount,
     required this.description,
     required this.otpCode,

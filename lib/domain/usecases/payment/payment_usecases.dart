@@ -16,15 +16,22 @@ class TransferUsecase {
     required String description,
     required String otpCode,
     required String otpType,
+    String? recipientAccount,
     String? reference,
     String? merchantId,
-  }) =>
-      _repository.transfer(
+  }) async {
+    try {
+      return await _repository.transfer(
         amount: amount,
         description: description,
         otpCode: otpCode,
         otpType: otpType,
+        recipientAccount: recipientAccount,
         reference: reference,
         merchantId: merchantId,
       );
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

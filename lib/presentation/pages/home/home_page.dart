@@ -9,6 +9,7 @@ import '../../../core/utils/currency_formatter.dart';
 import '../../../domain/entities/transaction_entity.dart';
 import '../../blocs/account/account_bloc.dart';
 import '../../blocs/auth/auth_bloc.dart';
+import '../../../domain/entities/user_entity.dart';
 import '../../widgets/app_avatar.dart';
 
 class HomePage extends StatefulWidget {

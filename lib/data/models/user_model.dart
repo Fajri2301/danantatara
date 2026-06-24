@@ -12,6 +12,7 @@ class UserModel extends UserEntity {
     required super.totpEnabled,
     super.twoFaMethod,
     super.phone,
+    super.dob,
     super.address,
     super.photoUrl,
     super.accountNumber,
