@@ -48,7 +48,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             colorScheme: const ColorScheme.dark(
               primary: AppColors.neonGreen,
               onPrimary: Colors.black,
-              surface: AppColors.card,
+              surface: AppColors.bg,
               onSurface: Colors.white,
             ),
           ),
