@@ -209,26 +209,26 @@ class AppRouter {
       );
 
   static Widget _withAuth(Widget child) {
-    return BlocProvider(create: (_) => sl<AuthBloc>(), child: child);
+    return BlocProvider.value(value: sl<AuthBloc>(), child: child);
   }
 
   static Widget _withOtp(Widget child) {
     return MultiBlocProvider(providers: [
-      BlocProvider(create: (_) => sl<AuthBloc>()),
+      BlocProvider.value(value: sl<AuthBloc>()),
       BlocProvider(create: (_) => sl<OtpBloc>()),
     ], child: child);
   }
 
   static Widget _withAccount(Widget child) {
     return MultiBlocProvider(providers: [
-      BlocProvider(create: (_) => sl<AuthBloc>()),
+      BlocProvider.value(value: sl<AuthBloc>()),
       BlocProvider(create: (_) => sl<AccountBloc>()),
     ], child: child);
   }
 
   static Widget _withPayment(Widget child) {
     return MultiBlocProvider(providers: [
-      BlocProvider(create: (_) => sl<AuthBloc>()),
+      BlocProvider.value(value: sl<AuthBloc>()),
       BlocProvider(create: (_) => sl<AccountBloc>()),
       BlocProvider(create: (_) => sl<PaymentBloc>()),
       BlocProvider(create: (_) => sl<OtpBloc>()),
