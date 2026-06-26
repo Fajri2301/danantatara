@@ -71,7 +71,10 @@ class PaymentDeeplinkPage extends StatelessWidget {
                       const SizedBox(height: 32),
                       const Text('Total Pembayaran', style: TextStyle(fontFamily: 'Inter', fontSize: 14, color: Colors.white54)),
                       const SizedBox(height: 8),
-                      Text(CurrencyFormatter.format(payload.amount), style: const TextStyle(fontFamily: 'Poppins', fontSize: 40, fontWeight: FontWeight.bold, color: AppColors.neonGreen)),
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(CurrencyFormatter.format(payload.amount), style: const TextStyle(fontFamily: 'Poppins', fontSize: 32, fontWeight: FontWeight.bold, color: AppColors.neonGreen)),
+                      ),
                       const SizedBox(height: 40),
                       
                       Container(
@@ -118,7 +121,10 @@ class PaymentDeeplinkPage extends StatelessWidget {
                       boxShadow: [BoxShadow(color: AppColors.neonGreen.withOpacity(0.3), blurRadius: 8)],
                     ),
                     child: Center(
-                      child: Text('Bayar ${CurrencyFormatter.format(payload.amount)}', style: const TextStyle(fontFamily: 'Inter', fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black)),
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text('Bayar ${CurrencyFormatter.format(payload.amount)}', style: const TextStyle(fontFamily: 'Inter', fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black)),
+                      ),
                     ),
                   ),
                 ),

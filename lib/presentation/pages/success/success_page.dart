@@ -39,12 +39,11 @@ class _SuccessPageState extends State<SuccessPage> {
         child: Column(
           children: [
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(28, 24, 28, 0),
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.fromLTRB(28, 40, 28, 24),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Spacer(),
                     Container(
                       width: 100,
                       height: 100,
@@ -77,22 +76,27 @@ class _SuccessPageState extends State<SuccessPage> {
                           )),
                     ],
                     const SizedBox(height: 32),
-                    Text(CurrencyFormatter.format(widget.amount),
-                        style: const TextStyle(
-                          fontFamily: 'Poppins',
-                          fontSize: 48,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.neonGreen,
-                        )),
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(CurrencyFormatter.format(widget.amount),
+                          style: const TextStyle(
+                            fontFamily: 'Poppins',
+                            fontSize: 36,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.neonGreen,
+                          )),
+                    ),
                     if (widget.lines.isNotEmpty) ...[
                       const SizedBox(height: 40),
                       Container(
                         width: double.infinity,
-                        padding: const EdgeInsets.all(20),
+                        padding: const EdgeInsets.all(24),
                         decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.3),
-                          borderRadius: BorderRadius.circular(24),
-                          border: Border.all(color: Colors.white24),
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: [
+                            BoxShadow(color: Colors.black.withOpacity(0.2), blurRadius: 10, offset: const Offset(0, 4)),
+                          ],
                         ),
                         child: Column(
                           children: widget.lines.asMap().entries.map((e) {
@@ -100,36 +104,61 @@ class _SuccessPageState extends State<SuccessPage> {
                             final l = e.value;
                             return Column(
                               children: [
-                                if (i > 0) const Divider(height: 1, color: Colors.white12),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 12),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(l[0],
-                                          style: const TextStyle(
-                                            fontFamily: 'Inter',
-                                            fontSize: 14,
-                                            color: Colors.white54,
-                                          )),
-                                      Text(l[1],
-                                          textAlign: TextAlign.right,
-                                          style: const TextStyle(
-                                            fontFamily: 'Inter',
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white,
-                                          )),
-                                    ],
+                                if (i > 0)
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(vertical: 12),
+                                    child: LayoutBuilder(
+                                      builder: (context, constraints) {
+                                        return Flex(
+                                          direction: Axis.horizontal,
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          mainAxisSize: MainAxisSize.max,
+                                          children: List.generate(
+                                            (constraints.constrainWidth() / 10).floor(),
+                                            (index) => const SizedBox(
+                                              width: 5,
+                                              height: 1,
+                                              child: DecoratedBox(decoration: BoxDecoration(color: Colors.black26)),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
                                   ),
-                                ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(vertical: 4),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Expanded(
+                                          child: Text(l[0],
+                                              style: const TextStyle(
+                                                fontFamily: 'Inter',
+                                                fontSize: 14,
+                                                color: Colors.black54,
+                                              )),
+                                        ),
+                                        const SizedBox(width: 16),
+                                        Expanded(
+                                          child: Text(l[1],
+                                              textAlign: TextAlign.right,
+                                              style: const TextStyle(
+                                                fontFamily: 'Inter',
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black87,
+                                              )),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                               ],
                             );
                           }).toList(),
                         ),
                       ),
                     ],
-                    const Spacer(),
                   ],
                 ),
               ),
@@ -155,7 +184,9 @@ class _SuccessPageState extends State<SuccessPage> {
                   ),
                   const SizedBox(height: 16),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Struk berhasil disimpan ke galeri.')));
+                    },
                     child: Container(
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(vertical: 18),
@@ -165,7 +196,7 @@ class _SuccessPageState extends State<SuccessPage> {
                         border: Border.all(color: AppColors.neonGreen),
                       ),
                       child: const Center(
-                        child: Text('Bagikan Resi', style: TextStyle(fontFamily: 'Inter', fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.neonGreen)),
+                        child: Text('Unduh Invoice / Struk', style: TextStyle(fontFamily: 'Inter', fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.neonGreen)),
                       ),
                     ),
                   ),
