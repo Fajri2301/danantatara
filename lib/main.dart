@@ -8,6 +8,16 @@ import 'core/services/deeplink_service.dart';
 import 'core/theme/app_theme.dart';
 import 'core/utils/app_bloc_observer.dart';
 import 'injection/injection_container.dart' as di;
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'core/services/notification_service.dart';
+
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  final notificationService = NotificationService();
+  await notificationService.init();
+  await notificationService.showNotification(message);
+}
 
 // Top-level variable — mencegah DeeplinkService di-garbage collect selama
 // proses berjalan sehingga uriLinkStream tetap aktif untuk in-app deeplinks.
@@ -22,6 +32,7 @@ void main() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   } catch (e) {
     if (!e.toString().contains('duplicate-app')) {
       debugPrint("Firebase initialization error: $e");
@@ -30,6 +41,11 @@ void main() async {
 
   // Initialize dependency injection
   await di.init();
+  await di.sl<NotificationService>().init();
+
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    di.sl<NotificationService>().showNotification(message);
+  });
 
   // Set preferred orientations
   await SystemChrome.setPreferredOrientations([
