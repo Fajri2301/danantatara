@@ -20,10 +20,22 @@ class NotificationService {
     );
 
     // Request permissions for Android 13+
-    await _flutterLocalNotificationsPlugin
+    final androidImplementation = _flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.requestNotificationsPermission();
+            AndroidFlutterLocalNotificationsPlugin>();
+            
+    await androidImplementation?.requestNotificationsPermission();
+
+    // Buat channel secara eksplisit agar FCM langsung mengenalinya
+    const AndroidNotificationChannel channel = AndroidNotificationChannel(
+      'high_importance_channel', // id
+      'High Importance Notifications', // title
+      description: 'This channel is used for important notifications.',
+      importance: Importance.max,
+      playSound: true,
+    );
+
+    await androidImplementation?.createNotificationChannel(channel);
 
     // Minta izin FCM
     await FirebaseMessaging.instance.requestPermission(
