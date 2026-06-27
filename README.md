@@ -7,6 +7,9 @@ Aplikasi *e-money* premium berbasis **Flutter** untuk Frontend, didukung oleh ba
 - **Backend E-Money (Golang API):** [https://github.com/Fajri2301/be-emoney.git](https://github.com/Fajri2301/be-emoney.git)
 - **Toko Emas Digital (App):** [https://github.com/Fajri2301/uts_1123150166_tokoemasdigital.git](https://github.com/Fajri2301/uts_1123150166_tokoemasdigital.git)
 
+## 📺 Presentasi Video
+🎥 **[Klik di sini untuk menonton presentasi Danantara di YouTube](https://youtu.be/uk3ZeuPCoS8)**
+
 ## 📱 Fitur Utama
 
 ### 👤 User Features
