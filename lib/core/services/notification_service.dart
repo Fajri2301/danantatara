@@ -50,6 +50,29 @@ class NotificationService {
       badge: true,
       sound: true,
     );
+
+    // Ambil dan sinkronkan FCM Token ke backend
+    try {
+      final token = await FirebaseMessaging.instance.getToken();
+      if (token != null) {
+        // Karena di.sl() mungkin belum sepenuhnya siap jika ini dipanggil dalam main sebelum runApp
+        // kita bisa mencoba mengirimnya, atau lebih baik pastikan AuthBloc/repo terupdate
+        // Namun, lebih aman kita defer sedikit
+        Future.delayed(const Duration(seconds: 2), () {
+          try {
+            // import 'package:dompet_kampus_global/injection/injection_container.dart' as di;
+            // dan 'package:dompet_kampus_global/presentation/blocs/auth/auth_bloc.dart';
+            // Tapi karena service ini core, lebih baik jika update token dipanggil oleh UI.
+            // Namun, karena kita tidak import sl, kita akan cetak token saja.
+            print('FCM Token: $token');
+          } catch (e) {
+            print('Failed to dispatch token update: $e');
+          }
+        });
+      }
+    } catch (e) {
+      print('Failed to get FCM token: $e');
+    }
   }
 
   Future<void> showNotification(RemoteMessage message) async {

@@ -10,6 +10,7 @@ import 'core/utils/app_bloc_observer.dart';
 import 'injection/injection_container.dart' as di;
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'core/services/notification_service.dart';
+import 'presentation/blocs/auth/auth_bloc.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -42,6 +43,16 @@ void main() async {
   // Initialize dependency injection
   await di.init();
   await di.sl<NotificationService>().init();
+
+  // Sinkronisasi token FCM ke Backend agar bisa menerima Push Notification
+  try {
+    final token = await FirebaseMessaging.instance.getToken();
+    if (token != null) {
+      di.sl<AuthBloc>().add(AuthUpdateFcmToken(token));
+    }
+  } catch (e) {
+    debugPrint('Gagal mendapatkan atau sinkron FCM token: $e');
+  }
 
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     di.sl<NotificationService>().showNotification(message);
