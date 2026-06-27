@@ -24,6 +24,20 @@ class NotificationService {
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
         ?.requestNotificationsPermission();
+
+    // Minta izin FCM
+    await FirebaseMessaging.instance.requestPermission(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+
+    // Konfigurasi agar FCM tetap memunculkan Heads-Up notification di Foreground
+    await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
   }
 
   Future<void> showNotification(RemoteMessage message) async {
@@ -43,10 +57,9 @@ class NotificationService {
             importance: Importance.max,
             priority: Priority.high,
             icon: '@mipmap/ic_launcher',
-            fullScreenIntent: true,
+            showWhen: true,
             playSound: true,
             enableVibration: true,
-            visibility: NotificationVisibility.public,
           ),
         ),
       );
