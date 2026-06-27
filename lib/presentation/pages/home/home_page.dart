@@ -143,9 +143,10 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-        _buildIconBtn(Icons.emoji_events),
-        const SizedBox(width: 8),
-        _buildIconBtn(Icons.notifications),
+        GestureDetector(
+          onTap: () => context.push('/notification'),
+          child: _buildIconBtn(Icons.notifications),
+        ),
       ],
     );
   }
