@@ -3,7 +3,6 @@
 Aplikasi *e-money* premium berbasis **Flutter** untuk Frontend, didukung oleh backend tangguh menggunakan **Golang (Gin + PostgreSQL)**, serta dilengkapi keamanan ekstra seperti Autentikasi Biometrik, 2FA (SMTP/TOTP), dan integrasi **Firebase Cloud Messaging (FCM)** untuk notifikasi _real-time_.
 
 ## 🔗 Repositori Terkait
-- **Frontend E-Money (Flutter):** [https://github.com/Fajri2301/danantatara.git](https://github.com/Fajri2301/danantatara.git)
 - **Backend E-Money (Golang API):** [https://github.com/Fajri2301/be-emoney.git](https://github.com/Fajri2301/be-emoney.git)
 - **Toko Emas Digital (App):** [https://github.com/Fajri2301/uts_1123150166_tokoemasdigital.git](https://github.com/Fajri2301/uts_1123150166_tokoemasdigital.git)
 
