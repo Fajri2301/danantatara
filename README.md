@@ -53,6 +53,22 @@ Aplikasi ini diimplementasikan dengan sangat ketat mengikuti kaidah **Clean Arch
 - **Data Layer:** Berisi Implementation Repository, Data Sources (Remote/Local), dan mapping API (seharusnya DTO/Model).
 - **Core Layer:** *Dependency Injection*, *Error Handling*, Konfigurasi Network (Dio Interceptors), dan *Constants*.
 
+## 📸 Screenshots UI
+
+Aplikasi ini dirancang dengan tema gelap yang elegan dipadukan dengan aksen neon hijau (*Neon Green*) khas *fintech* modern.
+
+| Home Screen | Riwayat Transaksi | Kirim Uang |
+|:---:|:---:|:---:|
+| <img src="ss_halaman/halaman-homescreen.png" width="200" alt="Home Screen"> | <img src="ss_halaman/halaman-riwayat.png" width="200" alt="Riwayat Transaksi"> | <img src="ss_halaman/halaman-kirimuang.png" width="200" alt="Kirim Uang"> |
+
+| Isi Saldo | Top Up Berhasil | Scan QRIS |
+|:---:|:---:|:---:|
+| <img src="ss_halaman/halaman-isisaldo.png" width="200" alt="Isi Saldo"> | <img src="ss_halaman/halaman-topup-berhasil.png" width="200" alt="Top Up Berhasil"> | <img src="ss_halaman/halaman-scanqris.png" width="200" alt="Scan QRIS"> |
+
+| Notifikasi | Profil & Akun | Kartu Tersimpan |
+|:---:|:---:|:---:|
+| <img src="ss_halaman/halaman-notif.png" width="200" alt="Notifikasi"> | <img src="ss_halaman/halaman-profile.png" width="200" alt="Profil"> | <img src="ss_halaman/halaman-kartu.png" width="200" alt="Kartu Tersimpan"> |
+
 ## 📂 Struktur Folder (Frontend - Flutter)
 
 ```
