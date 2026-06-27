@@ -31,10 +31,10 @@ class NotificationService {
 
     if (notification != null) {
       await _flutterLocalNotificationsPlugin.show(
-        notification.hashCode.abs() % 100000,
-        notification.title,
-        notification.body,
-        const NotificationDetails(
+        id: notification.hashCode.abs() % 100000,
+        title: notification.title,
+        body: notification.body,
+        notificationDetails: const NotificationDetails(
           android: AndroidNotificationDetails(
             'high_importance_channel', // id
             'High Importance Notifications', // title

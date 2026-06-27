@@ -18,6 +18,7 @@ class _NotificationPageState extends State<NotificationPage> {
   void initState() {
     super.initState();
     timeago.setLocaleMessages('id', timeago.IdMessages());
+    timeago.setLocaleMessages('id_short', timeago.IdShortMessages());
   }
 
   void _markAllAsRead(BuildContext context) {
@@ -173,7 +174,7 @@ class _NotificationPageState extends State<NotificationPage> {
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        timeago.format(notif.createdAt, locale: 'id'),
+                        timeago.format(notif.createdAt, locale: 'id_short'),
                         style: TextStyle(
                           fontFamily: 'Inter',
                           fontSize: 10,
