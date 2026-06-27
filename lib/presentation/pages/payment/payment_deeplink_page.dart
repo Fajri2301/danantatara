@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/services/deeplink_callback_service.dart';
 import '../../../core/services/deeplink_service.dart';
@@ -15,7 +16,8 @@ class PaymentDeeplinkPage extends StatelessWidget {
       DeeplinkCallbackService.notifyCancelled(
         callbackUrl: cb,
         reference: payload.reference,
-      );
+      ).then((_) => SystemNavigator.pop());
+      return;
     }
     context.go('/home');
   }

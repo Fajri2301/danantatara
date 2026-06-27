@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_constants.dart';
@@ -201,7 +202,8 @@ class _PinPageState extends State<PinPage> {
                   callbackUrl: cb,
                   reference: _callbackReference,
                   transactionId: result.transactionId,
-                );
+                ).then((_) => SystemNavigator.pop()); // Keluar dari Danantara
+                return;
               }
               context.go('/success', extra: {
                 'title': 'Pembayaran berhasil',
@@ -241,7 +243,8 @@ class _PinPageState extends State<PinPage> {
                   callbackUrl: cb,
                   reference: _callbackReference,
                   errorMessage: 'insufficient_balance',
-                );
+                ).then((_) => SystemNavigator.pop());
+                return;
               }
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -258,7 +261,8 @@ class _PinPageState extends State<PinPage> {
                   callbackUrl: cb,
                   reference: _callbackReference,
                   errorMessage: 'payment_error',
-                );
+                ).then((_) => SystemNavigator.pop());
+                return;
               }
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(state.message), backgroundColor: AppColors.red),
@@ -300,7 +304,8 @@ class _PinPageState extends State<PinPage> {
                         DeeplinkCallbackService.notifyCancelled(
                           callbackUrl: cb,
                           reference: _callbackReference,
-                        );
+                        ).then((_) => SystemNavigator.pop());
+                        return;
                       }
                       context.go('/home');
                     }
