@@ -1,22 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:timeago/timeago.dart' as timeago;
 import '../../../core/theme/app_colors.dart';
-
-class NotificationItem {
-  final String id;
-  final String title;
-  final String body;
-  final String time;
-  bool isRead;
-
-  NotificationItem({
-    required this.id,
-    required this.title,
-    required this.body,
-    required this.time,
-    this.isRead = false,
-  });
-}
+import '../../../domain/entities/notification_entity.dart';
+import '../../blocs/notification/notification_bloc.dart';
 
 class NotificationPage extends StatefulWidget {
   const NotificationPage({super.key});
@@ -26,51 +14,18 @@ class NotificationPage extends StatefulWidget {
 }
 
 class _NotificationPageState extends State<NotificationPage> {
-  // Dummy data untuk mensimulasikan fitur notifikasi UI
-  final List<NotificationItem> _notifications = [
-    NotificationItem(
-      id: '1',
-      title: 'Selamat Datang di Danantara!',
-      body: 'Terima kasih telah bergabung. Nikmati kemudahan transaksi digital kampus dalam satu genggaman.',
-      time: 'Baru saja',
-    ),
-    NotificationItem(
-      id: '2',
-      title: 'Promo Top Up Spesial',
-      body: 'Dapatkan cashback 50% hingga Rp 10.000 untuk top up pertama kamu bulan ini.',
-      time: '2 jam lalu',
-    ),
-    NotificationItem(
-      id: '3',
-      title: 'Pembayaran Berhasil',
-      body: 'Pembayaran sebesar Rp 25.000 ke Kantin Fakultas Teknik telah berhasil dikonfirmasi.',
-      time: 'Kemarin',
-      isRead: true,
-    ),
-    NotificationItem(
-      id: '4',
-      title: 'Peringatan Keamanan',
-      body: 'Ada percobaan login baru dari perangkat tidak dikenal. Jika ini bukan kamu, segera ubah PIN.',
-      time: '2 hari lalu',
-      isRead: true,
-    ),
-  ];
-
-  void _markAllAsRead() {
-    setState(() {
-      for (var item in _notifications) {
-        item.isRead = true;
-      }
-    });
+  @override
+  void initState() {
+    super.initState();
+    timeago.setLocaleMessages('id', timeago.IdMessages());
   }
 
-  void _markAsRead(String id) {
-    setState(() {
-      final index = _notifications.indexWhere((n) => n.id == id);
-      if (index != -1) {
-        _notifications[index].isRead = true;
-      }
-    });
+  void _markAllAsRead(BuildContext context) {
+    context.read<NotificationBloc>().add(NotificationMarkAllAsReadRequested());
+  }
+
+  void _markAsRead(BuildContext context, int id) {
+    context.read<NotificationBloc>().add(NotificationMarkAsReadRequested(id));
   }
 
   @override
@@ -97,21 +52,41 @@ class _NotificationPageState extends State<NotificationPage> {
           IconButton(
             tooltip: 'Tandai semua dibaca',
             icon: const Icon(Icons.done_all, color: AppColors.primary),
-            onPressed: _markAllAsRead,
+            onPressed: () => _markAllAsRead(context),
           ),
         ],
       ),
-      body: _notifications.isEmpty
-          ? _buildEmptyState()
-          : ListView.separated(
+      body: BlocBuilder<NotificationBloc, NotificationState>(
+        builder: (context, state) {
+          if (state is NotificationLoading || state is NotificationInitial) {
+            return const Center(
+              child: CircularProgressIndicator(color: AppColors.primary),
+            );
+          } else if (state is NotificationError) {
+            return Center(
+              child: Text(
+                state.message,
+                style: const TextStyle(color: Colors.redAccent),
+              ),
+            );
+          } else if (state is NotificationLoaded) {
+            final notifications = state.notifications;
+            if (notifications.isEmpty) {
+              return _buildEmptyState();
+            }
+            return ListView.separated(
               padding: const EdgeInsets.all(20),
-              itemCount: _notifications.length,
+              itemCount: notifications.length,
               separatorBuilder: (context, index) => const SizedBox(height: 12),
               itemBuilder: (context, index) {
-                final notif = _notifications[index];
-                return _buildNotificationCard(notif);
+                final notif = notifications[index];
+                return _buildNotificationCard(context, notif);
               },
-            ),
+            );
+          }
+          return const SizedBox();
+        },
+      ),
     );
   }
 
@@ -136,9 +111,13 @@ class _NotificationPageState extends State<NotificationPage> {
     );
   }
 
-  Widget _buildNotificationCard(NotificationItem notif) {
+  Widget _buildNotificationCard(BuildContext context, NotificationEntity notif) {
     return GestureDetector(
-      onTap: () => _markAsRead(notif.id),
+      onTap: () {
+        if (!notif.isRead) {
+          _markAsRead(context, notif.id);
+        }
+      },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         padding: const EdgeInsets.all(16),
@@ -194,7 +173,7 @@ class _NotificationPageState extends State<NotificationPage> {
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        notif.time,
+                        timeago.format(notif.createdAt, locale: 'id'),
                         style: TextStyle(
                           fontFamily: 'Inter',
                           fontSize: 10,

@@ -9,6 +9,7 @@ import '../data/datasources/remote/account_remote_datasource.dart';
 import '../data/datasources/remote/auth_remote_datasource.dart';
 import '../data/datasources/remote/otp_remote_datasource.dart';
 import '../data/datasources/remote/payment_remote_datasource.dart';
+import '../data/datasources/notification_remote_data_source.dart';
 import '../data/repositories/account_repository_impl.dart';
 import '../data/repositories/auth_repository_impl.dart';
 import '../data/repositories/otp_repository_impl.dart';
@@ -17,6 +18,8 @@ import '../domain/repositories/account_repository.dart';
 import '../domain/repositories/auth_repository.dart';
 import '../domain/repositories/otp_repository.dart';
 import '../domain/repositories/payment_repository.dart';
+import '../data/repositories/notification_repository_impl.dart';
+import '../domain/repositories/notification_repository.dart';
 import '../domain/usecases/account/get_account_usecase.dart';
 import '../domain/usecases/auth/get_me_usecase.dart';
 import '../domain/usecases/auth/logout_usecase.dart';
@@ -30,6 +33,7 @@ import '../presentation/blocs/account/account_bloc.dart';
 import '../presentation/blocs/auth/auth_bloc.dart';
 import '../presentation/blocs/auth/otp_bloc.dart';
 import '../presentation/blocs/payment/payment_bloc.dart';
+import '../presentation/blocs/notification/notification_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -66,6 +70,9 @@ Future<void> init() async {
   sl.registerLazySingleton<PaymentRemoteDatasource>(
     () => PaymentRemoteDatasourceImpl(sl()),
   );
+  sl.registerLazySingleton<NotificationRemoteDataSource>(
+    () => NotificationRemoteDataSourceImpl(apiClient: sl()),
+  );
 
   // Repositories
   sl.registerLazySingleton<AuthRepository>(
@@ -79,6 +86,9 @@ Future<void> init() async {
   );
   sl.registerLazySingleton<PaymentRepository>(
     () => PaymentRepositoryImpl(sl()),
+  );
+  sl.registerLazySingleton<NotificationRepository>(
+    () => NotificationRepositoryImpl(remoteDataSource: sl()),
   );
 
   // Use Cases — Auth
@@ -124,6 +134,9 @@ Future<void> init() async {
   sl.registerFactory(() => PaymentBloc(
         topup: sl(),
         transfer: sl(),
+      ));
+  sl.registerFactory(() => NotificationBloc(
+        repository: sl(),
       ));
 }
 

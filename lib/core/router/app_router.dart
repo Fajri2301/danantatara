@@ -7,6 +7,7 @@ import '../../presentation/blocs/account/account_bloc.dart';
 import '../../presentation/blocs/auth/auth_bloc.dart';
 import '../../presentation/blocs/auth/otp_bloc.dart';
 import '../../presentation/blocs/payment/payment_bloc.dart';
+import '../../presentation/blocs/notification/notification_bloc.dart';
 import '../../presentation/pages/account/account_page.dart';
 import '../../presentation/pages/account/edit_profile_page.dart';
 import '../../presentation/pages/account/personal_info_page.dart';
@@ -156,7 +157,10 @@ class AppRouter {
           ),
           GoRoute(
             path: '/notification',
-            builder: (_, __) => const NotificationPage(),
+            builder: (_, __) => BlocProvider(
+              create: (_) => sl<NotificationBloc>()..add(NotificationLoadRequested()),
+              child: const NotificationPage(),
+            ),
           ),
           GoRoute(path: '/edit-profile', builder: (_, __) => _withAuth(const EditProfilePage())),
           // Payment flows (no tab bar)
