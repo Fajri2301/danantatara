@@ -28,14 +28,13 @@ class NotificationService {
 
   Future<void> showNotification(RemoteMessage message) async {
     RemoteNotification? notification = message.notification;
-    AndroidNotification? android = message.notification?.android;
 
-    if (notification != null && android != null) {
+    if (notification != null) {
       await _flutterLocalNotificationsPlugin.show(
-        id: notification.hashCode,
-        title: notification.title,
-        body: notification.body,
-        notificationDetails: const NotificationDetails(
+        notification.hashCode.abs() % 100000,
+        notification.title,
+        notification.body,
+        const NotificationDetails(
           android: AndroidNotificationDetails(
             'high_importance_channel', // id
             'High Importance Notifications', // title
