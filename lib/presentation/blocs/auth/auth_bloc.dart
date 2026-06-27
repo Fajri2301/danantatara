@@ -8,6 +8,7 @@ import '../../../domain/usecases/auth/send_otp_usecase.dart';
 import '../../../domain/usecases/update_profile.dart';
 import '../../../domain/repositories/auth_repository.dart';
 import '../../../core/error/failures.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 // Events
 abstract class AuthEvent extends Equatable {
@@ -140,7 +141,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if (!emit.isDone) {
         emit(AuthAuthenticated(freshUser));
       }
-    } catch (_) {
+      
+      // Sinkronkan token FCM dengan backend agar push notif bisa dikirim
+      final fcmToken = await FirebaseMessaging.instance.getToken();
+      if (fcmToken != null) {
+        await _authRepo.updateFcmToken(fcmToken);
+      }
+    } catch (e) {
       // Abaikan jika gagal (misalnya tidak ada internet)
     }
   }

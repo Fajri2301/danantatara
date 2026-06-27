@@ -9,6 +9,7 @@ import '../../../core/utils/currency_formatter.dart';
 import '../../../domain/entities/transaction_entity.dart';
 import '../../blocs/account/account_bloc.dart';
 import '../../blocs/auth/auth_bloc.dart';
+import '../../blocs/notification/notification_bloc.dart';
 import '../../../domain/entities/user_entity.dart';
 import '../../widgets/app_avatar.dart';
 
@@ -26,6 +27,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     context.read<AccountBloc>().add(AccountLoadRequested());
     context.read<AuthBloc>().add(AuthCheckRequested());
+    context.read<NotificationBloc>().add(NotificationLoadRequested());
   }
 
   @override
@@ -144,22 +146,52 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         GestureDetector(
-          onTap: () => context.push('/notification'),
-          child: _buildIconBtn(Icons.notifications),
+          onTap: () async {
+            await context.push('/notification');
+            if (mounted) context.read<NotificationBloc>().add(NotificationLoadRequested());
+          },
+          child: BlocBuilder<NotificationBloc, NotificationState>(
+            builder: (context, state) {
+              bool hasUnread = false;
+              if (state is NotificationLoaded) {
+                hasUnread = state.notifications.any((n) => !n.isRead);
+              }
+              return _buildIconBtn(Icons.notifications, hasUnread);
+            },
+          ),
         ),
       ],
     );
   }
 
-  Widget _buildIconBtn(IconData icon) {
-    return Container(
-      width: 32,
-      height: 32,
-      decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.8), // Dark icons on green background
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Icon(icon, color: AppColors.primary, size: 16),
+  Widget _buildIconBtn(IconData icon, [bool hasUnread = false]) {
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        Container(
+          width: 32,
+          height: 32,
+          decoration: BoxDecoration(
+            color: Colors.black.withOpacity(0.8), // Dark icons on green background
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Icon(icon, color: AppColors.primary, size: 16),
+        ),
+        if (hasUnread)
+          Positioned(
+            top: -2,
+            right: -2,
+            child: Container(
+              width: 10,
+              height: 10,
+              decoration: BoxDecoration(
+                color: Colors.redAccent,
+                shape: BoxShape.circle,
+                border: Border.all(color: const Color(0xFFAACF31), width: 1.5),
+              ),
+            ),
+          ),
+      ],
     );
   }
 

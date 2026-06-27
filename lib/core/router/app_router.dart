@@ -157,8 +157,8 @@ class AppRouter {
           ),
           GoRoute(
             path: '/notification',
-            builder: (_, __) => BlocProvider(
-              create: (_) => sl<NotificationBloc>()..add(NotificationLoadRequested()),
+            builder: (_, __) => BlocProvider.value(
+              value: sl<NotificationBloc>()..add(NotificationLoadRequested()),
               child: const NotificationPage(),
             ),
           ),
@@ -238,6 +238,7 @@ class AppRouter {
     return MultiBlocProvider(providers: [
       BlocProvider.value(value: sl<AuthBloc>()),
       BlocProvider.value(value: sl<AccountBloc>()..add(AccountLoadRequested())),
+      BlocProvider.value(value: sl<NotificationBloc>()),
     ], child: child);
   }
 
